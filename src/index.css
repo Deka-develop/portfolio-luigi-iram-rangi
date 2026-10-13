@@ -6,7 +6,6 @@
   html {
     font-family: 'Inter', system-ui, sans-serif;
     scroll-behavior: smooth;
-    scroll-snap-type: y mandatory;
   }
   body {
     @apply bg-background text-foreground;
@@ -17,9 +16,32 @@
   }
 }
 
-.snap-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+/* Full-page snap only on tablet/desktop — phones scroll naturally */
+@media (min-width: 768px) {
+  html {
+    scroll-snap-type: y mandatory;
+  }
+  .snap-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+}
+
+/* Mobile: soften heavy blur effects that are expensive on phone GPUs */
+@media (max-width: 767px) {
+  .backdrop-blur-2xl, .backdrop-blur-xl {
+    --tw-backdrop-blur: blur(10px);
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Custom Scrollbar for better UI */

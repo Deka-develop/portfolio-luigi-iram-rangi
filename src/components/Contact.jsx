@@ -98,10 +98,10 @@ export default function Contact() {
           </div>
 
           {/* Live Telemetry Pill */}
-          <div className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-neutral-900/80 border border-white/10 backdrop-blur-md text-xs font-mono text-white/70 shadow-lg">
+          <div className="flex items-center gap-3 px-4 py-2 rounded-2xl bg-neutral-900/80 border border-white/10 backdrop-blur-md text-xs font-mono text-white/75 shadow-lg">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             <div className="flex items-center gap-2">
-              <span className="text-white/40">PONTIANAK:</span>
+              <span className="text-white/70">PONTIANAK:</span>
               <span className="text-emerald-300 font-bold tracking-wider">{timeStr || '23:45:00'} WIB</span>
             </div>
             <span className="text-white/20">|</span>
@@ -121,7 +121,7 @@ export default function Contact() {
           >
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] font-mono text-white/40 uppercase tracking-widest">
+                <span className="text-[11px] font-mono text-white/70 uppercase tracking-widest">
                   Direct Channels
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 border border-emerald-500/30 text-emerald-300">
@@ -132,7 +132,7 @@ export default function Contact() {
               <h3 className="text-lg sm:text-xl font-display font-bold text-white mb-1.5">
                 Saluran Komunikasi Langsung
               </h3>
-              <p className="text-xs text-white/60 font-light mb-4 leading-relaxed">
+              <p className="text-xs text-white/75 font-light mb-4 leading-relaxed">
                 Punya ide proyek, kebutuhan template khusus, atau kerja sama arsitektur web modern? Silakan hubungi langsung:
               </p>
 
@@ -153,6 +153,7 @@ export default function Contact() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleCopyEmail}
+                    aria-label="Salin alamat email"
                     className="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-mono text-white/80 hover:text-white transition-all flex items-center gap-1 cursor-pointer"
                     title="Salin alamat email"
                   >
@@ -163,7 +164,7 @@ export default function Contact() {
                       </>
                     ) : (
                       <>
-                        <Copy className="w-3.5 h-3.5 text-white/60" />
+                        <Copy className="w-3.5 h-3.5 text-white/80" />
                         <span className="text-[11px]">Salin</span>
                       </>
                     )}
@@ -171,6 +172,7 @@ export default function Contact() {
 
                   <a
                     href="mailto:iramrangi@gmail.com"
+                    aria-label="Kirim email ke Luigi Iram Rangi"
                     className="px-3 py-1.5 rounded-lg bg-cyan-500 text-black hover:bg-cyan-400 text-xs font-mono font-bold transition-all flex items-center gap-1 cursor-pointer"
                   >
                     <span>Kirim</span>
@@ -184,6 +186,7 @@ export default function Contact() {
                 href="https://www.instagram.com/iramrangi_dev/"
                 target="_blank"
                 rel="noreferrer"
+                aria-label="Kirim Direct Message ke Instagram @iramrangi_dev"
                 className="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-transparent border border-pink-500/20 hover:border-pink-400/50 flex items-center justify-between transition-all group/ig mb-3"
               >
                 <div className="flex items-center gap-3">
@@ -208,6 +211,7 @@ export default function Contact() {
                 href="https://www.borneoglobe.org/"
                 target="_blank"
                 rel="noreferrer"
+                aria-label="Kunjungi platform resmi Borneo Globe"
                 className="p-3 sm:p-3.5 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent border border-emerald-500/20 hover:border-emerald-400/50 flex items-center justify-between transition-all group/bg"
               >
                 <div className="flex items-center gap-3">
@@ -228,7 +232,7 @@ export default function Contact() {
               </a>
             </div>
 
-            <div className="pt-3 mt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/40">
+            <div className="pt-3 mt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/70">
               <span>Status: Terbuka untuk Kolaborasi</span>
               <span className="text-cyan-400">Ddev Studio</span>
             </div>
@@ -303,44 +307,50 @@ export default function Contact() {
                     <form onSubmit={handleFormSubmit} className="flex flex-col gap-3">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                         <div>
-                          <label className="text-[10px] font-mono text-white/50 block mb-1 uppercase tracking-wider">
+                          <label htmlFor="contact-name" className="text-[11px] font-mono text-white/80 font-medium block mb-1 uppercase tracking-wider">
                             Nama / Brand
                           </label>
                           <input
+                            id="contact-name"
                             type="text"
                             required
+                            aria-label="Nama atau nama brand Anda"
                             placeholder="Contoh: Alex Pratama"
                             value={formState.name}
                             onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                            className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-cyan-400/60 focus:outline-none text-xs font-mono text-white placeholder-white/25 transition-colors"
+                            className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/20 focus:border-cyan-400 focus:outline-none text-xs font-mono text-white placeholder-white/40 transition-colors"
                           />
                         </div>
 
                         <div>
-                          <label className="text-[10px] font-mono text-white/50 block mb-1 uppercase tracking-wider">
+                          <label htmlFor="contact-channel" className="text-[11px] font-mono text-white/80 font-medium block mb-1 uppercase tracking-wider">
                             Email / Kontak Anda
                           </label>
                           <input
+                            id="contact-channel"
                             type="text"
+                            aria-label="Email atau kontak alternatif Anda"
                             placeholder="alex@domain.com / @alex"
                             value={formState.contact}
                             onChange={(e) => setFormState({ ...formState, contact: e.target.value })}
-                            className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-cyan-400/60 focus:outline-none text-xs font-mono text-white placeholder-white/25 transition-colors"
+                            className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/20 focus:border-cyan-400 focus:outline-none text-xs font-mono text-white placeholder-white/40 transition-colors"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="text-[10px] font-mono text-white/50 block mb-1 uppercase tracking-wider">
+                        <label htmlFor="contact-message" className="text-[11px] font-mono text-white/80 font-medium block mb-1 uppercase tracking-wider">
                           Kebutuhan Proyek / Pesan
                         </label>
                         <textarea
+                          id="contact-message"
                           required
                           rows={3}
+                          aria-label="Deskripsi kebutuhan proyek atau pesan Anda"
                           placeholder="Ceritakan gambaran proyek web, kebutuhan template kustom, atau perkiraan timeline..."
                           value={formState.message}
                           onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                          className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-cyan-400/60 focus:outline-none text-xs font-mono text-white placeholder-white/25 resize-none transition-colors"
+                          className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/20 focus:border-cyan-400 focus:outline-none text-xs font-mono text-white placeholder-white/40 resize-none transition-colors"
                         />
                       </div>
 
@@ -373,7 +383,7 @@ export default function Contact() {
                       </span>
                     </div>
 
-                    <p className="text-xs text-white/60 font-light leading-relaxed mb-2">
+                    <p className="text-xs text-white/75 font-light leading-relaxed mb-2">
                       Platform digital resmi pemantauan lingkungan regional dan inisiatif berkelanjutan Borneo.
                     </p>
 
@@ -381,6 +391,7 @@ export default function Contact() {
                       href="https://www.borneoglobe.org/"
                       target="_blank"
                       rel="noreferrer"
+                      aria-label="Kunjungi situs Borneo Globe"
                       className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-cyan-300 hover:text-white text-xs font-mono transition-colors"
                     >
                       <Globe className="w-3 h-3" />
@@ -398,7 +409,7 @@ export default function Contact() {
                         Founder
                       </span>
                     </div>
-                    <p className="text-xs text-white/60 font-light leading-relaxed">
+                    <p className="text-xs text-white/75 font-light leading-relaxed">
                       Studio template Blogger berkecepatan tinggi, 3D WebGL, dan arsitektur web modern Pontianak.
                     </p>
                   </div>
@@ -406,7 +417,7 @@ export default function Contact() {
               )}
             </div>
 
-            <div className="pt-3 mt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/40 select-none">
+            <div className="pt-3 mt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/70 select-none">
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-cyan-400" />
                 <span>Pontianak, Kalimantan Barat</span>
@@ -420,18 +431,19 @@ export default function Contact() {
       </div>
 
       {/* Footer Bar */}
-      <footer className="max-w-6xl mx-auto w-full px-6 sm:px-10 lg:px-16 flex flex-col sm:flex-row justify-between items-center pt-4 border-t border-white/10 text-white/50 text-[11px] font-mono uppercase tracking-widest gap-3 relative z-10">
+      <footer className="max-w-6xl mx-auto w-full px-6 sm:px-10 lg:px-16 flex flex-col sm:flex-row justify-between items-center pt-4 border-t border-white/10 text-white/70 text-[11px] font-mono uppercase tracking-widest gap-3 relative z-10">
         <div className="flex items-center gap-5">
-          <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-cyan-300 transition-colors">GitHub</a>
+          <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="Kunjungi akun GitHub" className="hover:text-cyan-300 transition-colors">GitHub</a>
           <a 
             href="https://www.instagram.com/iramrangi_dev/" 
             target="_blank" 
             rel="noreferrer" 
+            aria-label="Kunjungi akun Instagram @iramrangi_dev"
             className="hover:text-pink-300 transition-colors"
           >
             Instagram
           </a>
-          <a href="https://www.borneoglobe.org/" target="_blank" rel="noreferrer" className="hover:text-emerald-300 transition-colors">
+          <a href="https://www.borneoglobe.org/" target="_blank" rel="noreferrer" aria-label="Kunjungi situs Borneo Globe" className="hover:text-emerald-300 transition-colors">
             Borneo Globe
           </a>
           <span className="text-white/20 hidden sm:inline-block">•</span>

@@ -103,7 +103,7 @@ const About = () => {
               <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 backdrop-blur-sm hover:border-white/20 transition-colors">
                 <span className="text-2xl sm:text-3xl font-display font-black text-white block mb-0.5">Ddev Studio</span>
                 <span className="text-cyan-400 text-xs uppercase tracking-widest block mb-1.5 font-mono font-semibold">Founder & Architect</span>
-                <p className="text-white/60 font-light text-xs leading-relaxed">
+                <p className="text-white/75 font-light text-xs leading-relaxed">
                   Ekosistem web studio mandiri: memproduksi template Blogger premium (Nebula Pro, Integrita), arsitektur kustom berkinerja tinggi, dan solusi digital modern.
                 </p>
               </div>
@@ -118,11 +118,12 @@ const About = () => {
                   href="https://www.borneoglobe.org/" 
                   target="_blank" 
                   rel="noreferrer" 
+                  aria-label="Kunjungi situs Borneo Globe"
                   className="text-emerald-400 hover:text-white text-xs uppercase tracking-widest block mb-1.5 font-mono font-semibold transition-colors pointer-events-auto"
                 >
                   Active Role • borneoglobe.org ↗
                 </a>
-                <p className="text-white/60 font-light text-xs leading-relaxed">
+                <p className="text-white/75 font-light text-xs leading-relaxed">
                   Bekerja membangun dan mengelola ekosistem digital untuk inisiatif pemantauan lingkungan dan kemitraan pulau Kalimantan di <span className="text-white font-medium">Borneo Globe</span>.
                 </p>
               </div>
@@ -144,10 +145,11 @@ const About = () => {
                     <button
                       key={m.year}
                       onClick={() => setActiveMilestone(idx)}
+                      aria-label={`Lihat milestone tahun ${m.year}: ${m.phase}`}
                       className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
                         activeMilestone === idx
                           ? 'bg-white text-black shadow-md scale-105'
-                          : 'text-white/50 hover:text-white hover:bg-white/5'
+                          : 'text-white/70 hover:text-white hover:bg-white/10'
                       }`}
                     >
                       {m.year}
@@ -175,7 +177,7 @@ const About = () => {
                         {current.phase}
                       </span>
                     </div>
-                    <p className="text-xs text-white/60 font-light leading-relaxed">
+                    <p className="text-xs text-white/75 font-light leading-relaxed">
                       {current.desc}
                     </p>
                   </div>

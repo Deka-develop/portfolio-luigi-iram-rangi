@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X, ArrowUpRight, Mail, Globe, Sparkles } from 'lucide-react';
 
@@ -7,8 +7,13 @@ import About from './components/About';
 import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Contact from './components/Contact';
-import GlobalBackgroundCanvas from './components/GlobalBackgroundCanvas';
 import CyberCursor from './components/CyberCursor';
+
+// Deferred: pulls in three.js, not needed for first paint
+const GlobalBackgroundCanvas = lazy(() => import('./components/GlobalBackgroundCanvas'));
+
+// Full-page snap only on desktop-size screens; phones scroll naturally
+const isSnapViewport = () => window.matchMedia('(min-width: 768px)').matches;
 
 const InstagramIcon = ({ className = "w-4 h-4" }) => (
   <svg 
@@ -70,7 +75,9 @@ function App() {
             }
           });
         },
-        { threshold: 0.5 }
+        // Fires when the section crosses the viewport's center line —
+        // works for sections taller than the screen (mobile) too
+        { rootMargin: '-50% 0px -50% 0px', threshold: 0 }
       );
 
       observer.observe(el);
@@ -88,6 +95,7 @@ function App() {
 
     const handleWheel = (e) => {
       if (isMenuOpen) return;
+      if (!isSnapViewport()) return;
       if (Math.abs(e.deltaY) < 15) return; // Ignore micro trackpad drift
 
       if (isNavigating.current) {
@@ -115,6 +123,8 @@ function App() {
         return;
       }
       if (isMenuOpen) return;
+      if (!isSnapViewport()) return;
+      if (e.target.closest?.('input, textarea')) return;
       if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
         e.preventDefault();
         if (activeSectionRef.current < sectionList.length - 1) {
@@ -134,6 +144,7 @@ function App() {
 
     const handleTouchEnd = (e) => {
       if (isMenuOpen) return;
+      if (!isSnapViewport()) return; // phones: native scrolling
       if (isNavigating.current) return;
       const touchEndY = e.changedTouches[0].clientY;
       const diffY = touchStartY - touchEndY;
@@ -170,15 +181,15 @@ function App() {
       <CyberCursor />
 
       {/* Global Header */}
-      <header className="fixed top-0 left-0 w-full z-40 flex justify-between items-center px-6 sm:px-10 py-5 pointer-events-none">
+      <header className="fixed top-0 left-0 w-full z-40 flex justify-between items-center px-5 sm:px-10 py-3 md:py-5 pointer-events-none bg-black/70 backdrop-blur-md border-b border-white/5 md:bg-transparent md:backdrop-blur-none md:border-b-0">
         <div 
           className="flex flex-col pointer-events-auto cursor-pointer group" 
           onClick={() => scrollToSection(0)}
         >
-          <div className="text-sm sm:text-base font-display font-black tracking-tight text-white leading-none group-hover:text-cyan-300 transition-colors">
+          <div className="text-sm sm:text-base font-display font-black tracking-tight text-white leading-none whitespace-nowrap group-hover:text-cyan-300 transition-colors">
             LUIGI IRAM RANGI
           </div>
-          <div className="text-[10px] font-mono tracking-[0.2em] text-cyan-400 uppercase leading-none mt-1">
+          <div className="text-[9px] sm:text-[10px] font-mono tracking-[0.2em] text-cyan-400 uppercase leading-none mt-1 whitespace-nowrap">
             Ddev • Dayak Developer
           </div>
         </div>
@@ -247,7 +258,7 @@ function App() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="hidden sm:inline-block px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[10px] font-mono text-white/40">
+                  <span className="hidden sm:inline-block px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[10px] font-mono text-white/70">
                     ESC
                   </span>
                   <button
@@ -263,7 +274,7 @@ function App() {
 
               {/* Daftar Menu Navigasi Per-Section */}
               <div className="p-6 flex flex-col gap-2 relative z-10 overflow-y-auto">
-                <span className="text-[10px] font-mono text-white/30 uppercase tracking-widest mb-1 px-3">
+                <span className="text-[10px] font-mono text-white/70 uppercase tracking-widest mb-1 px-3">
                   Index / Lompat Ke Section
                 </span>
                 {sectionList.map((item, idx) => {
@@ -288,7 +299,7 @@ function App() {
 
                       <div className="flex items-center gap-3.5 pl-1">
                         <span className={`text-xs font-mono font-bold transition-colors ${
-                          isActive ? 'text-cyan-400' : 'text-white/40 group-hover:text-cyan-300'
+                          isActive ? 'text-cyan-400' : 'text-white/70 group-hover:text-cyan-300'
                         }`}>
                           0{idx + 1}
                         </span>
@@ -298,7 +309,7 @@ function App() {
                           }`}>
                             {item.name}
                           </div>
-                          <div className="text-[11px] font-mono text-white/40 group-hover:text-white/60 mt-1">
+                          <div className="text-[11px] font-mono text-white/70 group-hover:text-white/90 mt-1">
                             {item.label}
                           </div>
                         </div>
@@ -307,7 +318,7 @@ function App() {
                       <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${
                         isActive
                           ? 'bg-cyan-400 text-black shadow-md'
-                          : 'bg-white/5 text-white/40 group-hover:bg-white/15 group-hover:text-white'
+                          : 'bg-white/5 text-white/70 group-hover:bg-white/15 group-hover:text-white'
                       }`}>
                         <ArrowUpRight className="w-4 h-4" />
                       </div>
@@ -325,7 +336,7 @@ function App() {
                       Borneo Globe Active
                     </span>
                   </div>
-                  <span className="text-[10px] font-mono text-white/40">
+                  <span className="text-[10px] font-mono text-white/70">
                     West Kalimantan
                   </span>
                 </div>
@@ -368,7 +379,9 @@ function App() {
       </AnimatePresence>
 
       {/* Global WebGL Spatial Starfield Background */}
-      <GlobalBackgroundCanvas activeSection={activeSection} />
+      <Suspense fallback={null}>
+        <GlobalBackgroundCanvas activeSection={activeSection} />
+      </Suspense>
 
       {/* Dynamic Background Ambient Tint */}
       <div 
@@ -387,7 +400,7 @@ function App() {
             <div 
               key={section.id} 
               id={section.id} 
-              className="snap-section w-full h-screen shrink-0 relative flex flex-col justify-center overflow-hidden"
+              className="snap-section w-full min-h-[100svh] md:h-screen md:min-h-0 shrink-0 relative flex flex-col justify-center overflow-x-clip md:overflow-hidden"
             >
               <Component setActiveSection={scrollToSection} />
             </div>
@@ -397,7 +410,7 @@ function App() {
       
       {/* Right Dots Navigation with Labels */}
       <nav 
-        className="fixed right-6 sm:right-8 top-1/2 -translate-y-1/2 flex flex-col gap-3.5 z-40"
+        className="fixed right-6 sm:right-8 top-1/2 -translate-y-1/2 hidden md:flex flex-col gap-3.5 z-40"
         aria-label="Section Navigation"
       >
         {sectionList.map((sec, idx) => (
@@ -405,10 +418,11 @@ function App() {
             key={sec.id}
             onClick={() => scrollToSection(idx)}
             title={sec.name}
+            aria-label={`Lompat ke bagian ${sec.name}: ${sec.label}`}
             className={`group relative flex items-center justify-end cursor-pointer p-1`}
           >
             {/* Tooltip Label on Hover */}
-            <span className="hidden md:inline-block absolute right-6 px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-neutral-900/90 border border-white/10 text-white/70 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+            <span className="hidden md:inline-block absolute right-6 px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-neutral-900/90 border border-white/10 text-white/80 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
               {sec.name}
             </span>
 

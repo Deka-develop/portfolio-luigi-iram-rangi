@@ -6,8 +6,8 @@ export default function CyberCursor() {
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
-    // Only enable on devices with fine pointer (mouse / trackpad)
-    if (window.matchMedia('(pointer: coarse)').matches) {
+    // Only enable on devices with fine pointer (mouse / trackpad) and screen >= 768px
+    if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768 || 'ontouchstart' in window) {
       setIsTouchDevice(true);
       return;
     }
@@ -23,7 +23,15 @@ export default function CyberCursor() {
     let isHovering = false;
     let isMouseDown = false;
     let isVisible = false;
-    let animId;
+    let isRunning = false;
+    let animId = null;
+
+    const startLoop = () => {
+      if (!isRunning) {
+        isRunning = true;
+        animId = requestAnimationFrame(render);
+      }
+    };
 
     const onMouseMove = (e) => {
       mouseX = e.clientX;
@@ -39,28 +47,35 @@ export default function CyberCursor() {
 
       // Check if target or its ancestors are interactive
       const target = e.target;
-      const interactiveEl = target.closest('button, a, input, textarea, select, [role="button"], .cursor-pointer');
+      const interactiveEl = target.closest?.('button, a, input, textarea, select, [role="button"], .cursor-pointer');
       isHovering = !!interactiveEl;
+
+      startLoop();
     };
 
     const onMouseDown = () => {
       isMouseDown = true;
+      startLoop();
     };
 
     const onMouseUp = () => {
       isMouseDown = false;
+      startLoop();
     };
 
     const onMouseLeave = () => {
       isVisible = false;
       dot.style.opacity = '0';
       ring.style.opacity = '0';
+      isRunning = false;
+      if (animId) cancelAnimationFrame(animId);
     };
 
     const onMouseEnter = () => {
       isVisible = true;
       dot.style.opacity = '1';
       ring.style.opacity = '1';
+      startLoop();
     };
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
@@ -69,11 +84,17 @@ export default function CyberCursor() {
     document.addEventListener('mouseleave', onMouseLeave);
     document.addEventListener('mouseenter', onMouseEnter);
 
-    // 120 FPS High-Performance Smooth Animation Loop
+    // Sleep when ring has caught up to mouse (0% idle CPU)
     const render = () => {
-      // Lerp outer trailing ring
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
+      if (!isVisible) {
+        isRunning = false;
+        return;
+      }
+
+      const diffX = mouseX - ringX;
+      const diffY = mouseY - ringY;
+      ringX += diffX * 0.18;
+      ringY += diffY * 0.18;
 
       // Update Center Laser Dot
       dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%) scale(${
@@ -94,13 +115,19 @@ export default function CyberCursor() {
         ring.style.backgroundColor = 'transparent';
       }
 
+      // If ring is within 0.1px of mouse position and no active mouse down, stop the loop
+      if (Math.abs(diffX) < 0.1 && Math.abs(diffY) < 0.1 && !isMouseDown) {
+        ringX = mouseX;
+        ringY = mouseY;
+        isRunning = false;
+        return;
+      }
+
       animId = requestAnimationFrame(render);
     };
 
-    animId = requestAnimationFrame(render);
-
     return () => {
-      cancelAnimationFrame(animId);
+      if (animId) cancelAnimationFrame(animId);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mouseup', onMouseUp);

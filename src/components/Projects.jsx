@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, ExternalLink, Sparkles, Layers, ShieldCheck, Zap, Globe, Lock, X, CheckCircle2 } from 'lucide-react';
 
-import borneoGlobeImg from '../assets/projects/borneo-globe.jpg';
-import ddevStudioImg from '../assets/projects/ddev-studio.jpg';
-import nebulaProImg from '../assets/projects/nebula-pro.jpg';
-import borneoBusinessImg from '../assets/projects/borneo-business.jpg';
+import borneoGlobeImg from '../assets/projects/borneo-globe.webp';
+import ddevStudioImg from '../assets/projects/ddev-studio.webp';
+import nebulaProImg from '../assets/projects/nebula-pro.webp';
+import borneoBusinessImg from '../assets/projects/borneo-business.webp';
 
 const projects = [
   {
@@ -168,7 +168,7 @@ export default function Projects() {
             </h2>
           </div>
 
-          <div className="flex items-center gap-3 text-xs font-mono text-white/50">
+          <div className="flex items-center gap-3 text-xs font-mono text-white/75">
             <span>DDEV STUDIO</span>
             <span>•</span>
             <span className="text-emerald-400">BORNEO GLOBE ACTIVE</span>
@@ -206,7 +206,7 @@ export default function Projects() {
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <span className={`text-xs font-mono font-bold transition-colors ${
-                        isSelected ? 'text-cyan-300' : 'text-white/40'
+                        isSelected ? 'text-cyan-300' : 'text-white/70'
                       }`}>
                         {project.num}
                       </span>
@@ -216,7 +216,7 @@ export default function Projects() {
                         }`}>
                           {project.title}
                         </h3>
-                        <p className="text-[11px] font-sans text-white/50 line-clamp-1 mt-0.5">
+                        <p className="text-[11px] font-sans text-white/75 line-clamp-1 mt-0.5">
                           {project.subtitle}
                         </p>
                       </div>
@@ -238,7 +238,7 @@ export default function Projects() {
                       <div className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
                         isSelected 
                           ? 'bg-white text-black shadow-md scale-105' 
-                          : 'bg-white/5 text-white/40 group-hover:bg-white/10 group-hover:text-white'
+                          : 'bg-white/5 text-white/70 group-hover:bg-white/10 group-hover:text-white'
                       }`}>
                         <ArrowUpRight className="w-3.5 h-3.5" />
                       </div>
@@ -292,7 +292,7 @@ export default function Projects() {
                     >
                       {activeProject.status}
                     </span>
-                    <span className="text-[10px] text-white/50 hidden sm:inline-block">
+                    <span className="text-[10px] text-white/70 hidden sm:inline-block">
                       {activeProject.year}
                     </span>
                   </div>
@@ -307,6 +307,8 @@ export default function Projects() {
                   <img
                     src={activeProject.image}
                     alt={activeProject.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent pointer-events-none" />
@@ -334,7 +336,7 @@ export default function Projects() {
                       <h3 className="text-xl sm:text-2xl font-display font-bold text-white">
                         {activeProject.title}
                       </h3>
-                      <span className="text-xs font-mono text-white/50 uppercase">
+                      <span className="text-xs font-mono text-white/75 uppercase">
                         {activeProject.category}
                       </span>
                     </div>
@@ -415,7 +417,7 @@ export default function Projects() {
               <div className="px-6 py-4 bg-neutral-900/90 border-b border-white/10 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
-                  <span className="text-xs font-mono font-bold tracking-wider text-white/50 uppercase">
+                  <span className="text-xs font-mono font-bold tracking-wider text-white/75 uppercase">
                     Case Study • {modalProject.num}
                   </span>
                   <span className="text-white/20">|</span>
@@ -440,6 +442,7 @@ export default function Projects() {
                   <img
                     src={modalProject.image}
                     alt={modalProject.title}
+                    decoding="async"
                     className="w-full h-full object-cover object-top"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
@@ -487,7 +490,7 @@ export default function Projects() {
                       <span className="text-lg sm:text-2xl font-display font-black text-white" style={{ color: modalProject.accentColor }}>
                         {m.val}
                       </span>
-                      <span className="text-[10px] sm:text-xs font-mono text-white/50 mt-0.5">
+                      <span className="text-[10px] sm:text-xs font-mono text-white/75 mt-0.5">
                         {m.label}
                       </span>
                     </div>
@@ -496,7 +499,7 @@ export default function Projects() {
 
                 {/* Deliverables & Tech Chips */}
                 <div>
-                  <span className="text-[10px] font-mono text-white/40 uppercase tracking-widest block mb-2">
+                  <span className="text-[10px] font-mono text-white/70 uppercase tracking-widest block mb-2">
                     Key Deliverables & Technology
                   </span>
                   <div className="flex flex-wrap gap-2">
@@ -523,7 +526,7 @@ export default function Projects() {
 
               {/* Footer Actions */}
               <div className="px-6 py-4 bg-neutral-900/90 border-t border-white/10 flex items-center justify-between">
-                <span className="text-[11px] font-mono text-white/40">
+                <span className="text-[11px] font-mono text-white/70">
                   {modalProject.caseStudy?.location}
                 </span>
 

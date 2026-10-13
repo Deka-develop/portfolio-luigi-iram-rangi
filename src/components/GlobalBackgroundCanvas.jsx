@@ -29,6 +29,9 @@ export default function GlobalBackgroundCanvas({ activeSection = 0 }) {
       { z: 22, y: -2, rotZ: 0 }          // 4: Contact
     ];
 
+    // Adaptive quality for phones / touch devices
+    const isLowPower = window.matchMedia('(max-width: 767px), (pointer: coarse)').matches;
+
     // 3. WebGL Renderer
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
@@ -36,11 +39,11 @@ export default function GlobalBackgroundCanvas({ activeSection = 0 }) {
       powerPreference: 'low-power'
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(isLowPower ? 1 : Math.min(window.devicePixelRatio, 1.5));
     container.appendChild(renderer.domElement);
 
     // 4. Create Ambient 3D Particle Cloud
-    const particleCount = 1200;
+    const particleCount = isLowPower ? 450 : 1200;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
@@ -131,8 +134,14 @@ export default function GlobalBackgroundCanvas({ activeSection = 0 }) {
     let animId;
     const startTime = performance.now();
 
+    let frame = 0;
     const animate = () => {
       animId = requestAnimationFrame(animate);
+
+      // Pause when tab hidden; render ~30fps on low-power devices
+      if (document.hidden) return;
+      frame++;
+      if (isLowPower && frame % 2 !== 0) return;
 
       const elapsedTime = (performance.now() - startTime) * 0.001;
 

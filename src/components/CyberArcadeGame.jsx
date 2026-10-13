@@ -483,11 +483,11 @@ export default function CyberArcadeGame({ onExit }) {
                 style={{ width: `${shield}%` }}
               />
             </div>
-            <span className="text-[10px] text-white/50">{shield}%</span>
+            <span className="text-[10px] text-white/70">{shield}%</span>
           </div>
 
           {/* High Score */}
-          <div className="flex items-center gap-1.5 text-white/60">
+          <div className="flex items-center gap-1.5 text-white/80">
             <Trophy className="w-3.5 h-3.5 text-amber-400" />
             <span className="text-[11px] text-amber-300 font-bold">{highScore}</span>
           </div>
@@ -495,6 +495,7 @@ export default function CyberArcadeGame({ onExit }) {
           {/* Return / Specs Toggle */}
           <button
             onClick={onExit}
+            aria-label="Tutup Game Arcade"
             className="px-3 py-1 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white text-xs font-mono transition-all cursor-pointer"
           >
             Tutup Game ✕
@@ -515,18 +516,18 @@ export default function CyberArcadeGame({ onExit }) {
             <span className="text-3xl sm:text-4xl font-display font-black text-red-500 tracking-wider mb-2">
               SYSTEM OVERLOAD!
             </span>
-            <p className="text-xs sm:text-sm text-white/70 font-mono mb-4">
+            <p className="text-xs sm:text-sm text-white/75 font-mono mb-4">
               Latency Glitch menghabiskan shield sistem Anda.
             </p>
 
             <div className="p-3 rounded-2xl bg-white/5 border border-white/10 mb-6 flex items-center gap-6 text-sm font-mono">
               <div>
-                <span className="text-white/40 block text-[10px]">FINAL SCORE</span>
+                <span className="text-white/70 block text-[10px]">FINAL SCORE</span>
                 <span className="text-cyan-300 font-bold text-lg">{score}</span>
               </div>
               <div className="w-px h-8 bg-white/10" />
               <div>
-                <span className="text-white/40 block text-[10px]">RECORD</span>
+                <span className="text-white/70 block text-[10px]">RECORD</span>
                 <span className="text-amber-300 font-bold text-lg">{highScore}</span>
               </div>
             </div>
@@ -534,6 +535,7 @@ export default function CyberArcadeGame({ onExit }) {
             <div className="flex items-center gap-3">
               <button
                 onClick={restartGame}
+                aria-label="Mainkan Lagi Game Arcade"
                 className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-black font-mono font-bold text-xs transition-all shadow-lg hover:scale-105 cursor-pointer"
               >
                 <RotateCcw className="w-4 h-4" />
@@ -542,6 +544,7 @@ export default function CyberArcadeGame({ onExit }) {
 
               <button
                 onClick={onExit}
+                aria-label="Kembali ke Matrix Keahlian"
                 className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white font-mono text-xs transition-all cursor-pointer"
               >
                 Kembali ke Matrix Keahlian
@@ -552,7 +555,7 @@ export default function CyberArcadeGame({ onExit }) {
       </div>
 
       {/* Bottom Controls Help Ribbon */}
-      <div className="px-5 py-2 bg-neutral-900/90 border-t border-white/10 flex flex-wrap items-center justify-between text-[11px] font-mono text-white/50">
+      <div className="px-5 py-2 bg-neutral-900/90 border-t border-white/10 flex flex-wrap items-center justify-between text-[11px] font-mono text-white/75">
         <div className="flex items-center gap-2">
           <Zap className="w-3.5 h-3.5 text-cyan-400" />
           <span>Geser mouse / sentuh layar untuk mengendalikan pesawat laser & tembak target!</span>

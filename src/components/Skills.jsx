@@ -111,10 +111,11 @@ export default function Skills() {
               <div className="flex items-center p-1 rounded-2xl bg-neutral-950/80 border border-white/15 backdrop-blur-md shadow-lg">
                 <button
                   onClick={() => setViewMode('specs')}
+                  aria-label="Lihat Matrix & Spesifikasi Keahlian"
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono transition-all cursor-pointer ${
                     viewMode === 'specs'
                       ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold shadow-sm'
-                      : 'text-white/60 hover:text-white hover:bg-white/5'
+                      : 'text-white/75 hover:text-white hover:bg-white/10'
                   }`}
                   title="Lihat Matrix & Spesifikasi Keahlian"
                 >
@@ -123,6 +124,7 @@ export default function Skills() {
                 </button>
                 <button
                   onClick={() => setViewMode('game')}
+                  aria-label="Mainkan Mini Game Cyber Arcade Interaktif"
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono transition-all cursor-pointer group ${
                     viewMode === 'game'
                       ? 'bg-fuchsia-500/25 text-fuchsia-300 border border-fuchsia-500/40 font-bold shadow-[0_0_15px_rgba(217,70,239,0.3)]'
@@ -198,7 +200,7 @@ export default function Skills() {
             <div className="hidden xl:flex items-center gap-2.5 px-3 py-1.5 rounded-2xl bg-neutral-900/80 border border-white/10 text-xs font-mono text-white/70 shadow-sm">
               <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
               <div className="flex items-center gap-1.5">
-                <span className="text-white/40">ENGINE:</span>
+                <span className="text-white/70">ENGINE:</span>
                 <span className="text-cyan-300 font-bold">120 FPS</span>
               </div>
             </div>
@@ -264,7 +266,7 @@ export default function Skills() {
                             >
                               <Icon className="w-4 h-4" />
                             </div>
-                            <span className="text-xs font-mono font-bold text-white/40">
+                            <span className="text-xs font-mono font-bold text-white/70">
                               {pillar.number}
                             </span>
                           </div>
@@ -282,7 +284,7 @@ export default function Skills() {
                           
                           {/* Live Metric Banner */}
                           <div className="px-3 py-1.5 rounded-xl bg-black/60 border border-white/10 flex items-center justify-between">
-                            <span className="text-[11px] font-mono text-white/50">
+                            <span className="text-[11px] font-mono text-white/75">
                               {pillar.metricLabel}
                             </span>
                             <span 
@@ -294,7 +296,7 @@ export default function Skills() {
                           </div>
                         </div>
 
-                        <p className="text-xs text-white/60 font-light leading-relaxed mb-3 line-clamp-2">
+                        <p className="text-xs text-white/75 font-light leading-relaxed mb-3 line-clamp-2">
                           {pillar.description}
                         </p>
 
@@ -334,7 +336,7 @@ export default function Skills() {
                       Active Technology Matrix & Proficiency
                     </span>
                   </div>
-                  <span className="text-[10px] font-mono text-white/40 hidden sm:inline-block">
+                  <span className="text-[10px] font-mono text-white/70 hidden sm:inline-block">
                     DDEV WORKSPACE & BORNEO GLOBE
                   </span>
                 </div>
@@ -347,7 +349,7 @@ export default function Skills() {
                     >
                       <div>
                         <div className="flex items-center justify-between gap-1 mb-0.5">
-                          <span className="text-[9px] font-mono px-1 rounded bg-white/5 text-white/50 group-hover:text-cyan-300">
+                          <span className="text-[9px] font-mono px-1 rounded bg-white/5 text-white/75 group-hover:text-cyan-300">
                             {item.tag}
                           </span>
                           <span className="text-[10px] font-mono font-bold text-cyan-400">
@@ -358,7 +360,7 @@ export default function Skills() {
                           {item.name}
                         </div>
                       </div>
-                      <div className="text-[9px] font-mono text-white/40 truncate mt-0.5">
+                      <div className="text-[9px] font-mono text-white/70 truncate mt-0.5">
                         {item.role}
                       </div>
                     </div>

@@ -191,30 +191,30 @@ export default function CyberCoreCanvas() {
     camera.position.set(0, 0, 4.2);
     stateRef.current.camera = camera;
 
-    // 3. Renderer with high-performance configurations
+    // Adaptive quality: phones / touch devices get a lighter pipeline
+    const isLowPower = window.matchMedia('(max-width: 767px), (pointer: coarse)').matches;
+
+    // 3. Renderer with adaptive configuration
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
-      antialias: true,
-      powerPreference: 'high-performance'
+      antialias: !isLowPower,
+      powerPreference: isLowPower ? 'low-power' : 'high-performance'
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isLowPower ? 1.25 : 1.75));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
     container.appendChild(renderer.domElement);
     stateRef.current.renderer = renderer;
 
-    // Extract real WebGL Hardware Info
+    // Safe hardware renderer info without deprecated extension warnings
     try {
       const gl = renderer.getContext();
-      const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-      if (debugInfo) {
-        const gpu = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-        setTelemetry(prev => ({
-          ...prev,
-          gpuRenderer: gpu ? gpu.split('/')[0].replace('ANGLE (', '').replace('Direct3D11 vs_5_0 ps_5_0', '').trim() : 'WebGL 2.0 GPU'
-        }));
-      }
+      const rendererStr = gl.getParameter(gl.RENDERER) || 'WebGL 2.0 GPU';
+      setTelemetry(prev => ({
+        ...prev,
+        gpuRenderer: isLowPower ? 'Mobile WebGL GPU' : rendererStr.replace('ANGLE (', '').split(',')[0].trim()
+      }));
     } catch {
       setTelemetry(prev => ({ ...prev, gpuRenderer: 'Hardware Accelerated WebGL' }));
     }
@@ -248,21 +248,21 @@ export default function CyberCoreCanvas() {
     const coreGroup = new THREE.Group();
     mainGroup.add(coreGroup);
 
-    // Primary Torus Knot Geometry
-    const torusGeo = new THREE.TorusKnotGeometry(1.0, 0.32, 140, 24, 2, 3);
+    // Primary Torus Knot Geometry (lower tessellation on mobile)
+    const torusGeo = isLowPower
+      ? new THREE.TorusKnotGeometry(1.0, 0.32, 90, 14, 2, 3)
+      : new THREE.TorusKnotGeometry(1.0, 0.32, 120, 18, 2, 3);
+    // NOTE: no `transmission` — it forces an extra full render pass every frame
     const torusMat = new THREE.MeshPhysicalMaterial({
       color: COLOR_THEMES.cyan.primary,
       emissive: COLOR_THEMES.cyan.primary,
-      emissiveIntensity: 0.18,
-      metalness: 0.25,
-      roughness: 0.1,
-      transmission: 0.65,
-      thickness: 1.2,
-      ior: 1.52,
+      emissiveIntensity: 0.22,
+      metalness: 0.35,
+      roughness: 0.15,
       clearcoat: 1.0,
       clearcoatRoughness: 0.1,
       transparent: true,
-      opacity: 0.88
+      opacity: 0.78
     });
     materialsList.push(torusMat);
     const torusMesh = new THREE.Mesh(torusGeo, torusMat);
@@ -311,7 +311,7 @@ export default function CyberCoreCanvas() {
     nebulaGroup.visible = false;
     mainGroup.add(nebulaGroup);
 
-    const particleCount = 3200;
+    const particleCount = isLowPower ? 1400 : 2600;
     const particlePositions = new Float32Array(particleCount * 3);
     const particleScales = new Float32Array(particleCount);
     const particleOrigins = [];
@@ -385,13 +385,11 @@ export default function CyberCoreCanvas() {
       color: COLOR_THEMES.cyan.secondary,
       emissive: COLOR_THEMES.cyan.secondary,
       emissiveIntensity: 0.4,
-      metalness: 0.1,
-      roughness: 0.1,
-      transmission: 0.8,
-      thickness: 0.8,
+      metalness: 0.2,
+      roughness: 0.15,
       clearcoat: 1.0,
       transparent: true,
-      opacity: 0.95
+      opacity: 0.8
     });
     materialsList.push(icoMatInner);
     const icoInner = new THREE.Mesh(icoGeoInner, icoMatInner);
@@ -442,6 +440,14 @@ export default function CyberCoreCanvas() {
 
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
+
+    // Pause rendering when the canvas is off-screen (saves GPU/battery)
+    let isOnScreen = true;
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => { isOnScreen = entry.isIntersecting; },
+      { threshold: 0 }
+    );
+    visibilityObserver.observe(container);
 
     // 7. Mouse / Touch Interactions
     const onPointerDown = (e) => {
@@ -495,6 +501,12 @@ export default function CyberCoreCanvas() {
     const animate = (currentTime) => {
       animationFrameId = requestAnimationFrame(animate);
 
+      // Skip all work when not visible
+      if (!isOnScreen || document.hidden) {
+        lastTime = currentTime;
+        return;
+      }
+
       const delta = Math.min((currentTime - lastTime) * 0.001, 0.1);
       lastTime = currentTime;
       const elapsedTime = (currentTime - stateRef.current.startTime) * 0.001;
@@ -504,7 +516,7 @@ export default function CyberCoreCanvas() {
       const frameDelta = currentTime - stateRef.current.lastFrameTime;
       stateRef.current.lastFrameTime = currentTime;
 
-      if (currentTime - lastTelemetryUpdate > 400) {
+      if (currentTime - lastTelemetryUpdate > 1000) {
         const currentFps = Math.round(1000 / (frameDelta || 16.6));
         setTelemetry(prev => ({
           ...prev,
@@ -581,6 +593,7 @@ export default function CyberCoreCanvas() {
     return () => {
       cancelAnimationFrame(animationFrameId);
       resizeObserver.disconnect();
+      visibilityObserver.disconnect();
 
       domEl.removeEventListener('mousedown', onPointerDown);
       window.removeEventListener('mousemove', onPointerMove);
@@ -636,7 +649,7 @@ export default function CyberCoreCanvas() {
                   3D Live
                 </span>
               </div>
-              <p className="text-[10px] text-white/50 font-mono truncate max-w-[190px]">
+              <p className="text-[10px] text-white/75 font-mono truncate max-w-[190px]">
                 {telemetry.gpuRenderer}
               </p>
             </div>
@@ -664,7 +677,7 @@ export default function CyberCoreCanvas() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="absolute bottom-2 left-1/2 -translate-x-1/2 pointer-events-none px-3 py-1 rounded-full bg-black/60 border border-white/10 backdrop-blur-md text-[10px] font-mono text-white/60 flex items-center gap-1.5 shadow-sm"
+                className="absolute bottom-2 left-1/2 -translate-x-1/2 pointer-events-none px-3 py-1 rounded-full bg-black/60 border border-white/10 backdrop-blur-md text-[10px] font-mono text-white/80 flex items-center gap-1.5 shadow-sm"
               >
                 <Maximize2 className="w-3 h-3 text-cyan-300" />
                 <span>Drag to Rotate • Parallax Active</span>
@@ -673,12 +686,12 @@ export default function CyberCoreCanvas() {
           </AnimatePresence>
 
           {/* Telemetry Corner Badges */}
-          <div className="absolute top-2 left-2 pointer-events-none font-mono text-[9px] text-white/40 space-y-0.5 bg-black/40 px-2 py-1 rounded-lg border border-white/5 backdrop-blur-sm">
+          <div className="absolute top-2 left-2 pointer-events-none font-mono text-[9px] text-white/70 space-y-0.5 bg-black/40 px-2 py-1 rounded-lg border border-white/5 backdrop-blur-sm">
             <div>VERTS: {telemetry.vertices.toLocaleString()}</div>
             <div>FRAME: {telemetry.frameTime}ms</div>
           </div>
 
-          <div className="absolute top-2 right-2 pointer-events-none font-mono text-[9px] text-white/40 space-y-0.5 bg-black/40 px-2 py-1 rounded-lg border border-white/5 backdrop-blur-sm text-right">
+          <div className="absolute top-2 right-2 pointer-events-none font-mono text-[9px] text-white/70 space-y-0.5 bg-black/40 px-2 py-1 rounded-lg border border-white/5 backdrop-blur-sm text-right">
             <div>ROT X: {telemetry.rotX}</div>
             <div>ROT Y: {telemetry.rotY}</div>
           </div>
@@ -696,13 +709,14 @@ export default function CyberCoreCanvas() {
                 <button
                   key={mode.id}
                   onClick={() => setActiveMode(mode.id)}
+                  aria-label={`Pilih mode geometri ${mode.label}`}
                   className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg text-[11px] font-mono font-medium transition-all cursor-pointer ${
                     isActive 
                       ? 'bg-white/15 text-white border border-white/20 shadow-sm' 
-                      : 'text-white/50 hover:text-white/80 hover:bg-white/[0.04]'
+                      : 'text-white/70 hover:text-white hover:bg-white/[0.04]'
                   }`}
                 >
-                  <Icon className={`w-3 h-3 ${isActive ? 'text-cyan-300' : 'text-white/40'}`} />
+                  <Icon className={`w-3 h-3 ${isActive ? 'text-cyan-300' : 'text-white/75'}`} />
                   <span className="hidden sm:inline">{mode.label}</span>
                   <span className="sm:hidden">{mode.label.split(' ')[0]}</span>
                 </button>
@@ -715,7 +729,7 @@ export default function CyberCoreCanvas() {
             
             {/* Color Palette Buttons */}
             <div className="flex items-center gap-1.5">
-              <span className="text-[10px] font-mono text-white/40 uppercase mr-1 hidden xs:inline">
+              <span className="text-[10px] font-mono text-white/70 uppercase mr-1 hidden xs:inline">
                 Color
               </span>
               {Object.keys(COLOR_THEMES).map((key) => {
@@ -726,6 +740,7 @@ export default function CyberCoreCanvas() {
                     key={key}
                     onClick={() => setActiveTheme(key)}
                     title={theme.name}
+                    aria-label={`Pilih tema warna ${theme.name}`}
                     className={`w-5 h-5 rounded-full transition-transform cursor-pointer border ${
                       isSelected 
                         ? 'scale-125 border-white shadow-[0_0_8px_rgba(255,255,255,0.8)]' 
@@ -741,10 +756,11 @@ export default function CyberCoreCanvas() {
             <div className="flex items-center gap-1.5">
               <button
                 onClick={() => setIsWireframe(!isWireframe)}
+                aria-label="Toggle wireframe render mode"
                 className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-mono border transition-all cursor-pointer ${
                   isWireframe 
                     ? 'bg-white/20 border-white/40 text-white' 
-                    : 'bg-white/[0.03] border-white/10 text-white/50 hover:text-white'
+                    : 'bg-white/[0.03] border-white/10 text-white/70 hover:text-white'
                 }`}
                 title="Toggle Wireframe"
               >
@@ -754,10 +770,11 @@ export default function CyberCoreCanvas() {
 
               <button
                 onClick={() => setAutoRotate(!autoRotate)}
+                aria-label="Toggle auto rotation spin"
                 className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-mono border transition-all cursor-pointer ${
                   autoRotate 
                     ? 'bg-cyan-500/15 border-cyan-500/30 text-cyan-300' 
-                    : 'bg-white/[0.03] border-white/10 text-white/50 hover:text-white'
+                    : 'bg-white/[0.03] border-white/10 text-white/70 hover:text-white'
                 }`}
                 title="Toggle Auto Spin"
               >
