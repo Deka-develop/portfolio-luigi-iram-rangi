@@ -27,6 +27,7 @@ export default function Contact() {
   // Quick form state
   const [formState, setFormState] = useState({ name: '', contact: '', message: '' });
   const [isSent, setIsSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Live WIB / UTC+7 West Kalimantan Clock
   useEffect(() => {
@@ -56,18 +57,47 @@ export default function Contact() {
     setTimeout(() => setCopied(false), 2200);
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!formState.name || !formState.message) return;
     
-    // Construct pre-filled email transmission
-    const subject = encodeURIComponent(`Project Inquiry from ${formState.name}`);
-    const body = encodeURIComponent(
-      `Halo Luigi,\n\nSaya: ${formState.name}\nKontak: ${formState.contact || 'N/A'}\n\nPesan Proyek:\n${formState.message}\n\n--\nDikirim via Portfolio Terminal`
-    );
-    
-    window.open(`mailto:iramrangi@gmail.com?subject=${subject}&body=${body}`, '_blank');
-    setIsSent(true);
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch('https://formsubmit.co/ajax/iramrangi@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formState.name,
+          contact: formState.contact || 'N/A',
+          message: formState.message,
+          _subject: `[Portofolio] Pesan Proyek Baru dari ${formState.name}`,
+          _template: 'table',
+          _captcha: 'false'
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok && (data.success === 'true' || data.success === true)) {
+        setIsSent(true);
+      } else {
+        // Fallback to mailto if service is awaiting activation or offline
+        throw new Error(data.message || 'Auto-relay pending');
+      }
+    } catch (err) {
+      // Fallback direct mailto so the inquiry is never lost
+      const subject = encodeURIComponent(`Project Inquiry from ${formState.name}`);
+      const body = encodeURIComponent(
+        `Halo Luigi,\n\nSaya: ${formState.name}\nKontak: ${formState.contact || 'N/A'}\n\nPesan Proyek:\n${formState.message}\n\n--\nDikirim via Portfolio Terminal`
+      );
+      window.location.href = `mailto:iramrangi@gmail.com?subject=${subject}&body=${body}`;
+      setIsSent(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -356,10 +386,20 @@ export default function Contact() {
 
                       <button
                         type="submit"
-                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 via-blue-500 to-fuchsia-500 text-black font-mono font-bold text-xs transition-all shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:scale-[1.01] cursor-pointer"
+                        disabled={isSubmitting}
+                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-cyan-400 via-blue-500 to-fuchsia-500 text-black font-mono font-bold text-xs transition-all shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:scale-[1.01] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                       >
-                        <Send className="w-3.5 h-3.5" />
-                        <span>Kirim Transmisi Pesan 🚀</span>
+                        {isSubmitting ? (
+                          <>
+                            <div className="w-3.5 h-3.5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                            <span>Mengirim Transmisi...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-3.5 h-3.5" />
+                            <span>Kirim Transmisi Pesan 🚀</span>
+                          </>
+                        )}
                       </button>
                     </form>
                   )}
