@@ -201,7 +201,7 @@ export default function CyberCoreCanvas() {
       powerPreference: isLowPower ? 'low-power' : 'high-performance'
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isLowPower ? 1.25 : 1.75));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isLowPower ? 1 : 1.25));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
     container.appendChild(renderer.domElement);
@@ -248,11 +248,10 @@ export default function CyberCoreCanvas() {
     const coreGroup = new THREE.Group();
     mainGroup.add(coreGroup);
 
-    // Primary Torus Knot Geometry (lower tessellation on mobile)
+    // Primary Torus Knot Geometry (optimized tessellation)
     const torusGeo = isLowPower
-      ? new THREE.TorusKnotGeometry(1.0, 0.32, 90, 14, 2, 3)
-      : new THREE.TorusKnotGeometry(1.0, 0.32, 120, 18, 2, 3);
-    // NOTE: no `transmission` — it forces an extra full render pass every frame
+      ? new THREE.TorusKnotGeometry(1.0, 0.32, 60, 12, 2, 3)
+      : new THREE.TorusKnotGeometry(1.0, 0.32, 80, 16, 2, 3);
     const torusMat = new THREE.MeshPhysicalMaterial({
       color: COLOR_THEMES.cyan.primary,
       emissive: COLOR_THEMES.cyan.primary,
@@ -283,7 +282,7 @@ export default function CyberCoreCanvas() {
     coreGroup.add(wireMesh);
 
     // Outer Gyro Gimbal Rings
-    const ringGeo1 = new THREE.RingGeometry(1.65, 1.68, 64);
+    const ringGeo1 = new THREE.RingGeometry(1.65, 1.68, 36);
     const ringMat1 = new THREE.MeshBasicMaterial({
       color: 0xffffff,
       side: THREE.DoubleSide,
@@ -294,7 +293,7 @@ export default function CyberCoreCanvas() {
     ring1.rotation.x = Math.PI / 3;
     coreGroup.add(ring1);
 
-    const ringGeo2 = new THREE.RingGeometry(1.82, 1.84, 64);
+    const ringGeo2 = new THREE.RingGeometry(1.82, 1.84, 36);
     const ringMat2 = new THREE.MeshBasicMaterial({
       color: COLOR_THEMES.cyan.primary,
       side: THREE.DoubleSide,
@@ -311,7 +310,7 @@ export default function CyberCoreCanvas() {
     nebulaGroup.visible = false;
     mainGroup.add(nebulaGroup);
 
-    const particleCount = isLowPower ? 1400 : 2600;
+    const particleCount = isLowPower ? 600 : 1200;
     const particlePositions = new Float32Array(particleCount * 3);
     const particleScales = new Float32Array(particleCount);
     const particleOrigins = [];
@@ -516,7 +515,7 @@ export default function CyberCoreCanvas() {
       const frameDelta = currentTime - stateRef.current.lastFrameTime;
       stateRef.current.lastFrameTime = currentTime;
 
-      if (currentTime - lastTelemetryUpdate > 1000) {
+      if (currentTime - lastTelemetryUpdate > 2000) {
         const currentFps = Math.round(1000 / (frameDelta || 16.6));
         setTelemetry(prev => ({
           ...prev,

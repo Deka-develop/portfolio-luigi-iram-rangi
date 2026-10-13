@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Code2, Cpu, Layers, Sparkles, Zap, Gauge, Terminal, Activity, ArrowUpRight, CheckCircle2, Gamepad2, X } from 'lucide-react';
-import CyberArcadeGame from './CyberArcadeGame';
+
+const CyberArcadeGame = lazy(() => import('./CyberArcadeGame'));
 
 const pillars = [
   {
@@ -218,7 +219,9 @@ export default function Skills() {
               transition={{ duration: 0.25 }}
               className="w-full"
             >
-              <CyberArcadeGame onExit={() => setViewMode('specs')} />
+              <Suspense fallback={<div className="w-full h-80 flex items-center justify-center text-xs font-mono text-cyan-400">LOADING ARCADE ENGINE...</div>}>
+                <CyberArcadeGame onExit={() => setViewMode('specs')} />
+              </Suspense>
             </motion.div>
           ) : (
             <motion.div

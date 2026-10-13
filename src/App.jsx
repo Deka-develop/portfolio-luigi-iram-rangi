@@ -3,14 +3,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X, ArrowUpRight, Mail, Globe, Sparkles } from 'lucide-react';
 
 import Hero from './components/Hero';
-import About from './components/About';
-import Projects from './components/Projects';
-import Skills from './components/Skills';
-import Contact from './components/Contact';
 import CyberCursor from './components/CyberCursor';
+import GlobalBackgroundCanvas from './components/GlobalBackgroundCanvas';
 
-// Deferred: pulls in three.js, not needed for first paint
-const GlobalBackgroundCanvas = lazy(() => import('./components/GlobalBackgroundCanvas'));
+// Code-split below-the-fold sections for instant FCP/TBT
+const About = lazy(() => import('./components/About'));
+const Projects = lazy(() => import('./components/Projects'));
+const Skills = lazy(() => import('./components/Skills'));
+const Contact = lazy(() => import('./components/Contact'));
 
 // Full-page snap only on desktop-size screens; phones scroll naturally
 const isSnapViewport = () => window.matchMedia('(min-width: 768px)').matches;
@@ -87,6 +87,22 @@ function App() {
     return () => {
       observers.forEach((obs) => obs.disconnect());
     };
+  }, []);
+
+  // Preload below-the-fold sections on idle for instant snap navigation
+  useEffect(() => {
+    const preload = () => {
+      import('./components/About');
+      import('./components/Projects');
+      import('./components/Skills');
+      import('./components/Contact');
+    };
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(preload, { timeout: 3500 });
+    } else {
+      const timer = setTimeout(preload, 2500);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   // 2. Per-Section Wheel, Keyboard, and Touch Gesture Controller
@@ -378,10 +394,8 @@ function App() {
         )}
       </AnimatePresence>
 
-      {/* Global WebGL Spatial Starfield Background */}
-      <Suspense fallback={null}>
-        <GlobalBackgroundCanvas activeSection={activeSection} />
-      </Suspense>
+      {/* Global 2D Spatial Starfield Background */}
+      <GlobalBackgroundCanvas activeSection={activeSection} />
 
       {/* Dynamic Background Ambient Tint */}
       <div 
@@ -402,7 +416,9 @@ function App() {
               id={section.id} 
               className="snap-section w-full min-h-[100svh] md:h-screen md:min-h-0 shrink-0 relative flex flex-col justify-center overflow-x-clip md:overflow-hidden"
             >
-              <Component setActiveSection={scrollToSection} />
+              <Suspense fallback={<div className="w-full h-full min-h-[300px]" />}>
+                <Component setActiveSection={scrollToSection} />
+              </Suspense>
             </div>
           );
         })}

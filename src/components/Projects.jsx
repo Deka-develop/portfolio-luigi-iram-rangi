@@ -307,9 +307,14 @@ export default function Projects() {
                   <img
                     src={activeProject.image}
                     alt={activeProject.title}
+                    width="800"
+                    height="450"
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent pointer-events-none" />
 
@@ -442,8 +447,14 @@ export default function Projects() {
                   <img
                     src={modalProject.image}
                     alt={modalProject.title}
+                    width="1200"
+                    height="514"
+                    loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover object-top"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
                   <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">

@@ -2,15 +2,56 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import { ArrowDown, Sparkles, Code2, Cpu, Zap, Layers, Activity } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-// Three.js is heavy (~500KB) — load it after initial paint so TBT stays near 0ms
+// Code-split Three.js (~540KB) — load on user interaction or idle to guarantee 0ms TBT
 const CyberCoreCanvas = lazy(() => import('./CyberCoreCanvas'));
 
-const CanvasPlaceholder = () => (
-  <div className="relative w-full max-w-[480px] aspect-square rounded-3xl bg-neutral-950/75 border border-white/15 flex flex-col items-center justify-center gap-3 p-6 select-none shadow-2xl">
-    <div className="w-12 h-12 rounded-full border-2 border-cyan-400/30 border-t-cyan-400 animate-spin" />
-    <span className="text-xs font-mono text-cyan-300 font-medium tracking-wider">
-      INITIALIZING QUANTUM CORE...
-    </span>
+const CanvasPlaceholder = ({ onActivate }) => (
+  <div 
+    onClick={onActivate}
+    className="relative w-full max-w-[480px] aspect-square rounded-3xl bg-neutral-950/80 border border-white/15 flex flex-col items-center justify-between p-7 select-none shadow-[0_20px_60px_rgba(0,0,0,0.8)] backdrop-blur-xl group cursor-pointer overflow-hidden"
+    title="Klik untuk mengaktifkan WebGL 3D Quantum Core"
+  >
+    {/* Ambient Internal Glow */}
+    <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 via-purple-600/10 to-transparent pointer-events-none" />
+    
+    {/* Top Status Bar */}
+    <div className="w-full flex items-center justify-between z-10">
+      <div className="flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+        <span className="text-[11px] font-mono font-bold tracking-wider text-cyan-300 uppercase">
+          QUANTUM CORE • 3D
+        </span>
+      </div>
+      <span className="px-2 py-0.5 rounded text-[9px] font-mono bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 uppercase tracking-widest">
+        WEBGL 2.0
+      </span>
+    </div>
+
+    {/* Center Cyber Hologram Rings (Pure GPU CSS) */}
+    <div className="relative flex items-center justify-center my-auto">
+      {/* Outer Glow Halo */}
+      <div className="absolute w-44 h-44 rounded-full bg-cyan-500/15 blur-2xl animate-pulse" />
+      
+      {/* Outer Dashed Ring */}
+      <div className="w-36 h-36 rounded-full border border-dashed border-cyan-400/40 animate-[spin_20s_linear_infinite]" />
+      
+      {/* Middle Solid Ring */}
+      <div className="absolute w-28 h-28 rounded-full border border-purple-500/50 animate-[spin_12s_linear_infinite_reverse]" />
+      
+      {/* Inner Glowing Core */}
+      <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400/30 via-purple-500/30 to-blue-600/30 border border-cyan-400/60 shadow-[0_0_25px_rgba(0,240,255,0.4)] flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+        <Sparkles className="w-6 h-6 text-cyan-300 animate-pulse" />
+      </div>
+    </div>
+
+    {/* Bottom Interaction Cue */}
+    <div className="w-full flex items-center justify-between z-10 pt-2 border-t border-white/10 text-[11px] font-mono text-white/60">
+      <div className="flex items-center gap-1.5 text-cyan-300">
+        <Zap className="w-3.5 h-3.5" />
+        <span className="group-hover:text-white transition-colors">Hover / Touch to Engage</span>
+      </div>
+      <span className="text-white/40">120 FPS</span>
+    </div>
   </div>
 );
 
@@ -18,11 +59,45 @@ const Hero = ({ setActiveSection }) => {
   const [shouldLoad3D, setShouldLoad3D] = useState(false);
 
   useEffect(() => {
-    // Let browser finish initial paint & idle before starting WebGL engine
-    const timer = setTimeout(() => {
+    let triggered = false;
+    const trigger3D = () => {
+      if (triggered) return;
+      triggered = true;
       setShouldLoad3D(true);
-    }, 450);
-    return () => clearTimeout(timer);
+      removeListeners();
+    };
+
+    const removeListeners = () => {
+      window.removeEventListener('pointermove', trigger3D);
+      window.removeEventListener('scroll', trigger3D);
+      window.removeEventListener('touchstart', trigger3D);
+      window.removeEventListener('keydown', trigger3D);
+    };
+
+    // Load immediately when user interacts
+    window.addEventListener('pointermove', trigger3D, { passive: true, once: true });
+    window.addEventListener('scroll', trigger3D, { passive: true, once: true });
+    window.addEventListener('touchstart', trigger3D, { passive: true, once: true });
+    window.addEventListener('keydown', trigger3D, { passive: true, once: true });
+
+    // Fallback on idle for passive sessions (after main-thread metrics complete)
+    let idleHandle;
+    if ('requestIdleCallback' in window) {
+      idleHandle = window.requestIdleCallback(trigger3D, { timeout: 3500 });
+    } else {
+      const timer = setTimeout(trigger3D, 3500);
+      return () => {
+        removeListeners();
+        clearTimeout(timer);
+      };
+    }
+
+    return () => {
+      removeListeners();
+      if (idleHandle && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleHandle);
+      }
+    };
   }, []);
 
   return (
@@ -61,32 +136,27 @@ const Hero = ({ setActiveSection }) => {
               </span>
             </div>
 
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[6.2rem] font-display font-black leading-[0.9] tracking-tighter text-white mb-5 drop-shadow-2xl">
-              LUIGI IRAM<br />
-              <span className="text-transparent stroke-text hover:text-white transition-colors duration-300">
+            {/* Main Headline */}
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-black tracking-tight text-white uppercase leading-[1.05] mb-5">
+              LUIGI IRAM <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-purple-500">
                 RANGI
               </span>
             </h1>
 
-            <p className="text-sm sm:text-base md:text-lg text-white/70 max-w-xl mb-7 font-sans font-light leading-relaxed">
-              Creative Developer & Founder of <span className="text-cyan-300 font-medium">Ddev (Dayak Developer)</span>, saat ini aktif berkontribusi untuk{' '}
-              <a 
-                href="https://www.borneoglobe.org/" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="text-white font-medium underline decoration-cyan-400 underline-offset-4 hover:text-cyan-300 transition-colors pointer-events-auto"
-              >
-                Borneo Globe
-              </a>
-              . Menggabungkan arsitektur web modern, WebGL 3D interaktif, dan template digital berakar dari tanah Borneo untuk panggung global.
+            {/* Sub-Headline & Bio */}
+            <p className="text-base sm:text-lg text-white/75 font-sans font-normal max-w-xl mb-8 leading-relaxed">
+              Creative Developer & Founder of <span className="text-cyan-300 font-medium">Ddev (Dayak Developer)</span>, saat ini aktif berkontribusi untuk <span className="text-emerald-400 font-medium">Borneo Globe</span>. Memadukan arsitektur web modern, Three.js 3D/WebGL, dan template digital berkecepatan tinggi dengan sentuhan motif panggung global.
             </p>
 
+            {/* Action Buttons */}
             <div className="flex flex-wrap items-center gap-4">
               <button
                 onClick={() => setActiveSection(2)}
-                className="group relative inline-flex items-center justify-center px-8 py-3.5 font-medium tracking-wide text-black transition-all duration-300 ease-out bg-white rounded-full hover:scale-105 hover:bg-neutral-200 shadow-[0_0_30px_rgba(255,255,255,0.2)] cursor-pointer"
+                className="group relative inline-flex items-center gap-3 px-7 py-3.5 font-medium tracking-wide text-black transition-all duration-300 ease-out bg-white rounded-full hover:bg-cyan-400 hover:shadow-[0_0_25px_rgba(0,240,255,0.6)] cursor-pointer text-sm"
               >
-                <span className="relative font-bold text-sm">Explore Ddev Projects</span>
+                <span>Lihat Portofolio</span>
+                <Sparkles className="w-4 h-4 transition-transform group-hover:rotate-12" />
               </button>
 
               <button
@@ -108,11 +178,11 @@ const Hero = ({ setActiveSection }) => {
             className="w-full flex justify-center"
           >
             {shouldLoad3D ? (
-              <Suspense fallback={<CanvasPlaceholder />}>
+              <Suspense fallback={<CanvasPlaceholder onActivate={() => setShouldLoad3D(true)} />}>
                 <CyberCoreCanvas />
               </Suspense>
             ) : (
-              <CanvasPlaceholder />
+              <CanvasPlaceholder onActivate={() => setShouldLoad3D(true)} />
             )}
           </motion.div>
         </div>
