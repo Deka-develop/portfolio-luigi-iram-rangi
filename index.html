@@ -9,12 +9,20 @@
     <meta name="theme-color" content="#050505" />
     <link rel="apple-touch-icon" href="./favicon.svg" />
     
-    <!-- Google Fonts: Inter, Outfit, JetBrains Mono -->
+    <!-- Google Fonts: Inter, Outfit, JetBrains Mono (Non-render-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="./assets/index-waSjWAug.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-k27wapma.css">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap">
+    </noscript>
+    <script type="module" crossorigin src="./assets/index-BM2WQIYp.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/rolldown-runtime-CbXtAM7H.js">
+    <link rel="modulepreload" crossorigin href="./assets/vendor-icons-BwZeLSY-.js">
+    <link rel="modulepreload" crossorigin href="./assets/vendor-react-B1NKUiOz.js">
+    <link rel="modulepreload" crossorigin href="./assets/vendor-motion-BeSFhX7M.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-xM4wldyO.css">
   </head>
   <body class="bg-[#050505] text-white selection:bg-cyan-500/30 selection:text-cyan-200">
     <div id="root"></div>
