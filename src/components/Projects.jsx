@@ -2,6 +2,11 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, ExternalLink, Sparkles, Layers, ShieldCheck, Zap, Globe, Lock, X, CheckCircle2 } from 'lucide-react';
 
+import borneoGlobeImg from '../assets/projects/borneo-globe.jpg';
+import ddevStudioImg from '../assets/projects/ddev-studio.jpg';
+import nebulaProImg from '../assets/projects/nebula-pro.jpg';
+import borneoBusinessImg from '../assets/projects/borneo-business.jpg';
+
 const projects = [
   {
     id: 'borneo-globe',
@@ -14,7 +19,7 @@ const projects = [
     statusColor: 'emerald',
     year: '2025 - Present',
     url: 'https://www.borneoglobe.org/',
-    image: '/projects/borneo-globe.jpg',
+    image: borneoGlobeImg,
     glow: 'from-blue-600/20 via-teal-500/15 to-transparent',
     accentColor: '#38bdf8',
     highlightMetric: '1,840+ Beneficiaries',
@@ -44,7 +49,7 @@ const projects = [
     statusColor: 'cyan',
     year: '2025',
     url: 'https://www.instagram.com/iramrangi_dev/',
-    image: '/projects/ddev-studio.jpg',
+    image: ddevStudioImg,
     glow: 'from-cyan-500/20 via-blue-600/15 to-transparent',
     accentColor: '#00f0ff',
     highlightMetric: '120+ Templates Built',
@@ -74,7 +79,7 @@ const projects = [
     statusColor: 'purple',
     year: '2025',
     url: '#',
-    image: '/projects/nebula-pro.jpg',
+    image: nebulaProImg,
     glow: 'from-purple-500/20 via-pink-600/15 to-transparent',
     accentColor: '#b537f2',
     highlightMetric: '100/100 PageSpeed',
@@ -104,7 +109,7 @@ const projects = [
     statusColor: 'amber',
     year: '2024',
     url: '#',
-    image: '/projects/borneo-business.jpg',
+    image: borneoBusinessImg,
     glow: 'from-amber-500/20 via-orange-600/15 to-transparent',
     accentColor: '#f59e0b',
     highlightMetric: 'High Conversion UX',
