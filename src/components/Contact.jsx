@@ -29,7 +29,7 @@ export default function Contact() {
   const [isSent, setIsSent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Live WIB / UTC+7 West Kalimantan Clock
+  // Live WIB / UTC+7 West Borneo Clock
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
@@ -460,7 +460,7 @@ export default function Contact() {
             <div className="pt-3 mt-3 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/70 select-none">
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Pontianak, Kalimantan Barat</span>
+                <span>Pontianak, West Borneo</span>
               </div>
               <span className="text-emerald-400 font-semibold">Online</span>
             </div>

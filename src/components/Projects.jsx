@@ -27,13 +27,13 @@ const projects = [
     tech: ['Web Platform', 'Digital Strategy', 'Global Reach', 'Impact Ecosystem'],
     caseStudy: {
       client: 'Borneo Globe Regional Initiative',
-      location: 'West Kalimantan, Indonesia',
+      location: 'West Borneo, Indonesia',
       challenge: 'Membangun jembatan digital antara inisiatif pulau Borneo dengan mitra dan peneliti internasional melalui platform yang cepat, kredibel, dan ramah koneksi pelosok.',
       solution: 'Arsitektur web berbasis data regional dengan visualisasi infografis dinamis, UI ramah lingkungan, optimasi aset ringan, dan pemuatan tanpa lag di seluruh perangkat.',
       metrics: [
         { label: 'Beneficiaries', val: '1,840+' },
         { label: 'Accessibility', val: '100% Mobile Ready' },
-        { label: 'Regional Reach', val: 'Kalimantan Active' }
+        { label: 'Regional Reach', val: 'Borneo Active' }
       ],
       deliverables: ['Official Web Platform', 'Regional Impact Ecosystem', 'Cross-Device Architecture']
     }
@@ -53,11 +53,11 @@ const projects = [
     glow: 'from-cyan-500/20 via-blue-600/15 to-transparent',
     accentColor: '#00f0ff',
     highlightMetric: '120+ Templates Built',
-    description: 'Studio digital dan ekosistem template modern dari Kalimantan Barat. Memadukan estetika futuristik neon-cyber dengan sentuhan motif orisinal Dayak.',
+    description: 'Studio digital dan ekosistem template modern dari Borneo Barat. Memadukan estetika futuristik neon-cyber dengan sentuhan motif orisinal Dayak.',
     tech: ['React', 'Three.js WebGL', 'Tailwind CSS', 'Framer Motion'],
     caseStudy: {
       client: 'Ddev Studio Ecosystem',
-      location: 'Pontianak, Kalimantan Barat',
+      location: 'Pontianak, West Borneo',
       challenge: 'Menghadirkan studio kreatif independen yang mampu bersaing di pasar global dengan memadukan identitas orisinal Dayak dan rekayasa web 3D mutakhir.',
       solution: 'Memproduksi 120+ template berkinerja tinggi, sistem desain modular, animasi kinetik WebGL 120 FPS, serta pasar digital untuk kreator web.',
       metrics: [

@@ -25,7 +25,7 @@ const milestones = [
     year: '2025',
     phase: 'Borneo Globe Active Hub',
     title: 'Regional Impact Ecosystem',
-    desc: 'Membangun ekosistem platform digital resmi Borneo Globe (borneoglobe.org) untuk pemantauan lingkungan dan kemitraan pulau Kalimantan.',
+    desc: 'Membangun ekosistem platform digital resmi Borneo Globe (borneoglobe.org) untuk pemantauan lingkungan dan kemitraan pulau Borneo.',
     badge: 'Regional Scale',
     color: '#10b981',
     borderClass: 'border-emerald-500/30 text-emerald-300 bg-emerald-500/10'
@@ -75,7 +75,7 @@ const About = () => {
                     0°00'00" EQUATOR LINE
                   </span>
                   <span className="text-xs font-mono text-white/70">
-                    Pontianak, Kalimantan Barat
+                    Pontianak, West Borneo
                   </span>
                 </div>
               </div>
@@ -124,7 +124,7 @@ const About = () => {
                   Active Role • borneoglobe.org ↗
                 </a>
                 <p className="text-white/75 font-light text-xs leading-relaxed">
-                  Bekerja membangun dan mengelola ekosistem digital untuk inisiatif pemantauan lingkungan dan kemitraan pulau Kalimantan di <span className="text-white font-medium">Borneo Globe</span>.
+                  Bekerja membangun dan mengelola ekosistem digital untuk inisiatif pemantauan lingkungan dan kemitraan pulau Borneo di <span className="text-white font-medium">Borneo Globe</span>.
                 </p>
               </div>
             </div>

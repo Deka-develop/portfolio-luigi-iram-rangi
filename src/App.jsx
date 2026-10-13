@@ -353,7 +353,7 @@ function App() {
                     </span>
                   </div>
                   <span className="text-[10px] font-mono text-white/70">
-                    West Kalimantan
+                    West Borneo
                   </span>
                 </div>
 
