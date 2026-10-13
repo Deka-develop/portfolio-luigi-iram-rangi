@@ -78,6 +78,7 @@ const techArsenal = [
 export default function Skills() {
   const [activePillar, setActivePillar] = useState(0);
   const [viewMode, setViewMode] = useState('specs'); // 'specs' | 'game'
+  const [showGameBanner, setShowGameBanner] = useState(true);
 
   return (
     <section className="w-full h-full min-h-screen bg-transparent flex flex-col justify-center pt-20 md:pt-24 pb-6 relative overflow-hidden select-none">
@@ -141,28 +142,20 @@ export default function Skills() {
                 </button>
               </div>
 
-              {/* Kolom Panduan Melayang Permanen Ditaruh Di Atas (Tidak Menutupi Card) */}
+              {/* Kolom Panduan Melayang (Hanya Desktop, Tidak Muncul di Mobile agar Tidak Menutupi Layar) */}
               <AnimatePresence>
-                {viewMode === 'specs' && (
+                {viewMode === 'specs' && showGameBanner && (
                   <motion.div
-                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                    animate={{ 
-                      opacity: 1, 
-                      y: [0, -5, 0], 
-                      scale: 1 
-                    }}
-                    exit={{ opacity: 0, y: -8, scale: 0.95 }}
-                    transition={{ 
-                      y: { repeat: Infinity, duration: 2.8, ease: 'easeInOut' },
-                      opacity: { duration: 0.25 },
-                      scale: { duration: 0.25 }
-                    }}
-                    className="absolute bottom-full right-0 mb-3 w-72 sm:w-84 z-30 p-3.5 rounded-2xl bg-neutral-950/95 border border-fuchsia-500/50 backdrop-blur-2xl shadow-[0_15px_40px_rgba(217,70,239,0.25),0_0_20px_rgba(0,0,0,0.9)] flex flex-col gap-2.5"
+                    initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                    transition={{ duration: 0.2 }}
+                    className="hidden md:flex absolute bottom-full right-0 mb-3 w-80 z-30 p-3.5 rounded-2xl bg-neutral-950/95 border border-fuchsia-500/50 backdrop-blur-2xl shadow-[0_15px_40px_rgba(217,70,239,0.25),0_0_20px_rgba(0,0,0,0.9)] flex-col gap-2.5"
                   >
-                    {/* Glowing Pointer Arrow pointed down to the Play Cyber Arcade button */}
+                    {/* Glowing Pointer Arrow */}
                     <div className="absolute -bottom-1.5 right-8 sm:right-12 w-3 h-3 bg-neutral-950 border-b border-r border-fuchsia-500/60 rotate-45" />
 
-                    {/* Header */}
+                    {/* Header with Close Button */}
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-fuchsia-400 animate-ping" />
@@ -170,9 +163,22 @@ export default function Skills() {
                           Interactive Arcade Mode
                         </span>
                       </div>
-                      <span className="px-2 py-0.5 rounded-full bg-fuchsia-500/15 border border-fuchsia-500/30 text-[9px] font-mono text-fuchsia-300 font-semibold uppercase tracking-wider">
-                        Live Game
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 rounded-full bg-fuchsia-500/15 border border-fuchsia-500/30 text-[9px] font-mono text-fuchsia-300 font-semibold uppercase tracking-wider">
+                          Live Game
+                        </span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowGameBanner(false);
+                          }}
+                          aria-label="Tutup notifikasi game"
+                          className="p-1 rounded-lg bg-white/5 hover:bg-white/15 text-white/60 hover:text-white transition-colors cursor-pointer"
+                          title="Tutup pemberitahuan"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
 
                     {/* Description */}
@@ -186,7 +192,10 @@ export default function Skills() {
                         ⚡ 120 FPS WebGL
                       </span>
                       <button
-                        onClick={() => setViewMode('game')}
+                        onClick={() => {
+                          setViewMode('game');
+                          setShowGameBanner(false);
+                        }}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-fuchsia-500 to-cyan-500 hover:from-fuchsia-400 hover:to-cyan-400 text-black text-xs font-mono font-bold shadow-[0_0_15px_rgba(217,70,239,0.4)] hover:scale-105 transition-all cursor-pointer"
                       >
                         <Gamepad2 className="w-3.5 h-3.5" />
