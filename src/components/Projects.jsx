@@ -127,7 +127,7 @@ const projects = [
       metrics: [
         { label: 'Dampak', val: '2,800+' },
         { label: 'Lokasi', val: '48+ Titik' },
-        { label: 'Riset', val: '108+ Dokumen' }
+        { label: 'Riset', val: '108+ Doc' }
       ],
       deliverables: ['Official NGO Web Platform', 'Bilingual Multilingual Engine', 'Interactive Impact Showcase']
     }
