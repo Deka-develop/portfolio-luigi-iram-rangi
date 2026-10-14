@@ -1,10 +1,13 @@
+import { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ArrowDown } from 'lucide-react';
 import { DayakShieldEmblem } from './DayakMotifs';
 
+const Dayak3DCanvas = lazy(() => import('./Dayak3DCanvas'));
+
 export default function Hero({ setActiveSection, onNavigateToProjects, onNavigateToMilestone }) {
   return (
-    <section className="relative w-full min-h-screen flex flex-col justify-between pt-24 md:pt-28 pb-8 px-6 md:px-12 lg:px-20 bg-transparent text-[#111111] overflow-hidden">
+    <section id="intro-hero" className="sticky top-0 min-h-screen w-full flex flex-col justify-between pt-24 md:pt-28 pb-8 px-6 md:px-12 lg:px-20 bg-[#EDEEF0] text-[#111111] overflow-hidden z-10">
       
       {/* Subtle Noise Texture Overlay */}
       <div className="absolute inset-0 bg-noise pointer-events-none z-0" />
@@ -66,20 +69,20 @@ export default function Hero({ setActiveSection, onNavigateToProjects, onNavigat
             <span className="text-[#111111]/20">.</span>
           </motion.h1>
 
-          {/* Spatial 3D WebGL Kinetic Sculpture Window (Driven by Scroll WebGL Engine) */}
-          <div
-            className="w-full max-w-[850px] h-[340px] sm:h-[400px] md:h-[460px] lg:h-[500px] relative -my-4 sm:-my-6 md:-my-8 z-20 pointer-events-none flex items-center justify-center"
-            aria-hidden="true"
-          >
-            {/* Stage Frame Indicators */}
-            <div className="absolute top-4 left-4 font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-[#111111]/45 px-2.5 py-1 rounded-full bg-white/60 backdrop-blur-sm border border-black/5 pointer-events-auto shadow-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#684AFF] inline-block mr-1.5 animate-pulse" />
-              Interactive 3D Stage
-            </div>
-
-            <div className="absolute bottom-4 right-4 font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-[#111111]/45 px-2.5 py-1 rounded-full bg-white/60 backdrop-blur-sm border border-black/5 pointer-events-auto shadow-sm">
-              Gulir ke Bawah untuk Animasi 3D ↓
-            </div>
+          {/* 3D WebGL Kinetic Sculpture Viewport */}
+          <div className="w-full max-w-[850px] h-[340px] sm:h-[400px] md:h-[460px] lg:h-[500px] relative -my-4 sm:-my-6 md:-my-8 z-20">
+            <Suspense
+              fallback={
+                <div className="w-full h-full flex flex-col items-center justify-center text-center">
+                  <DayakShieldEmblem className="w-10 h-10 text-[#684AFF] animate-pulse mb-3" color="#684AFF" />
+                  <span className="font-mono text-xs uppercase tracking-widest text-[#111111]/40">
+                    Initializing WebGL 3D Engine...
+                  </span>
+                </div>
+              }
+            >
+              <Dayak3DCanvas />
+            </Suspense>
           </div>
 
           <motion.h2

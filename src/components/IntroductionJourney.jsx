@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Cpu,
@@ -170,30 +170,92 @@ const portalLinks = [
   }
 ];
 
+// Section list for the transition navigator
+const sectionsNav = [
+  { id: 'intro-hero', label: '00 // HERO' },
+  { id: 'intro-manifesto', label: '01 // MANIFESTO' },
+  { id: 'intro-pillars', label: '02 // TIGA PILAR' },
+  { id: 'intro-ethos', label: '03 // ETOS & PERSONA' },
+  { id: 'intro-gateway', label: '04 // GERBANG JELAJAH' }
+];
+
 export default function IntroductionJourney({ onNavigate }) {
   const [activePilar, setActivePilar] = useState(0);
+  const [activeSectionId, setActiveSectionId] = useState('intro-hero');
+
+  // Track active section via IntersectionObserver
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSectionId(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    sectionsNav.forEach((sec) => {
+      const el = document.getElementById(sec.id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <article
       id="introduction-story"
       aria-label="Perjalanan Perkenalan dan Filosofi Luigi Iram Rangi"
-      className="relative w-full bg-transparent text-[#111111] overflow-hidden border-t border-[#111111]/15"
+      className="relative w-full text-[#111111]"
     >
-      {/* Background Subtle Ambient Gradients */}
-      <div className="absolute top-[10%] left-[-10%] w-[500px] h-[500px] bg-[#684AFF]/5 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute top-[45%] right-[-10%] w-[600px] h-[600px] bg-[#D97706]/6 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-[15%] left-[20%] w-[550px] h-[550px] bg-[#0284C7]/5 rounded-full blur-[140px] pointer-events-none" />
+      {/* ───────────────── FLOATING SECTION TRANSITION NAVIGATOR ───────────────── */}
+      <nav
+        aria-label="Navigasi Transisi Section Beranda"
+        className="fixed bottom-6 right-6 z-40 hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-black/10 shadow-xl text-[10px] font-mono tracking-wider"
+      >
+        <span className="text-[#111111]/40 text-[9px] uppercase font-bold pl-1 pr-1.5 border-r border-black/10">
+          Transisi Section:
+        </span>
+        {sectionsNav.map((sec) => {
+          const isActive = activeSectionId === sec.id;
+          return (
+            <button
+              key={sec.id}
+              onClick={() => scrollToSection(sec.id)}
+              className={`px-2.5 py-1 rounded-full transition-all cursor-pointer font-bold ${
+                isActive
+                  ? 'bg-[#111111] text-white shadow-sm scale-105'
+                  : 'text-[#111111]/60 hover:text-[#111111] hover:bg-black/5'
+              }`}
+              title={`Lompat ke ${sec.label}`}
+            >
+              {sec.label.split(' // ')[0]}
+            </button>
+          );
+        })}
+      </nav>
 
-      {/* ───────────────── CHAPTER 1: MANIFESTO & FILOSOFI ───────────────── */}
-      <section className="relative w-full px-6 md:px-12 lg:px-20 pt-20 md:pt-28 pb-16 md:pb-24 border-b border-[#111111]/10">
-        
+      {/* ───────────────── SECTION 1: MANIFESTO & FILOSOFI (STICKY CARD 2) ───────────────── */}
+      <section
+        id="intro-manifesto"
+        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-20 md:py-28 bg-[#E5E6E8] text-[#111111] shadow-[0_-25px_60px_rgba(0,0,0,0.12)] border-t border-[#111111]/15 z-20"
+      >
         {/* Section Index Bar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col gap-2 mb-8 md:mb-12"
+          className="flex flex-col gap-2 mb-8 md:mb-12 max-w-6xl mx-auto w-full"
         >
           <div className="flex items-center justify-between text-[10px] md:text-xs font-mono tracking-[0.25em] uppercase text-[#111111]/60">
             <div className="flex items-center gap-2">
@@ -211,7 +273,7 @@ export default function IntroductionJourney({ onNavigate }) {
         </motion.div>
 
         {/* Big Impact Statement */}
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto w-full">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -252,7 +314,7 @@ export default function IntroductionJourney({ onNavigate }) {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ delay: 0.3, duration: 0.6 }}
-              className="lg:col-span-4 bg-white/80 backdrop-blur-md border border-[#111111]/10 rounded-2xl p-6 sm:p-8 flex flex-col items-center text-center shadow-lg relative group"
+              className="lg:col-span-4 bg-white/90 backdrop-blur-md border border-[#111111]/10 rounded-2xl p-6 sm:p-8 flex flex-col items-center text-center shadow-lg relative group"
             >
               <DayakCornerAccent position="top-right" className="absolute top-3 right-3 w-4 h-4 text-[#D97706]" />
               <DayakCornerAccent position="bottom-left" className="absolute bottom-3 left-3 w-4 h-4 text-[#684AFF]" />
@@ -280,19 +342,20 @@ export default function IntroductionJourney({ onNavigate }) {
 
           </div>
         </div>
-
       </section>
 
-      {/* ───────────────── CHAPTER 2: TIGA PILAR DIRI ───────────────── */}
-      <section className="relative w-full px-6 md:px-12 lg:px-20 py-20 md:py-28 border-b border-[#111111]/10 bg-white/20 backdrop-blur-[2px]">
-        
+      {/* ───────────────── SECTION 2: TIGA PILAR DIRI (STICKY CARD 3) ───────────────── */}
+      <section
+        id="intro-pillars"
+        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-20 md:py-28 bg-[#EDEEF0] text-[#111111] shadow-[0_-25px_60px_rgba(0,0,0,0.16)] border-t border-[#111111]/15 z-30"
+      >
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col gap-2 mb-12 max-w-6xl mx-auto"
+          className="flex flex-col gap-2 mb-10 max-w-6xl mx-auto w-full"
         >
           <div className="flex items-center gap-3 text-[10px] md:text-xs font-mono tracking-[0.25em] uppercase text-[#111111]/60">
             <span className="w-2 h-2 rounded-full bg-[#0284C7]" />
@@ -307,7 +370,7 @@ export default function IntroductionJourney({ onNavigate }) {
         </motion.div>
 
         {/* Interactive 3-Pillar Deck */}
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           {pillars.map((p, idx) => {
             const Icon = p.icon;
             const isHovered = activePilar === idx;
@@ -323,10 +386,9 @@ export default function IntroductionJourney({ onNavigate }) {
                 className={`relative flex flex-col justify-between p-7 sm:p-8 rounded-3xl transition-all duration-300 border cursor-pointer ${
                   isHovered
                     ? 'bg-[#111111] text-[#EDEEF0] shadow-2xl border-[#111111] -translate-y-2'
-                    : 'bg-white/90 text-[#111111] border-[#111111]/10 hover:border-[#111111]/30 shadow-md'
+                    : 'bg-white text-[#111111] border-[#111111]/10 hover:border-[#111111]/30 shadow-md'
                 }`}
               >
-                {/* Top Badge & Number */}
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     <span
@@ -378,7 +440,6 @@ export default function IntroductionJourney({ onNavigate }) {
                   </p>
                 </div>
 
-                {/* Highlights List */}
                 <div
                   className={`pt-5 border-t flex flex-col gap-2.5 ${
                     isHovered ? 'border-white/15' : 'border-[#111111]/10'
@@ -412,181 +473,142 @@ export default function IntroductionJourney({ onNavigate }) {
             );
           })}
         </div>
-
       </section>
 
-      {/* ───────────────── CHAPTER 3: PRINSIP & ETOS KERJA ───────────────── */}
-      <section className="relative w-full px-6 md:px-12 lg:px-20 py-20 md:py-28 border-b border-[#111111]/10">
-        
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col gap-2 mb-12 max-w-6xl mx-auto"
-        >
-          <div className="flex items-center gap-3 text-[10px] md:text-xs font-mono tracking-[0.25em] uppercase text-[#111111]/60">
-            <span className="w-2 h-2 rounded-full bg-[#D97706]" />
-            <span className="font-bold text-[#111111]">03 // PRINSIP &amp; ETOS REKAYASA</span>
-          </div>
-          <h3 className="font-sans font-black text-2xl sm:text-4xl md:text-5xl uppercase tracking-tight text-[#111111] mt-1">
-            NILAI YANG SAYA PEGANG TEGUH
-          </h3>
-          <p className="font-sans text-sm sm:text-base text-[#111111]/60 max-w-2xl mt-1">
-            Standar non-negosiasi dalam setiap arsitektur kode, visual grafis, maupun kolaborasi kemitraan yang saya bangun.
-          </p>
-        </motion.div>
+      {/* ───────────────── SECTION 3: PRINSIP & PERSONA (STICKY CARD 4) ───────────────── */}
+      <section
+        id="intro-ethos"
+        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-20 md:py-28 bg-[#E8E9EC] text-[#111111] shadow-[0_-25px_60px_rgba(0,0,0,0.22)] border-t border-[#111111]/15 z-40"
+      >
+        <div className="max-w-6xl mx-auto w-full">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col gap-2 mb-10"
+          >
+            <div className="flex items-center gap-3 text-[10px] md:text-xs font-mono tracking-[0.25em] uppercase text-[#111111]/60">
+              <span className="w-2 h-2 rounded-full bg-[#D97706]" />
+              <span className="font-bold text-[#111111]">03 // PRINSIP &amp; PERSONA DI BALIK LAYAR</span>
+            </div>
+            <h3 className="font-sans font-black text-2xl sm:text-4xl md:text-5xl uppercase tracking-tight text-[#111111] mt-1">
+              NILAI YANG SAYA PEGANG TEGUH
+            </h3>
+            <p className="font-sans text-sm sm:text-base text-[#111111]/60 max-w-2xl mt-1">
+              Standar arsitektur kode dan sisi manusiawi di balik layar Luigi Iram Rangi.
+            </p>
+          </motion.div>
 
-        {/* Animated Principles Grid */}
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {principles.map((pr, idx) => (
-            <motion.div
-              key={pr.num}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ delay: idx * 0.1, duration: 0.5 }}
-              className="group p-6 sm:p-8 rounded-3xl bg-white/80 border border-[#111111]/10 hover:border-[#684AFF]/40 hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="font-mono text-sm sm:text-base font-bold text-[#684AFF] tracking-widest">
-                    [{pr.num}]
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full bg-[#111111]/5 text-[#111111]/70 font-semibold group-hover:bg-[#684AFF]/10 group-hover:text-[#684AFF] transition-colors">
-                    {pr.tag}
-                  </span>
-                </div>
-
-                <h4 className="font-sans font-bold text-lg sm:text-xl uppercase tracking-tight text-[#111111] group-hover:text-[#684AFF] transition-colors mb-2">
-                  {pr.title}
-                </h4>
-
-                <p className="font-sans text-sm text-[#111111]/70 leading-relaxed font-normal">
-                  {pr.desc}
-                </p>
-              </div>
-
-              <div className="mt-6 pt-4 border-t border-[#111111]/5 flex items-center justify-end">
-                <span className="font-mono text-[10px] text-[#111111]/40 uppercase tracking-widest flex items-center gap-1 group-hover:text-[#684AFF] transition-colors">
-                  Standardized <Zap className="w-3 h-3 text-[#D97706]" />
-                </span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-      </section>
-
-      {/* ───────────────── CHAPTER 4: PERSONA DI BALIK LAYAR ───────────────── */}
-      <section className="relative w-full px-6 md:px-12 lg:px-20 py-20 md:py-28 border-b border-[#111111]/10 bg-white/20 backdrop-blur-[2px]">
-        
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {/* Left Narrative Column */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.6 }}
-              className="lg:col-span-6 flex flex-col gap-6"
-            >
-              <div className="flex items-center gap-3 text-[10px] md:text-xs font-mono tracking-[0.25em] uppercase text-[#111111]/60">
-                <span className="w-2 h-2 rounded-full bg-[#10B981]" />
-                <span className="font-bold text-[#111111]">04 // DI BALIK LAYAR &amp; PERSONA</span>
-              </div>
-
-              <h3 className="font-sans font-black text-2xl sm:text-4xl md:text-5xl uppercase tracking-tight text-[#111111] leading-tight">
-                MANUSIA DI BALIK KUMPULAN SINTAKS.
-              </h3>
-
-              <p className="font-sans text-base text-[#111111]/70 leading-relaxed">
-                Di luar penulisan kode dan kalkulasi matematis grafika, saya adalah seorang pembelajar seumur hidup yang gemar mengeksplorasi estetika retro game arcade, fiksi ilmiah cyberpunk, dan tradisi lisan Kalimantan Barat.
-              </p>
-
-              <p className="font-sans text-base text-[#111111]/70 leading-relaxed">
-                Bagi saya, komputer dan layar bukanlah sekadar alat mekanis, melainkan kanvas modern di mana budaya, seni visual, dan rekayasa cerdas dapat bertemu untuk menyentuh kehidupan manusia secara positif.
-              </p>
-
-              <div className="flex items-center gap-3 pt-2">
-                <span className="px-3 py-1.5 rounded-full bg-[#111111] text-white font-mono text-[10px] uppercase tracking-wider font-bold">
-                  Dayak Technologist
-                </span>
-                <span className="px-3 py-1.5 rounded-full bg-[#684AFF]/10 text-[#684AFF] font-mono text-[10px] uppercase tracking-wider font-bold">
-                  WebGL Artisan
-                </span>
-                <span className="px-3 py-1.5 rounded-full bg-[#10B981]/10 text-[#10B981] font-mono text-[10px] uppercase tracking-wider font-bold">
-                  Available for High-End Projects
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Right Tidbits Grid */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.6 }}
-              className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4"
-            >
-              {personaDetails.map((item) => {
-                const ItemIcon = item.icon;
-                return (
-                  <div
-                    key={item.label}
-                    className="p-5 rounded-2xl bg-white border border-[#111111]/10 hover:border-[#684AFF]/40 hover:shadow-md transition-all flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="font-mono text-[10px] uppercase tracking-wider text-[#111111]/50 font-bold">
-                          {item.label}
-                        </span>
-                        <ItemIcon className="w-4 h-4 text-[#684AFF]" aria-hidden="true" />
-                      </div>
-                      <span className="font-sans font-bold text-base text-[#111111] block leading-tight">
-                        {item.val}
+            {/* Left Column: 4 Work Principles */}
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {principles.map((pr, idx) => (
+                <motion.div
+                  key={pr.num}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ delay: idx * 0.1, duration: 0.5 }}
+                  className="group p-5 rounded-2xl bg-white border border-[#111111]/10 hover:border-[#684AFF]/40 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="font-mono text-xs font-bold text-[#684AFF] tracking-widest">
+                        [{pr.num}]
+                      </span>
+                      <span className="font-mono text-[9px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-[#111111]/5 text-[#111111]/70 font-semibold group-hover:bg-[#684AFF]/10 group-hover:text-[#684AFF] transition-colors">
+                        {pr.tag}
                       </span>
                     </div>
-                    <span className="font-mono text-[10px] text-[#111111]/60 mt-3 pt-2 border-t border-[#111111]/5 block">
-                      {item.sub}
+
+                    <h4 className="font-sans font-bold text-sm sm:text-base uppercase tracking-tight text-[#111111] group-hover:text-[#684AFF] transition-colors mb-1.5 leading-snug">
+                      {pr.title}
+                    </h4>
+
+                    <p className="font-sans text-xs text-[#111111]/70 leading-relaxed font-normal">
+                      {pr.desc}
+                    </p>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-[#111111]/5 flex items-center justify-end">
+                    <span className="font-mono text-[9px] text-[#111111]/40 uppercase tracking-widest flex items-center gap-1 group-hover:text-[#684AFF] transition-colors">
+                      Standardized <Zap className="w-2.5 h-2.5 text-[#D97706]" />
                     </span>
                   </div>
-                );
-              })}
-            </motion.div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Right Column: Persona Tidbits */}
+            <div className="lg:col-span-5 flex flex-col gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {personaDetails.map((item) => {
+                  const ItemIcon = item.icon;
+                  return (
+                    <div
+                      key={item.label}
+                      className="p-5 rounded-2xl bg-white border border-[#111111]/10 hover:border-[#684AFF]/40 hover:shadow-md transition-all flex flex-col justify-between"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-mono text-[9px] uppercase tracking-wider text-[#111111]/50 font-bold">
+                            {item.label}
+                          </span>
+                          <ItemIcon className="w-4 h-4 text-[#684AFF]" aria-hidden="true" />
+                        </div>
+                        <span className="font-sans font-bold text-sm text-[#111111] block leading-tight">
+                          {item.val}
+                        </span>
+                      </div>
+                      <span className="font-mono text-[10px] text-[#111111]/60 mt-2.5 pt-2 border-t border-[#111111]/5 block">
+                        {item.sub}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="p-5 rounded-2xl bg-white/70 border border-[#111111]/10 font-sans text-xs text-[#111111]/70 leading-relaxed">
+                <p>
+                  Bagi saya, layar komputer adalah kanvas digital khatulistiwa tempat nilai luhur Borneo dapat diekspresikan kembali dalam estetika modern berstandar dunia.
+                </p>
+              </div>
+            </div>
 
           </div>
         </div>
-
       </section>
 
-      {/* ───────────────── CHAPTER 5: GERBANG PENJELAJAHAN (NEXT STEPS) ───────────────── */}
-      <section className="relative w-full px-6 md:px-12 lg:px-20 py-20 md:py-28">
-        
+      {/* ───────────────── SECTION 4: PINTU GERBANG PENJELAJAHAN (STICKY CARD 5 - CLIMAX) ───────────────── */}
+      <section
+        id="intro-gateway"
+        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-20 md:py-28 bg-[#111111] text-[#EDEEF0] shadow-[0_-30px_70px_rgba(0,0,0,0.45)] border-t border-white/10 z-50"
+      >
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col items-center text-center max-w-4xl mx-auto mb-14"
+          className="flex flex-col items-center text-center max-w-4xl mx-auto mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111111] text-[#EDEEF0] font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-[#EDEEF0] font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] mb-4 border border-white/10">
             <Layers className="w-3.5 h-3.5 text-[#684AFF]" aria-hidden="true" />
-            05 // PINTU GERBANG PENJELAJAHAN
+            04 // PINTU GERBANG PENJELAJAHAN
           </div>
-          <h3 className="font-sans font-black text-3xl sm:text-5xl md:text-6xl uppercase tracking-tight text-[#111111]">
+          <h3 className="font-sans font-black text-3xl sm:text-5xl md:text-6xl uppercase tracking-tight text-white">
             SIAP MELIHAT LEBIH JAUH?
           </h3>
-          <p className="font-sans text-sm sm:text-base md:text-lg text-[#111111]/70 max-w-2xl mt-3">
+          <p className="font-sans text-sm sm:text-base md:text-lg text-white/70 max-w-2xl mt-3">
             Setelah mengenal fondasi dan filosofi saya, telusuri karya nyata, instalasi 3D, instrumen teknologi, atau mulai diskusi proyek bersama.
           </p>
         </motion.div>
 
         {/* Portal Gateway Cards */}
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="max-w-6xl mx-auto w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {portalLinks.map((p, idx) => (
             <motion.div
               key={p.id}
@@ -594,29 +616,29 @@ export default function IntroductionJourney({ onNavigate }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-40px' }}
               transition={{ delay: idx * 0.1, duration: 0.5 }}
-              className="group p-6 rounded-3xl bg-white border border-[#111111]/10 hover:border-[#111111] hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
+              className="group p-6 rounded-3xl bg-[#1A1A1A] border border-white/10 hover:border-[#684AFF] hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
             >
               <div>
                 <span
                   className="inline-block font-mono text-[9px] uppercase tracking-wider font-bold px-2.5 py-1 rounded-full mb-4"
-                  style={{ backgroundColor: `${p.accent}15`, color: p.accent }}
+                  style={{ backgroundColor: `${p.accent}20`, color: p.accent }}
                 >
                   {p.badge}
                 </span>
 
-                <h4 className="font-sans font-black text-xl uppercase tracking-tight text-[#111111] mb-2 group-hover:text-[#684AFF] transition-colors">
+                <h4 className="font-sans font-black text-xl uppercase tracking-tight text-white mb-2 group-hover:text-[#684AFF] transition-colors">
                   {p.name}
                 </h4>
 
-                <p className="font-sans text-xs text-[#111111]/60 leading-relaxed font-medium">
+                <p className="font-sans text-xs text-white/60 leading-relaxed font-medium">
                   {p.desc}
                 </p>
               </div>
 
-              <div className="mt-8 pt-4 border-t border-[#111111]/10">
+              <div className="mt-8 pt-4 border-t border-white/10">
                 <button
                   onClick={() => onNavigate?.(p.id)}
-                  className="w-full py-2.5 px-3 rounded-full bg-[#111111] text-white hover:bg-[#684AFF] transition-colors font-sans text-xs font-bold uppercase tracking-wider flex items-center justify-between cursor-pointer focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none"
+                  className="w-full py-2.5 px-3 rounded-full bg-white text-[#111111] hover:bg-[#684AFF] hover:text-white transition-colors font-sans text-xs font-bold uppercase tracking-wider flex items-center justify-between cursor-pointer focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none"
                   aria-label={`Navigasi ke ${p.name}`}
                 >
                   <span>{p.btnText}</span>
@@ -628,10 +650,10 @@ export default function IntroductionJourney({ onNavigate }) {
         </div>
 
         {/* Bottom Closing Seal */}
-        <div className="max-w-6xl mx-auto mt-16 pt-8 border-t border-[#111111]/10 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[#111111]/50">
+        <div className="max-w-6xl mx-auto w-full mt-14 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-white/50">
           <div className="flex items-center gap-2">
             <DayakShieldEmblem className="w-4 h-4 text-[#D97706]" color="#D97706" />
-            <span className="font-bold text-[#111111]">LUIGI IRAM RANGI // FOUNDER OF DDEV</span>
+            <span className="font-bold text-white">LUIGI IRAM RANGI // FOUNDER OF DDEV</span>
           </div>
           <div>
             <span>0°01′S 109°20′E • PONTIANAK, KALIMANTAN BARAT</span>
@@ -640,7 +662,6 @@ export default function IntroductionJourney({ onNavigate }) {
             <span>© {new Date().getFullYear()} ALL RIGHTS RESERVED</span>
           </div>
         </div>
-
       </section>
 
     </article>
