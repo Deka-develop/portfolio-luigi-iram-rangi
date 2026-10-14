@@ -8,7 +8,7 @@ const CyberCoreCanvas = lazy(() => import('./CyberCoreCanvas'));
 const CanvasPlaceholder = ({ onActivate }) => (
   <div 
     onClick={onActivate}
-    className="relative w-full max-w-[480px] aspect-square rounded-3xl bg-neutral-950/80 border border-white/15 flex flex-col items-center justify-between p-7 select-none shadow-[0_20px_60px_rgba(0,0,0,0.8)] backdrop-blur-xl group cursor-pointer overflow-hidden"
+    className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[420px] lg:max-w-[480px] aspect-square rounded-3xl bg-neutral-950/80 border border-white/15 flex flex-col items-center justify-between p-4 sm:p-7 select-none shadow-[0_20px_60px_rgba(0,0,0,0.8)] backdrop-blur-xl group cursor-pointer overflow-hidden"
     title="Klik untuk mengaktifkan WebGL 3D AI Cyber Avatar"
   >
     {/* Ambient Internal Glow */}
@@ -111,7 +111,7 @@ const Hero = ({ setActiveSection }) => {
       <div className="absolute -bottom-20 -left-20 w-[500px] h-[500px] bg-gradient-to-tr from-cyan-500/10 via-blue-600/10 to-transparent rounded-full blur-[120px] pointer-events-none hidden md:block" />
 
       {/* Main Hero Content */}
-      <div className="flex-1 w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-14 pt-24 md:pt-20 pb-6 relative z-10">
+      <div className="flex-1 w-full max-w-7xl mx-auto px-5 sm:px-10 lg:px-16 flex flex-col lg:flex-row items-center justify-center gap-5 sm:gap-10 lg:gap-14 pt-16 sm:pt-24 md:pt-20 pb-3 md:pb-6 relative z-10">
         
         {/* Left Column: Heading & CTA */}
         <div className="w-full lg:w-[52%] flex flex-col justify-center">
@@ -121,7 +121,7 @@ const Hero = ({ setActiveSection }) => {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             {/* Availability Pill */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl mb-5 shadow-sm max-w-full">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl mb-3 sm:mb-5 shadow-sm max-w-full">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
               <span className="text-[10px] sm:text-xs font-mono font-medium tracking-wider text-white/80 uppercase">
                 Founder of Ddev • Currently at{' '}
@@ -137,7 +137,7 @@ const Hero = ({ setActiveSection }) => {
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-black tracking-tight text-white uppercase leading-[1.05] mb-5">
+            <h1 className="text-3xl sm:text-6xl lg:text-7xl font-display font-black tracking-tight text-white uppercase leading-[1.05] mb-3 sm:mb-5">
               LUIGI IRAM <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-purple-500">
                 RANGI
@@ -145,7 +145,7 @@ const Hero = ({ setActiveSection }) => {
             </h1>
 
             {/* Sub-Headline & Bio */}
-            <p className="text-base sm:text-lg text-white/75 font-sans font-normal max-w-lg mb-5 leading-relaxed">
+            <p className="text-xs sm:text-base lg:text-lg text-white/75 font-sans font-normal max-w-lg mb-3 sm:mb-5 leading-relaxed">
               Creative Developer & Founder of <span className="text-cyan-300 font-medium">Ddev</span>. Merancang web modern, visual 3D/WebGL, dan arsitektur performa tinggi dari Borneo.
             </p>
 
@@ -154,7 +154,7 @@ const Hero = ({ setActiveSection }) => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35, duration: 0.6 }}
-              className="flex flex-wrap items-center gap-2 mb-7"
+              className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-4 sm:mb-7"
             >
               {[
                 { label: '120 FPS WebGL 3D', icon: Zap, color: '#00f0ff' },
@@ -167,10 +167,10 @@ const Hero = ({ setActiveSection }) => {
                   <motion.div
                     key={pIdx}
                     whileHover={{ scale: 1.05, y: -2 }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 hover:border-white/30 backdrop-blur-md shadow-sm transition-all cursor-default group"
+                    className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-white/[0.04] border border-white/10 hover:border-white/30 backdrop-blur-md shadow-sm transition-all cursor-default group"
                   >
                     <span className="w-1.5 h-1.5 rounded-full animate-ping" style={{ backgroundColor: pt.color }} />
-                    <span className="text-[11px] font-mono font-medium text-white/80 group-hover:text-white transition-colors">
+                    <span className="text-[10px] sm:text-[11px] font-mono font-medium text-white/80 group-hover:text-white transition-colors">
                       {pt.label}
                     </span>
                   </motion.div>
@@ -179,18 +179,18 @@ const Hero = ({ setActiveSection }) => {
             </motion.div>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
               <button
                 onClick={() => setActiveSection(2)}
-                className="group relative inline-flex items-center gap-3 px-7 py-3.5 font-medium tracking-wide text-black transition-all duration-300 ease-out bg-white rounded-full hover:bg-cyan-400 hover:shadow-[0_0_25px_rgba(0,240,255,0.6)] cursor-pointer text-sm"
+                className="group relative inline-flex items-center gap-2.5 px-5 py-2.5 sm:px-7 sm:py-3.5 font-medium tracking-wide text-black transition-all duration-300 ease-out bg-white rounded-full hover:bg-cyan-400 hover:shadow-[0_0_25px_rgba(0,240,255,0.6)] cursor-pointer text-xs sm:text-sm"
               >
                 <span>Lihat Portofolio</span>
-                <Sparkles className="w-4 h-4 transition-transform group-hover:rotate-12" />
+                <Sparkles className="w-3.5 h-3.5 transition-transform group-hover:rotate-12" />
               </button>
 
               <button
                 onClick={() => setActiveSection(4)}
-                className="inline-flex items-center justify-center px-7 py-3.5 font-medium tracking-wide text-white/80 transition-all duration-300 ease-out rounded-full border border-white/20 hover:border-white/60 hover:text-white hover:bg-white/[0.05] cursor-pointer text-sm"
+                className="inline-flex items-center justify-center px-5 py-2.5 sm:px-7 sm:py-3.5 font-medium tracking-wide text-white/80 transition-all duration-300 ease-out rounded-full border border-white/20 hover:border-white/60 hover:text-white hover:bg-white/[0.05] cursor-pointer text-xs sm:text-sm"
               >
                 Get in Touch
               </button>

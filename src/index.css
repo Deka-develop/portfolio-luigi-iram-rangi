@@ -6,23 +6,31 @@
   html {
     font-family: 'Inter', system-ui, sans-serif;
     scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
+    scroll-snap-type: y proximity;
   }
   body {
     @apply bg-background text-foreground;
     overflow-x: hidden;
+    overscroll-behavior-y: none;
+    -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', system-ui, sans-serif;
   }
 }
 
-/* Full-page snap only on tablet/desktop — phones scroll naturally */
+.snap-section {
+  scroll-snap-align: start;
+}
+
+/* Strict slide snap on desktop / tablet screens */
 @media (min-width: 768px) {
   html {
     scroll-snap-type: y mandatory;
   }
   .snap-section {
-    scroll-snap-align: start;
     scroll-snap-stop: always;
   }
 }

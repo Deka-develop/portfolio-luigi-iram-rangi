@@ -348,6 +348,7 @@ export default function CyberCoreCanvas() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, isLowPower ? 1 : 1.25));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
+    renderer.domElement.style.touchAction = 'pan-y';
     container.appendChild(renderer.domElement);
     stateRef.current.renderer = renderer;
 
@@ -604,17 +605,27 @@ export default function CyberCoreCanvas() {
     );
     visibilityObserver.observe(container);
 
-    // 7. Mouse / Touch Interactions
+    // 7. Mouse / Touch Interactions with Mobile Scroll Pass-through
+    let touchStartClientX = 0;
+    let touchStartClientY = 0;
+    let isHorizontalGesture = false;
+
     const onPointerDown = (e) => {
       stateRef.current.pointer.isDown = true;
-      stateRef.current.pointer.prevX = e.clientX || (e.touches && e.touches[0].clientX);
-      stateRef.current.pointer.prevY = e.clientY || (e.touches && e.touches[0].clientY);
+      const clientX = e.clientX ?? (e.touches && e.touches[0]?.clientX);
+      const clientY = e.clientY ?? (e.touches && e.touches[0]?.clientY);
+      stateRef.current.pointer.prevX = clientX;
+      stateRef.current.pointer.prevY = clientY;
+      touchStartClientX = clientX;
+      touchStartClientY = clientY;
+      isHorizontalGesture = false;
       setIsDragging(true);
     };
 
     const onPointerMove = (e) => {
-      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-      const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+      const isTouchEvent = !!e.touches;
+      const clientX = e.clientX ?? (e.touches && e.touches[0]?.clientX);
+      const clientY = e.clientY ?? (e.touches && e.touches[0]?.clientY);
       if (clientX === undefined) return;
 
       const rect = container.getBoundingClientRect();
@@ -629,13 +640,27 @@ export default function CyberCoreCanvas() {
         stateRef.current.pointer.prevX = clientX;
         stateRef.current.pointer.prevY = clientY;
 
-        stateRef.current.targetRotation.y += deltaX * 0.008;
-        stateRef.current.targetRotation.x += deltaY * 0.008;
+        if (isTouchEvent) {
+          // On mobile touch: only rotate if user is explicitly dragging horizontally
+          const totalDx = Math.abs(clientX - touchStartClientX);
+          const totalDy = Math.abs(clientY - touchStartClientY);
+          if (totalDx > totalDy + 8) {
+            isHorizontalGesture = true;
+          }
+          if (isHorizontalGesture) {
+            stateRef.current.targetRotation.y += deltaX * 0.008;
+          }
+        } else {
+          // Desktop mouse drag: full freedom
+          stateRef.current.targetRotation.y += deltaX * 0.008;
+          stateRef.current.targetRotation.x += deltaY * 0.008;
+        }
       }
     };
 
     const onPointerUp = () => {
       stateRef.current.pointer.isDown = false;
+      isHorizontalGesture = false;
       setIsDragging(false);
     };
 
@@ -778,7 +803,7 @@ export default function CyberCoreCanvas() {
   const curTheme = COLOR_THEMES[activeTheme] || COLOR_THEMES.cyan;
 
   return (
-    <div className="relative w-full max-w-[480px] aspect-square flex items-center justify-center select-none">
+    <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[420px] lg:max-w-[480px] aspect-square flex items-center justify-center select-none">
       
       {/* Dynamic Atmospheric Glow based on current active theme */}
       <div 
@@ -828,7 +853,7 @@ export default function CyberCoreCanvas() {
         {/* 2. Central WebGL Viewport Container */}
         <div 
           ref={mountRef} 
-          className="relative flex-1 w-full min-h-[260px] flex items-center justify-center cursor-grab active:cursor-grabbing overflow-hidden"
+          className="relative flex-1 w-full min-h-[180px] xs:min-h-[210px] sm:min-h-[260px] flex items-center justify-center cursor-grab active:cursor-grabbing overflow-hidden touch-pan-y"
           title="Drag to rotate, hover to interact"
         >
           {/* Drag Overlay Hint */}

@@ -81,8 +81,6 @@ export default function GlobalBackgroundCanvas({ activeSection = 0 }) {
 
       if (!isVisible) return;
       frame++;
-      // On mobile/low-power devices, render every 2nd frame (30fps) to save battery
-      if (isLowPower && frame % 2 !== 0) return;
 
       // Smooth mouse lerp
       mouseX += (targetMouseX - mouseX) * 0.05;
