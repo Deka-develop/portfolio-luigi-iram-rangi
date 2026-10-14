@@ -299,11 +299,11 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* Main Split Showcase Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+        {/* Main Split Showcase Layout (Side-by-side on both mobile and desktop) */}
+        <div className="grid grid-cols-12 gap-2 sm:gap-6 lg:gap-8 items-start sm:items-center">
           
           {/* Left Column (5 Cols): Interactive Project Navigator List */}
-          <div className="lg:col-span-5 flex flex-col gap-1.5 sm:gap-2 max-h-[660px] overflow-y-auto pr-1">
+          <div className="col-span-5 flex flex-col gap-1.5 sm:gap-2 max-h-[480px] sm:max-h-[660px] overflow-y-auto pr-0.5 sm:pr-1 custom-scrollbar">
             {projects.map((project, idx) => {
               const isSelected = activeIdx === idx;
               return (
@@ -311,9 +311,9 @@ export default function Projects() {
                   key={project.id}
                   onMouseEnter={() => setActiveIdx(idx)}
                   onClick={() => setActiveIdx(idx)}
-                  className={`group relative p-2.5 sm:p-3 rounded-2xl border transition-all duration-300 cursor-pointer ${
+                  className={`group relative p-2 sm:p-3 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer ${
                     isSelected
-                      ? 'bg-white/[0.07] border-white/30 shadow-[0_10px_30px_rgba(0,0,0,0.6)] backdrop-blur-xl'
+                      ? 'bg-white/[0.08] border-white/30 shadow-[0_10px_30px_rgba(0,0,0,0.6)] backdrop-blur-xl'
                       : 'bg-white/[0.02] border-white/5 hover:border-white/15 hover:bg-white/[0.04]'
                   }`}
                 >
@@ -321,33 +321,33 @@ export default function Projects() {
                   {isSelected && (
                     <motion.div
                       layoutId="activeProjectBar"
-                      className="absolute left-0 top-2.5 bottom-2.5 w-1 rounded-r-full"
+                      className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full"
                       style={{ backgroundColor: project.accentColor }}
                       transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     />
                   )}
 
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2.5 sm:gap-3">
-                      <span className={`text-xs font-mono font-bold transition-colors ${
+                  <div className="flex items-center justify-between gap-1.5 sm:gap-3">
+                    <div className="flex items-center gap-1.5 sm:gap-3 min-w-0">
+                      <span className={`text-[10px] sm:text-xs font-mono font-bold transition-colors shrink-0 ${
                         isSelected ? 'text-cyan-300' : 'text-white/70'
                       }`}>
                         {project.num}
                       </span>
-                      <div>
-                        <h3 className={`text-sm sm:text-base font-display font-bold leading-tight transition-colors ${
+                      <div className="min-w-0">
+                        <h3 className={`text-xs sm:text-base font-display font-bold leading-tight transition-colors truncate ${
                           isSelected ? 'text-white' : 'text-white/70 group-hover:text-white'
                         }`}>
                           {project.title}
                         </h3>
-                        <p className="text-[10px] sm:text-[11px] font-sans text-white/75 line-clamp-1 mt-0.5">
+                        <p className="hidden md:block text-[10px] sm:text-[11px] font-sans text-white/75 line-clamp-1 mt-0.5">
                           {project.subtitle}
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <span className={`hidden sm:inline-block px-2 py-0.5 rounded text-[9px] font-mono uppercase tracking-wider border ${
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className={`hidden lg:inline-block px-2 py-0.5 rounded text-[9px] font-mono uppercase tracking-wider border ${
                         project.statusColor === 'emerald'
                           ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
                           : project.statusColor === 'cyan'
@@ -367,7 +367,7 @@ export default function Projects() {
                         {project.role}
                       </span>
 
-                      <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center transition-all ${
+                      <div className={`hidden sm:flex w-6 h-6 sm:w-7 sm:h-7 rounded-lg items-center justify-center transition-all ${
                         isSelected 
                           ? 'bg-white text-black shadow-md scale-105' 
                           : 'bg-white/5 text-white/70 group-hover:bg-white/10 group-hover:text-white'
@@ -382,7 +382,7 @@ export default function Projects() {
           </div>
 
           {/* Right Column (7 Cols): High-Performance Live Project Preview Card */}
-          <div className="lg:col-span-7 relative">
+          <div className="col-span-7 relative">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeProject.id}
@@ -398,12 +398,12 @@ export default function Projects() {
                 />
 
                 {/* Sleek Browser Window Chrome */}
-                <div className="px-4 py-2.5 bg-neutral-900/95 border-b border-white/10 flex items-center justify-between text-xs font-mono">
+                <div className="px-2.5 sm:px-4 py-1.5 sm:py-2.5 bg-neutral-900/95 border-b border-white/10 flex items-center justify-between text-[10px] sm:text-xs font-mono">
                   <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                    <div className="flex items-center gap-1 sm:gap-1.5">
+                      <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-red-500/80" />
+                      <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-amber-500/80" />
+                      <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500/80" />
                     </div>
                     <div className="ml-2 hidden sm:flex items-center gap-1.5 px-3 py-0.5 rounded-lg bg-black/50 border border-white/10 text-[11px] text-white/70">
                       <Lock className="w-3 h-3 text-emerald-400 shrink-0" />
@@ -415,7 +415,7 @@ export default function Projects() {
 
                   <div className="flex items-center gap-2">
                     <span 
-                      className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold border"
+                      className="px-2 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-semibold border"
                       style={{ 
                         color: activeProject.accentColor, 
                         borderColor: `${activeProject.accentColor}40`,
@@ -459,36 +459,36 @@ export default function Projects() {
                   </div>
 
                   {/* Corner Metric Pill */}
-                  <div className="absolute bottom-3 right-3 pointer-events-none">
-                    <span className="px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-[11px] font-mono text-cyan-300 shadow-lg">
+                  <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 pointer-events-none">
+                    <span className="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-[9px] sm:text-[11px] font-mono text-cyan-300 shadow-lg">
                       {activeProject.highlightMetric}
                     </span>
                   </div>
                 </div>
 
                 {/* Card Content & Action Bar */}
-                <div className="p-5 sm:p-6 flex flex-col justify-between gap-4">
+                <div className="p-3 sm:p-6 flex flex-col justify-between gap-2.5 sm:gap-4">
                   <div>
-                    <div className="flex items-center justify-between gap-2 mb-1.5">
-                      <h3 className="text-xl sm:text-2xl font-display font-bold text-white">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <h3 className="text-sm sm:text-2xl font-display font-bold text-white truncate">
                         {activeProject.title}
                       </h3>
-                      <span className="text-xs font-mono text-white/75 uppercase">
+                      <span className="text-[9px] sm:text-xs font-mono text-white/75 uppercase shrink-0">
                         {activeProject.category}
                       </span>
                     </div>
 
-                    <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed line-clamp-2">
+                    <p className="text-[10px] sm:text-sm text-white/70 font-light leading-snug sm:leading-relaxed line-clamp-2">
                       {activeProject.description}
                     </p>
 
                     {/* Quick Metric Points */}
                     {activeProject.caseStudy?.metrics && (
-                      <div className="grid grid-cols-3 gap-2 mt-3 pt-2.5 border-t border-white/10">
+                      <div className="grid grid-cols-3 gap-1 sm:gap-2 mt-2 sm:mt-3 pt-1.5 sm:pt-2.5 border-t border-white/10">
                         {activeProject.caseStudy.metrics.map((m, mIdx) => (
                           <div key={mIdx} className="flex flex-col text-left">
-                            <span className="text-[9px] font-mono text-white/50 uppercase tracking-wider truncate">{m.label}</span>
-                            <span className="text-xs font-mono font-bold truncate" style={{ color: activeProject.accentColor }}>
+                            <span className="text-[8px] sm:text-[9px] font-mono text-white/50 uppercase tracking-wider truncate">{m.label}</span>
+                            <span className="text-[10px] sm:text-xs font-mono font-bold truncate" style={{ color: activeProject.accentColor }}>
                               {m.val}
                             </span>
                           </div>
@@ -498,8 +498,8 @@ export default function Projects() {
                   </div>
 
                   {/* Tech Stack Pills & CTA */}
-                  <div className="pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex flex-wrap items-center gap-1.5">
+                  <div className="pt-2 sm:pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+                    <div className="hidden md:flex flex-wrap items-center gap-1.5">
                       {activeProject.tech.map((t, i) => (
                         <span
                           key={i}
@@ -510,13 +510,14 @@ export default function Projects() {
                       ))}
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto justify-end">
                       <button
                         onClick={() => setModalProject(activeProject)}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-mono font-bold bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all duration-300 shadow-md cursor-pointer hover:scale-105"
+                        className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-[10px] sm:text-xs font-mono font-bold bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all duration-300 shadow-md cursor-pointer hover:scale-105"
                       >
-                        <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                        <span>Case Study & Specs</span>
+                        <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-cyan-400" />
+                        <span className="hidden sm:inline">Case Study & Specs</span>
+                        <span className="sm:hidden">Specs</span>
                       </button>
 
                       {activeProject.url && activeProject.url !== '#' && (
@@ -524,11 +525,11 @@ export default function Projects() {
                           href={activeProject.url}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-mono font-bold text-black transition-all duration-300 shadow-md cursor-pointer hover:scale-105"
+                          className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-[10px] sm:text-xs font-mono font-bold text-black transition-all duration-300 shadow-md cursor-pointer hover:scale-105"
                           style={{ backgroundColor: activeProject.accentColor }}
                         >
-                          <ExternalLink className="w-3.5 h-3.5" />
-                          <span>Visit Site</span>
+                          <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                          <span>Visit</span>
                         </a>
                       )}
                     </div>
