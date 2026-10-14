@@ -623,38 +623,31 @@ export default function CyberCoreCanvas() {
     };
 
     const onPointerMove = (e) => {
+      if (!stateRef.current.pointer.isDown) return;
       const isTouchEvent = !!e.touches;
       const clientX = e.clientX ?? (e.touches && e.touches[0]?.clientX);
       const clientY = e.clientY ?? (e.touches && e.touches[0]?.clientY);
       if (clientX === undefined) return;
 
-      const rect = container.getBoundingClientRect();
-      const normX = ((clientX - rect.left) / rect.width) * 2 - 1;
-      const normY = -(((clientY - rect.top) / rect.height) * 2 - 1);
-      stateRef.current.pointer.x = normX;
-      stateRef.current.pointer.y = normY;
+      const deltaX = clientX - stateRef.current.pointer.prevX;
+      const deltaY = clientY - stateRef.current.pointer.prevY;
+      stateRef.current.pointer.prevX = clientX;
+      stateRef.current.pointer.prevY = clientY;
 
-      if (stateRef.current.pointer.isDown) {
-        const deltaX = clientX - stateRef.current.pointer.prevX;
-        const deltaY = clientY - stateRef.current.pointer.prevY;
-        stateRef.current.pointer.prevX = clientX;
-        stateRef.current.pointer.prevY = clientY;
-
-        if (isTouchEvent) {
-          // On mobile touch: only rotate if user is explicitly dragging horizontally
-          const totalDx = Math.abs(clientX - touchStartClientX);
-          const totalDy = Math.abs(clientY - touchStartClientY);
-          if (totalDx > totalDy + 8) {
-            isHorizontalGesture = true;
-          }
-          if (isHorizontalGesture) {
-            stateRef.current.targetRotation.y += deltaX * 0.008;
-          }
-        } else {
-          // Desktop mouse drag: full freedom
-          stateRef.current.targetRotation.y += deltaX * 0.008;
-          stateRef.current.targetRotation.x += deltaY * 0.008;
+      if (isTouchEvent) {
+        // On mobile touch: only rotate if user is explicitly dragging horizontally
+        const totalDx = Math.abs(clientX - touchStartClientX);
+        const totalDy = Math.abs(clientY - touchStartClientY);
+        if (totalDx > totalDy + 8) {
+          isHorizontalGesture = true;
         }
+        if (isHorizontalGesture) {
+          stateRef.current.targetRotation.y += deltaX * 0.008;
+        }
+      } else {
+        // Desktop mouse drag: full freedom
+        stateRef.current.targetRotation.y += deltaX * 0.008;
+        stateRef.current.targetRotation.x += deltaY * 0.008;
       }
     };
 
@@ -708,18 +701,14 @@ export default function CyberCoreCanvas() {
         lastTelemetryUpdate = currentTime;
       }
 
-      // Parallax and Rotation Interpolation (Smooth Damping)
+      // Smooth Rotation Damping (Independent of cursor movement)
       if (stateRef.current.autoRotate && !stateRef.current.pointer.isDown) {
         stateRef.current.targetRotation.y += delta * 0.45;
-        stateRef.current.targetRotation.x = 0.2 + Math.sin(elapsedTime * 0.6) * 0.15;
+        stateRef.current.targetRotation.x = 0.15 + Math.sin(elapsedTime * 0.6) * 0.08;
       }
 
-      // Cursor magnetic influence
-      const mouseInfluenceX = stateRef.current.pointer.y * 0.4;
-      const mouseInfluenceY = stateRef.current.pointer.x * 0.4;
-
-      stateRef.current.currentRotation.x += (stateRef.current.targetRotation.x + mouseInfluenceX - stateRef.current.currentRotation.x) * 0.08;
-      stateRef.current.currentRotation.y += (stateRef.current.targetRotation.y + mouseInfluenceY - stateRef.current.currentRotation.y) * 0.08;
+      stateRef.current.currentRotation.x += (stateRef.current.targetRotation.x - stateRef.current.currentRotation.x) * 0.08;
+      stateRef.current.currentRotation.y += (stateRef.current.targetRotation.y - stateRef.current.currentRotation.y) * 0.08;
 
       mainGroup.rotation.x = stateRef.current.currentRotation.x;
       mainGroup.rotation.y = stateRef.current.currentRotation.y;
@@ -854,7 +843,7 @@ export default function CyberCoreCanvas() {
         <div 
           ref={mountRef} 
           className="relative flex-1 w-full min-h-[180px] xs:min-h-[210px] sm:min-h-[260px] flex items-center justify-center cursor-grab active:cursor-grabbing overflow-hidden touch-pan-y"
-          title="Drag to rotate, hover to interact"
+          title="Drag to rotate 3D model"
         >
           {/* Drag Overlay Hint */}
           <AnimatePresence>
@@ -866,7 +855,7 @@ export default function CyberCoreCanvas() {
                 className="absolute bottom-2 left-1/2 -translate-x-1/2 pointer-events-none px-3 py-1 rounded-full bg-black/60 border border-white/10 backdrop-blur-md text-[10px] font-mono text-white/80 flex items-center gap-1.5 shadow-sm"
               >
                 <Maximize2 className="w-3 h-3 text-cyan-300" />
-                <span>Drag to Rotate • Parallax Active</span>
+                <span>Drag to Rotate • 3D Interactive</span>
               </motion.div>
             )}
           </AnimatePresence>
