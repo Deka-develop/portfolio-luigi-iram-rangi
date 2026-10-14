@@ -177,10 +177,10 @@ const About = () => {
                     className="flex flex-col gap-1.5"
                   >
                     {[
-                      'Interactive 3D WebGL & Custom GLSL Shaders',
-                      'Skor 100/100 Core Web Vitals & Sub-0.6s LCP',
-                      'Anyarmart, Buku Dayak & 8 Client Platforms',
-                      '120+ Web Systems & Token Design Architecture'
+                      '3D WebGL & Custom GLSL Shaders',
+                      '100/100 Core Vitals (< 0.6s LCP)',
+                      '8 Live Client Production Platforms',
+                      '120+ Web Systems Architecture'
                     ].map((pt, pIdx) => (
                       <motion.div 
                         key={pIdx} 
@@ -192,7 +192,7 @@ const About = () => {
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-60" />
                           <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan-300 shadow-[0_0_8px_#22d3ee]" />
                         </span>
-                        <span className="truncate group-hover/item:text-white transition-colors">{pt}</span>
+                        <span className="truncate group-hover/item:text-white transition-colors font-medium">{pt}</span>
                       </motion.div>
                     ))}
                   </motion.div>
@@ -228,10 +228,10 @@ const About = () => {
                     className="flex flex-col gap-1.5"
                   >
                     {[
-                      'Platform Pemantauan Lingkungan Pulau Borneo',
-                      '2,800+ Penerima Manfaat Program Digital',
-                      'Jembatan Riset & Kemitraan Konservasi Global',
-                      '100% Mobile Ready & Resisten Koneksi Pelosok'
+                      'Platform Konservasi & Riset Borneo',
+                      '2,800+ Penerima Manfaat Digital',
+                      'Kemitraan Konservasi Global',
+                      '100% Mobile Ready & Resisten Pelosok'
                     ].map((pt, pIdx) => (
                       <motion.div 
                         key={pIdx} 
@@ -243,7 +243,7 @@ const About = () => {
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
                           <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-300 shadow-[0_0_8px_#34d399]" />
                         </span>
-                        <span className="truncate group-hover/item:text-white transition-colors">{pt}</span>
+                        <span className="truncate group-hover/item:text-white transition-colors font-medium">{pt}</span>
                       </motion.div>
                     ))}
                   </motion.div>
