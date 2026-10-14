@@ -27,6 +27,7 @@ export default function Contact() {
   // Quick form state
   const [formState, setFormState] = useState({ name: '', contact: '', message: '' });
   const [isSent, setIsSent] = useState(false);
+  const [sendResult, setSendResult] = useState({ type: 'direct', message: '', urls: null });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Live WIB / UTC+7 West Borneo Clock
@@ -57,11 +58,24 @@ export default function Contact() {
     setTimeout(() => setCopied(false), 2200);
   };
 
+  // Helper to construct mail compose URLs (both mailto and web Gmail)
+  const getMailUrls = (name, contact, message) => {
+    const subject = encodeURIComponent(`[Portofolio] Pesan Proyek dari ${name}`);
+    const body = encodeURIComponent(
+      `Halo Luigi,\n\nSaya: ${name}\nKontak: ${contact || 'N/A'}\n\nPesan Proyek:\n${message}\n\n--\nDikirim via Portfolio Terminal`
+    );
+    return {
+      mailto: `mailto:iramrangi@gmail.com?subject=${subject}&body=${body}`,
+      gmail: `https://mail.google.com/mail/?view=cm&fs=1&to=iramrangi@gmail.com&su=${subject}&body=${body}`
+    };
+  };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!formState.name || !formState.message) return;
     
     setIsSubmitting(true);
+    const urls = getMailUrls(formState.name, formState.contact, formState.message);
 
     try {
       const res = await fetch('https://formsubmit.co/ajax/iramrangi@gmail.com', {
@@ -80,20 +94,29 @@ export default function Contact() {
         })
       });
 
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (res.ok && (data.success === 'true' || data.success === true)) {
+        setSendResult({
+          type: 'direct',
+          message: 'Pesan transmisi berhasil terkirim langsung ke inbox iramrangi@gmail.com.'
+        });
+        setIsSent(true);
+      } else if (data.message && data.message.toLowerCase().includes('activation')) {
+        setSendResult({
+          type: 'activation',
+          message: 'FormSubmit memerlukan aktivasi 1x via email masuk di iramrangi@gmail.com. Pesan tetap dapat Anda teruskan langsung lewat Gmail atau aplikasi email sekarang:',
+          urls
+        });
         setIsSent(true);
       } else {
-        // Fallback to mailto if service is awaiting activation or offline
         throw new Error(data.message || 'Auto-relay pending');
       }
     } catch (err) {
-      // Fallback direct mailto so the inquiry is never lost
-      const subject = encodeURIComponent(`Project Inquiry from ${formState.name}`);
-      const body = encodeURIComponent(
-        `Halo Luigi,\n\nSaya: ${formState.name}\nKontak: ${formState.contact || 'N/A'}\n\nPesan Proyek:\n${formState.message}\n\n--\nDikirim via Portfolio Terminal`
-      );
-      window.location.href = `mailto:iramrangi@gmail.com?subject=${subject}&body=${body}`;
+      setSendResult({
+        type: 'fallback',
+        message: 'Pengiriman otomatis dialihkan. Silakan klik tombol di bawah untuk meneruskan pesan via Gmail Web atau aplikasi email:',
+        urls
+      });
       setIsSent(true);
     } finally {
       setIsSubmitting(false);
@@ -313,22 +336,51 @@ export default function Contact() {
               {activeTab === 'message' && (
                 <div>
                   {isSent ? (
-                    <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center flex flex-col items-center justify-center gap-3">
+                    <div className="p-5 sm:p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center flex flex-col items-center justify-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-emerald-400/20 border border-emerald-400/40 flex items-center justify-center">
                         <CheckCircle2 className="w-6 h-6 text-emerald-400" />
                       </div>
-                      <h4 className="text-base font-display font-bold text-white">
-                        Transmisi Terbuka!
-                      </h4>
-                      <p className="text-xs text-white/70 font-mono">
-                        Pesan Anda siap dikirimkan langsung ke <span className="text-cyan-300 font-bold">iramrangi@gmail.com</span>.
-                      </p>
+                      <div>
+                        <h4 className="text-base font-display font-bold text-white mb-1">
+                          {sendResult.type === 'direct'
+                            ? 'Transmisi Berhasil Terkirim! 🚀'
+                            : sendResult.type === 'activation'
+                            ? 'Aktivasi Form Diperlukan'
+                            : 'Transmisi Siap Diteruskan'}
+                        </h4>
+                        <p className="text-xs text-white/70 font-mono max-w-sm mx-auto leading-relaxed">
+                          {sendResult.message}
+                        </p>
+                      </div>
+
+                      {sendResult.urls && (
+                        <div className="flex flex-wrap items-center justify-center gap-2 mt-1">
+                          <a
+                            href={sendResult.urls.gmail}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="px-3.5 py-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-mono font-bold text-xs flex items-center gap-1.5 transition-all shadow-md"
+                          >
+                            <span>Buka di Gmail Web</span>
+                            <ArrowUpRight className="w-3.5 h-3.5" />
+                          </a>
+                          <a
+                            href={sendResult.urls.mailto}
+                            className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-mono text-xs flex items-center gap-1.5 transition-all"
+                          >
+                            <span>Buka Mail Client</span>
+                            <Mail className="w-3.5 h-3.5 text-white/80" />
+                          </a>
+                        </div>
+                      )}
+
                       <button
                         onClick={() => {
                           setIsSent(false);
+                          setSendResult({ type: 'direct', message: '', urls: null });
                           setFormState({ name: '', contact: '', message: '' });
                         }}
-                        className="mt-2 px-4 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-mono text-white transition-all cursor-pointer"
+                        className="mt-1 px-4 py-1.5 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 text-xs font-mono text-white/80 hover:text-white transition-all cursor-pointer"
                       >
                         Kirim Pesan Lain
                       </button>
