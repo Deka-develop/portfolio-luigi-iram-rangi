@@ -177,7 +177,7 @@ export default function IntroductionJourney({ onNavigate }) {
     <article
       id="introduction-story"
       aria-label="Perjalanan Perkenalan dan Filosofi Luigi Iram Rangi"
-      className="relative w-full bg-[#EDEEF0] text-[#111111] overflow-hidden border-t border-[#111111]/15"
+      className="relative w-full bg-transparent text-[#111111] overflow-hidden border-t border-[#111111]/15"
     >
       {/* Background Subtle Ambient Gradients */}
       <div className="absolute top-[10%] left-[-10%] w-[500px] h-[500px] bg-[#684AFF]/5 rounded-full blur-[140px] pointer-events-none" />
@@ -284,7 +284,7 @@ export default function IntroductionJourney({ onNavigate }) {
       </section>
 
       {/* ───────────────── CHAPTER 2: TIGA PILAR DIRI ───────────────── */}
-      <section className="relative w-full px-6 md:px-12 lg:px-20 py-20 md:py-28 border-b border-[#111111]/10 bg-white/40">
+      <section className="relative w-full px-6 md:px-12 lg:px-20 py-20 md:py-28 border-b border-[#111111]/10 bg-white/20 backdrop-blur-[2px]">
         
         {/* Section Header */}
         <motion.div
@@ -480,7 +480,7 @@ export default function IntroductionJourney({ onNavigate }) {
       </section>
 
       {/* ───────────────── CHAPTER 4: PERSONA DI BALIK LAYAR ───────────────── */}
-      <section className="relative w-full px-6 md:px-12 lg:px-20 py-20 md:py-28 border-b border-[#111111]/10 bg-white/50">
+      <section className="relative w-full px-6 md:px-12 lg:px-20 py-20 md:py-28 border-b border-[#111111]/10 bg-white/20 backdrop-blur-[2px]">
         
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">

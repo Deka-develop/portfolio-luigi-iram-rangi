@@ -11,8 +11,10 @@ const MilestonePage = lazy(() => import('./pages/MilestonePage'));
 const SkillsPage = lazy(() => import('./pages/SkillsPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 
-// Scroll-driven animated introduction journey
+// Scroll-driven animated introduction journey & persistent WebGL 3D engine
 const IntroductionJourney = lazy(() => import('./components/IntroductionJourney'));
+const ScrollWebGLCanvas = lazy(() => import('./components/ScrollWebGLCanvas'));
+
 function getRouteFromHash() {
   if (typeof window === 'undefined') return 'home';
   const hash = window.location.hash.toLowerCase().replace(/^#\/?/, '');
@@ -430,6 +432,9 @@ function App() {
 
           {route === 'home' && (
             <div className="relative z-10 w-full flex flex-col">
+              {/* Persistent 120 FPS WebGL 3D Spatial Canvas Layer (Scroll-Driven Choreography) */}
+              <ScrollWebGLCanvas />
+
               {/* Monumental Hero Opening */}
               <Hero
                 onNavigateToProjects={() => navigateTo('karya')}
