@@ -1,0 +1,1 @@
+var e=new URL(`borneo-globe-Bi1n276B.webp`,import.meta.url).href,t=new URL(`anyarmart-vn-JyPng.webp`,import.meta.url).href,n=new URL(`buku-dayak-BXJJGXIp.webp`,import.meta.url).href;export{t as n,e as r,n as t};
