@@ -1,6 +1,9 @@
+import { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, ArrowUpRight, Compass, Sparkles } from 'lucide-react';
 import { DayakShieldEmblem, DayakBorderRibbon, DayakCulturalSeal, DayakCornerAccent } from './DayakMotifs';
+
+const Dayak3DCanvas = lazy(() => import('./Dayak3DCanvas'));
 
 export default function Hero({ setActiveSection }) {
   return (
@@ -36,12 +39,12 @@ export default function Hero({ setActiveSection }) {
         <DayakBorderRibbon className="w-full h-3" color="#141413" opacity={0.25} />
       </motion.div>
 
-      {/* Center Stage: Monumental Headline + Cultural Seal */}
+      {/* Center Stage: Monumental Headline + 3D Three.js Artifact & Bio */}
       <div className="relative z-10 w-full my-auto py-6 md:py-10">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 md:gap-12">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 md:gap-12">
           
           {/* Giant Monumental Name */}
-          <div className="relative flex flex-col">
+          <div className="relative flex flex-col shrink-0">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -59,7 +62,7 @@ export default function Hero({ setActiveSection }) {
                 initial={{ y: '30%', opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.25, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-block text-[17vw] sm:text-[15vw] md:text-[11vw] lg:text-[9.5vw]"
+                className="inline-block text-[17vw] sm:text-[15vw] md:text-[11vw] lg:text-[8.5vw] xl:text-[9.5vw]"
               >
                 LUIGI
               </motion.span>
@@ -67,7 +70,7 @@ export default function Hero({ setActiveSection }) {
                 initial={{ y: '30%', opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.35, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-block text-[17vw] sm:text-[15vw] md:text-[11vw] lg:text-[9.5vw]"
+                className="inline-block text-[17vw] sm:text-[15vw] md:text-[11vw] lg:text-[8.5vw] xl:text-[9.5vw]"
               >
                 IRAM
               </motion.span>
@@ -75,37 +78,46 @@ export default function Hero({ setActiveSection }) {
                 initial={{ y: '30%', opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.45, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-block text-[17vw] sm:text-[15vw] md:text-[11vw] lg:text-[9.5vw]"
+                className="inline-block text-[17vw] sm:text-[15vw] md:text-[11vw] lg:text-[8.5vw] xl:text-[9.5vw]"
               >
                 RANGI
               </motion.span>
             </h1>
           </div>
 
-          {/* Right Column: Cultural Seal + Manifesto Paragraph */}
+          {/* Right Column: Three.js 3D Artifact + Manifesto Paragraph */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
-            className="flex flex-col items-start lg:items-end justify-between gap-6 max-w-xl"
+            className="flex flex-col items-start lg:items-end justify-between gap-6 w-full lg:max-w-lg xl:max-w-xl"
           >
-            {/* Rotating Cultural Seal */}
-            <div className="flex items-center gap-4">
-              <DayakCulturalSeal className="w-20 h-20 md:w-28 md:h-28" animated={true} />
-              <div className="flex flex-col text-left font-mono text-[9px] md:text-[10px] uppercase tracking-wider text-ink/70">
-                <span className="font-bold text-ink">Dayak Heritage</span>
-                <span>Contemporary Web</span>
-                <span className="text-ochre">Kinerja Tinggi</span>
-              </div>
+            {/* Live Three.js 3D Viewport Component */}
+            <div className="w-full">
+              <Suspense
+                fallback={
+                  <div className="w-full h-64 sm:h-72 md:h-80 bg-paper-dark border-2 border-ink shadow-[5px_5px_0_#D97706] flex flex-col items-center justify-center p-6 text-center">
+                    <DayakShieldEmblem className="w-8 h-8 text-ochre animate-pulse mb-3" color="#D97706" />
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-ink/70">
+                      Memuat Mesin WebGL 3D…
+                    </span>
+                  </div>
+                }
+              >
+                <Dayak3DCanvas className="w-full" />
+              </Suspense>
             </div>
 
-            {/* Editorial Bio Statement */}
-            <p className="font-sans text-sm sm:text-base md:text-[17px] leading-[1.5] text-ink/80 text-left lg:text-right font-normal">
-              Merajut akar budaya <strong className="text-ink font-semibold">Dayak & Borneo</strong> dengan arsitektur web modern, visual 3D interaktif, serta sistem digital berkinerja tinggi. Membangun teknologi yang cepat, kokoh, dan bermakna bagi komunitas.
-            </p>
+            {/* Editorial Bio Statement & Seal */}
+            <div className="flex flex-col sm:flex-row lg:flex-row-reverse items-start sm:items-center gap-4">
+              <DayakCulturalSeal className="w-16 h-16 md:w-20 md:h-20 shrink-0" animated={true} />
+              <p className="font-sans text-xs sm:text-sm md:text-[15px] leading-[1.5] text-ink/80 text-left lg:text-right font-normal">
+                Merajut akar budaya <strong className="text-ink font-semibold">Dayak & Borneo</strong> dengan arsitektur web modern, visual 3D interaktif Three.js, serta sistem digital berkinerja tinggi.
+              </p>
+            </div>
 
             {/* Direct Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-3 pt-1">
               <button
                 onClick={() => setActiveSection(2)}
                 className="group relative inline-flex items-center gap-2 px-5 py-3 bg-ink text-paper font-sans text-xs md:text-sm font-bold uppercase tracking-wider border-2 border-ink shadow-[4px_4px_0_#D97706] hover:shadow-[2px_2px_0_#D97706] hover:translate-x-[2px] hover:translate-y-[2px] transition-all cursor-pointer"
