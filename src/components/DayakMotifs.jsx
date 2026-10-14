@@ -4,35 +4,27 @@
  * Authentic cultural computing: geometric precision inspired by Dayak woodcarving, shields & weaving.
  */
 
-// Modern Geometric Dayak Shield Emblem
-export function DayakShieldEmblem({ className = "w-8 h-8", color = "currentColor" }) {
+// Minimalist Geometric Monogram Logo (Zero AI Cliché)
+export function DayakShieldEmblem({ className = "w-8 h-8" }) {
   return (
     <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-      {/* Outer Hexagonal Shield Contour */}
-      <polygon
-        points="24,2 44,12 44,36 24,46 4,36 4,12"
-        stroke={color}
-        strokeWidth="1.75"
-        strokeLinejoin="round"
-      />
-      {/* Inner Concentric Diamond */}
-      <polygon
-        points="24,8 38,24 24,40 10,24"
-        stroke={color}
-        strokeWidth="1.25"
-        strokeDasharray="2 2"
-        opacity="0.8"
-      />
-      {/* Center 8-pointed Borneo Star Core */}
+      {/* Clean Obsidian Rounded Squircle */}
+      <rect width="48" height="48" rx="12" fill="#111111" />
+      
+      {/* Minimalist Geometric "L" */}
       <path
-        d="M24 14 L26.5 21.5 L34 24 L26.5 26.5 L24 34 L21.5 26.5 L14 24 L21.5 21.5 Z"
-        fill={color}
+        d="M 12 12 L 17 12 L 17 31.5 L 25.5 31.5 L 25.5 36 L 12 36 Z"
+        fill="#EDEEF0"
       />
-      {/* Subtle Cardinal Dots */}
-      <circle cx="24" cy="5" r="1.25" fill={color} />
-      <circle cx="41" cy="24" r="1.25" fill={color} />
-      <circle cx="24" cy="43" r="1.25" fill={color} />
-      <circle cx="7" cy="24" r="1.25" fill={color} />
+
+      {/* Minimalist Modern "R" */}
+      <path
+        d="M 24 12 L 32.5 12 C 36 12 38 14.1 38 17.2 C 38 19.8 36.2 21.8 33.5 22.3 L 38.5 36 L 33 36 L 28.8 24 L 24 24 L 24 36 L 19.5 36 L 19.5 12 L 24 12 Z M 24 16 L 24 20.2 L 32 20.2 C 33.2 20.2 34 19.3 34 18.1 C 34 16.9 33.2 16 32 16 Z"
+        fill="#EDEEF0"
+      />
+
+      {/* Electric Violet Accent Dot */}
+      <circle cx="37.5" cy="10.5" r="2.8" fill="#684AFF" />
     </svg>
   );
 }

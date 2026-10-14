@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, ExternalLink, Sparkles, Lock, X, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
-import { DayakShieldEmblem, DayakBorderRibbon, DayakCornerAccent } from './DayakMotifs';
+import { ArrowUpRight, ExternalLink, Sparkles, Layers, ShieldCheck, Zap, Globe, Lock, X, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { DayakShieldEmblem } from './DayakMotifs';
 
 import borneoGlobeImg from '../assets/projects/borneo-globe.webp';
 import anyarmartImg from '../assets/projects/anyarmart.webp';
@@ -262,14 +262,13 @@ export default function Projects() {
   const touchStartX = useRef(0);
   const tabsContainerRef = useRef(null);
 
-  // Auto-scroll active chip into view on mobile
+  // Auto-scroll active pill into view on mobile
   useEffect(() => {
-    const rail = tabsContainerRef.current;
-    if (!rail) return;
-    const activeBtn = rail.children[activeIdx];
-    if (activeBtn) {
-      const target = activeBtn.offsetLeft - rail.clientWidth / 2 + activeBtn.clientWidth / 2;
-      rail.scrollTo({ left: target, behavior: 'smooth' });
+    if (tabsContainerRef.current) {
+      const activeBtn = tabsContainerRef.current.children[activeIdx];
+      if (activeBtn) {
+        activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
     }
   }, [activeIdx]);
 
@@ -286,7 +285,7 @@ export default function Projects() {
     }
   };
 
-  // Press ESC to close modal & lock page scroll while open
+  // Press ESC to close modal
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') setModalProject(null);
@@ -295,316 +294,410 @@ export default function Projects() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = modalProject ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [modalProject]);
-
-  const goPrev = () => setActiveIdx((prev) => (prev > 0 ? prev - 1 : projects.length - 1));
-  const goNext = () => setActiveIdx((prev) => (prev < projects.length - 1 ? prev + 1 : 0));
-
   return (
-    <section className="relative w-full bg-paper text-ink px-5 md:px-12 lg:px-20 pt-28 md:pt-36 pb-24 md:pb-32 select-none border-b border-ink/15">
+    <section className="w-full h-full min-h-screen bg-[#0b0c10] text-white pt-24 md:pt-32 pb-16 px-4 sm:px-8 lg:px-16 flex flex-col justify-center relative overflow-hidden select-none border-y border-white/10">
+      
+      {/* Background Dynamic Atmospheric Glow */}
+      <div 
+        className={`absolute -right-20 top-1/3 w-[500px] h-[500px] bg-gradient-to-br ${activeProject.glow} rounded-full blur-[140px] pointer-events-none transition-all duration-700`}
+      />
 
-      {/* Section tag */}
-      <div className="flex flex-col gap-2 mb-8 md:mb-12">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <DayakShieldEmblem className="w-3.5 h-3.5 text-ochre" color="#D97706" />
-            <span className="font-mono text-[11px] uppercase tracking-[0.25em] font-bold">01 / Karya Terpilih</span>
+      <div className="max-w-7xl mx-auto px-3 sm:px-10 lg:px-16 w-full relative z-10 flex flex-col justify-between">
+        
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 md:mb-8 pb-4 border-b border-white/10">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 mb-2">
+              <DayakShieldEmblem className="w-3.5 h-3.5 text-[#38bdf8]" color="#38bdf8" />
+              <span className="text-white/80 text-[11px] font-mono font-semibold tracking-widest uppercase">
+                Koleksi Sistem Produksi
+              </span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-sans font-black text-white tracking-tight">
+              Karya Unggulan &amp; Solusi Produksi<span className="text-[#684AFF]">.</span>
+            </h2>
           </div>
-          <div className="flex-1 h-[1px] bg-ink/20" />
-          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-ink/60 hidden sm:inline">Ddev Studio • West Borneo</span>
-        </div>
-        <DayakBorderRibbon className="w-full h-2.5" color="#141413" opacity={0.2} />
-      </div>
 
-      {/* Giant heading */}
-      <div className="flex items-start gap-3 mb-10 md:mb-14">
-        <h2 className="font-sans font-black uppercase tracking-tighter leading-[0.86] text-[15vw] md:text-[9.5vw] lg:text-[8.5vw]">
-          Selected<br />Works
-        </h2>
-        <span className="mt-2 md:mt-4 px-2.5 py-1 bg-ochre text-white border-2 border-ink font-mono text-xs md:text-sm font-bold">
-          {String(projects.length).padStart(2, '0')}
-        </span>
-      </div>
-
-      {/* Mobile: chip rail + stepper */}
-      <div className="flex lg:hidden flex-col gap-3 mb-5 w-full">
-        <div
-          ref={tabsContainerRef}
-          className="relative flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar select-none"
-        >
-          {projects.map((project, idx) => {
-            const isSelected = activeIdx === idx;
-            return (
-              <button
-                key={project.id}
-                onClick={() => setActiveIdx(idx)}
-                className={`shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-full border-2 border-ink text-xs font-bold uppercase tracking-wide transition-colors cursor-pointer ${
-                  isSelected ? 'bg-ink text-paper' : 'bg-paper text-ink'
-                }`}
-              >
-                <span className={`font-mono text-[10px] ${isSelected ? 'text-ochre' : 'text-ink/50'}`}>{project.num}</span>
-                <span className="whitespace-nowrap">{project.title}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="flex items-center justify-between border-2 border-ink px-3 py-2 bg-paper-dark">
-          <div className="flex items-center gap-2 min-w-0 font-mono text-xs">
-            <span className="font-bold tracking-wider">
-              {activeProject.num} / {String(projects.length).padStart(2, '0')}
-            </span>
-            <span className="text-ink/30">•</span>
-            <span className="font-medium truncate max-w-[180px]">{activeProject.title}</span>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              onClick={goPrev}
-              className="w-9 h-9 border-2 border-ink flex items-center justify-center hover:bg-ink hover:text-paper active:scale-95 transition-all cursor-pointer"
-              aria-label="Proyek sebelumnya"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              onClick={goNext}
-              className="w-9 h-9 border-2 border-ink flex items-center justify-center hover:bg-ink hover:text-paper active:scale-95 transition-all cursor-pointer"
-              aria-label="Proyek berikutnya"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
+          <div className="flex items-center gap-3 text-xs font-mono text-white/75">
+            <span>DDEV STUDIO</span>
+            <span>•</span>
+            <span className="text-emerald-400">8 SISTEM PRODUKSI</span>
           </div>
         </div>
-      </div>
 
-      {/* Main layout: index list (desktop) + preview card */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start w-full">
-
-        {/* Desktop index list */}
-        <ol className="hidden lg:flex lg:col-span-5 flex-col border-t-2 border-ink">
-          {projects.map((project, idx) => {
-            const isSelected = activeIdx === idx;
-            return (
-              <li key={project.id}>
+        {/* Mobile Horizontal Carousel Tabs (Pills) */}
+        <div className="flex lg:hidden flex-col gap-2.5 mb-4 w-full">
+          {/* Scrollable pill chips with auto-centering */}
+          <div 
+            ref={tabsContainerRef}
+            className="flex items-center gap-2 overflow-x-auto pb-1.5 pt-0.5 px-0.5 custom-scrollbar select-none"
+          >
+            {projects.map((project, idx) => {
+              const isSelected = activeIdx === idx;
+              return (
                 <button
-                  onMouseEnter={() => setActiveIdx(idx)}
-                  onFocus={() => setActiveIdx(idx)}
-                  onClick={() => setModalProject(project)}
-                  className={`group w-full text-left flex items-center gap-4 px-3 py-4 border-b-2 border-ink transition-all duration-300 cursor-pointer ${
-                    isSelected ? 'bg-ink text-paper pl-6' : 'hover:pl-5'
+                  key={project.id}
+                  onClick={() => setActiveIdx(idx)}
+                  className={`group shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-bold border transition-all cursor-pointer ${
+                    isSelected
+                      ? 'bg-white/15 text-white shadow-[0_0_15px_rgba(0,240,255,0.25)]'
+                      : 'bg-white/[0.03] text-white/70 hover:text-white border-white/10 hover:border-white/25'
                   }`}
+                  style={{
+                    borderColor: isSelected ? project.accentColor : undefined,
+                    boxShadow: isSelected ? `0 0 16px ${project.accentColor}40` : undefined
+                  }}
                 >
-                  <span className={`font-mono text-xs font-bold w-6 shrink-0 ${isSelected ? 'text-ochre' : 'text-ink/50'}`}>
+                  <span 
+                    className="text-[11px] font-mono font-black"
+                    style={{ color: isSelected ? project.accentColor : 'rgba(255,255,255,0.5)' }}
+                  >
                     {project.num}
                   </span>
-                  <span className="flex-1 min-w-0">
-                    <span className="block font-sans font-black uppercase tracking-tight text-2xl xl:text-[28px] leading-none truncate">
-                      {project.title}
-                    </span>
-                    <span className={`block font-mono text-[10px] uppercase tracking-[0.15em] mt-1.5 truncate ${isSelected ? 'text-paper/60' : 'text-ink/50'}`}>
-                      {project.role}
-                    </span>
-                  </span>
-                  <span
-                    className={`w-9 h-9 shrink-0 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
-                      isSelected ? 'bg-ochre border-ochre text-white rotate-0' : 'border-ink/30 text-ink/60 -rotate-45 group-hover:rotate-0'
-                    }`}
-                  >
-                    <ArrowUpRight className="w-4 h-4" />
+                  <span className="whitespace-nowrap font-display font-medium text-xs">
+                    {project.title}
                   </span>
                 </button>
-              </li>
-            );
-          })}
-        </ol>
+              );
+            })}
+          </div>
 
-        {/* Preview card */}
-        <div
-          className="w-full lg:col-span-7 relative lg:sticky lg:top-24"
-          onTouchStart={handleCardTouchStart}
-          onTouchEnd={handleCardTouchEnd}
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeProject.id}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="relative bg-paper border-2 border-ink shadow-[7px_7px_0_#111] md:shadow-[10px_10px_0_#111] flex flex-col"
-            >
-              {/* Window chrome */}
-              <div className="px-3 sm:px-4 py-2 bg-paper border-b-2 border-ink flex items-center justify-between gap-3 font-mono text-[10px] sm:text-xs">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="flex items-center gap-1.5 shrink-0">
-                    <span className="w-2.5 h-2.5 rounded-full border-2 border-ink" />
-                    <span className="w-2.5 h-2.5 rounded-full border-2 border-ink" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-ink" />
-                  </div>
-                  <span className="hidden sm:flex items-center gap-1.5 px-3 py-0.5 border border-ink/40 text-[11px] text-ink/70 min-w-0">
-                    <Lock className="w-3 h-3 shrink-0" />
-                    <span className="truncate max-w-[220px]">
-                      {activeProject.url !== '#' ? activeProject.url.replace(/^https?:\/\//, '') : `${activeProject.id}.ddev.studio`}
-                    </span>
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <span className="px-2 py-0.5 bg-ochre text-white border border-ink text-[9px] sm:text-[10px] font-bold uppercase tracking-wider truncate max-w-[130px] sm:max-w-none">
-                    {activeProject.status}
-                  </span>
-                  <span className="text-ink/60 hidden sm:inline">{activeProject.year}</span>
-                </div>
-              </div>
+          {/* Quick Stepper Bar: 04 / 08 + Prev/Next Buttons */}
+          <div className="flex items-center justify-between py-1.5 px-3 text-xs font-mono bg-white/[0.02] border border-white/5 rounded-xl">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="font-bold tracking-wider" style={{ color: activeProject.accentColor }}>
+                {activeProject.num} / {String(projects.length).padStart(2, '0')}
+              </span>
+              <span className="text-white/30">•</span>
+              <span className="text-white/80 font-medium truncate max-w-[190px]">
+                {activeProject.title}
+              </span>
+            </div>
 
-              {/* Screenshot (opens case study) */}
-              <div
-                onClick={() => setModalProject(activeProject)}
-                className="relative w-full aspect-[16/9] overflow-hidden bg-ink/5 group cursor-pointer border-b-2 border-ink"
-                title="Klik untuk melihat Case Study & Spesifikasi Lengkap"
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button
+                onClick={() => setActiveIdx((prev) => (prev > 0 ? prev - 1 : projects.length - 1))}
+                className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all cursor-pointer active:scale-95"
+                aria-label="Proyek sebelumnya"
+                title="Previous Project"
               >
-                <img
-                  src={activeProject.image}
-                  alt={activeProject.title}
-                  width="800"
-                  height="450"
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-                <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/55 transition-colors duration-300 flex items-center justify-center">
-                  <span className="opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 px-4 py-2 bg-ochre text-white border-2 border-ink font-mono text-xs font-bold uppercase tracking-wider">
-                    Open Case Study ↗
-                  </span>
-                </div>
-                <span className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 px-2.5 py-1 bg-paper border-2 border-ink font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wide">
-                  {activeProject.highlightMetric}
-                </span>
-              </div>
-
-              {/* Content */}
-              <div className="p-4 sm:p-6 flex flex-col gap-4">
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <span className="font-mono text-[11px] uppercase tracking-[0.2em] font-bold text-ochre">
-                      {activeProject.category}
-                    </span>
-                    <span className="font-mono text-[10px] text-ink/50 sm:hidden">{activeProject.year}</span>
-                  </div>
-                  <h3 className="font-sans font-black uppercase tracking-tighter text-3xl sm:text-4xl leading-[0.95] break-words">
-                    {activeProject.title}
-                  </h3>
-                  <p className="font-sans text-sm font-semibold text-ink/70 mt-1.5">{activeProject.subtitle}</p>
-                </div>
-
-                <p className="font-sans text-sm text-[#333] leading-relaxed line-clamp-3">
-                  {activeProject.description}
-                </p>
-
-                {activeProject.caseStudy?.metrics && (
-                  <div className="grid grid-cols-3 border-2 border-ink">
-                    {activeProject.caseStudy.metrics.map((m, mIdx) => (
-                      <div
-                        key={mIdx}
-                        className={`px-2.5 py-2.5 min-w-0 ${mIdx !== 2 ? 'border-r-2 border-ink' : ''}`}
-                      >
-                        <span className="block font-mono text-[9px] sm:text-[10px] uppercase tracking-wider text-ink/50 truncate">{m.label}</span>
-                        <span className="block font-sans font-black text-sm sm:text-base truncate mt-0.5">{m.val}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div className="flex flex-wrap items-center gap-1.5">
-                  {activeProject.tech.map((t, i) => (
-                    <span
-                      key={i}
-                      className="px-2.5 py-1 rounded-full border border-ink text-[10px] sm:text-[11px] font-mono uppercase tracking-wide"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex items-center gap-3 pt-1">
-                  <button
-                    onClick={() => setModalProject(activeProject)}
-                    className="group relative flex-1 sm:flex-initial cursor-pointer"
-                  >
-                    <div className="absolute inset-0 bg-ink translate-x-1 translate-y-1 transition-transform duration-200 group-hover:translate-x-0 group-hover:translate-y-0" />
-                    <div className="relative px-4 py-3 bg-paper border-2 border-ink flex items-center justify-center gap-2 transition-transform duration-200 group-hover:translate-x-1 group-hover:translate-y-1">
-                      <Sparkles className="w-3.5 h-3.5 text-ochre" />
-                      <span className="font-sans font-black text-[11px] sm:text-xs uppercase tracking-widest whitespace-nowrap">Case Study</span>
-                    </div>
-                  </button>
-
-                  {activeProject.url && activeProject.url !== '#' && (
-                    <a
-                      href={activeProject.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="group relative shrink-0"
-                    >
-                      <div className="absolute inset-0 bg-ink translate-x-1 translate-y-1 transition-transform duration-200 group-hover:translate-x-0 group-hover:translate-y-0" />
-                      <div className="relative px-4 py-3 bg-ochre text-white border-2 border-ink flex items-center justify-center gap-2 transition-transform duration-200 group-hover:translate-x-1 group-hover:translate-y-1">
-                        <span className="font-sans font-black text-[11px] sm:text-xs uppercase tracking-widest">Visit</span>
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </div>
-                    </a>
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setActiveIdx((prev) => (prev < projects.length - 1 ? prev + 1 : 0))}
+                className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all cursor-pointer active:scale-95"
+                aria-label="Proyek berikutnya"
+                title="Next Project"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
+
+        {/* Main Showcase Layout: 12-Cols on Desktop, Full-Width on Mobile */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-start lg:items-center w-full">
+          
+          {/* Left Column (5 Cols): Desktop Vertical Interactive Project Navigator List */}
+          <div className="hidden lg:flex lg:col-span-5 flex-col gap-2 max-h-[660px] overflow-y-auto pr-1 custom-scrollbar">
+            {projects.map((project, idx) => {
+              const isSelected = activeIdx === idx;
+              return (
+                <div
+                  key={project.id}
+                  onMouseEnter={() => setActiveIdx(idx)}
+                  onClick={() => setActiveIdx(idx)}
+                  className={`group relative p-3 rounded-2xl border transition-all duration-300 cursor-pointer ${
+                    isSelected
+                      ? 'bg-white/[0.08] border-white/30 shadow-[0_10px_30px_rgba(0,0,0,0.6)] backdrop-blur-xl'
+                      : 'bg-white/[0.02] border-white/5 hover:border-white/15 hover:bg-white/[0.04]'
+                  }`}
+                >
+                  {/* Active Highlight Bar */}
+                  {isSelected && (
+                    <motion.div
+                      layoutId="activeProjectBar"
+                      className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full"
+                      style={{ backgroundColor: project.accentColor }}
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
+
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className={`text-xs font-mono font-bold transition-colors shrink-0 ${
+                        isSelected ? 'text-cyan-300' : 'text-white/70'
+                      }`}>
+                        {project.num}
+                      </span>
+                      <div className="min-w-0">
+                        <h3 className={`text-base font-display font-bold leading-tight transition-colors line-clamp-1 break-words ${
+                          isSelected ? 'text-white' : 'text-white/70 group-hover:text-white'
+                        }`}>
+                          {project.title}
+                        </h3>
+                        <p className="text-[11px] font-sans text-white/75 line-clamp-1 mt-0.5">
+                          {project.subtitle}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className={`px-2 py-0.5 rounded text-[9px] font-mono uppercase tracking-wider border ${
+                        project.statusColor === 'emerald'
+                          ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
+                          : project.statusColor === 'cyan'
+                          ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-300'
+                          : project.statusColor === 'blue'
+                          ? 'bg-blue-500/10 border-blue-500/30 text-blue-300'
+                          : project.statusColor === 'purple'
+                          ? 'bg-purple-500/10 border-purple-500/30 text-purple-300'
+                          : project.statusColor === 'amber'
+                          ? 'bg-amber-500/10 border-amber-500/30 text-amber-300'
+                          : project.statusColor === 'rose'
+                          ? 'bg-rose-500/10 border-rose-500/30 text-rose-300'
+                          : project.statusColor === 'gold'
+                          ? 'bg-yellow-500/10 border-yellow-500/30 text-yellow-300'
+                          : 'bg-orange-500/10 border-orange-500/30 text-orange-300'
+                      }`}>
+                        {project.role}
+                      </span>
+
+                      <div className={`w-7 h-7 rounded-lg items-center justify-center flex transition-all ${
+                        isSelected 
+                          ? 'bg-white text-black shadow-md scale-105' 
+                          : 'bg-white/5 text-white/70 group-hover:bg-white/10 group-hover:text-white'
+                      }`}>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Right Column: Full-Width on Mobile, 7-Cols on Desktop */}
+          <div 
+            className="w-full lg:col-span-7 relative"
+            onTouchStart={handleCardTouchStart}
+            onTouchEnd={handleCardTouchEnd}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeProject.id}
+                initial={{ opacity: 0, scale: 0.96, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: -10 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+                className="relative rounded-2xl sm:rounded-3xl bg-neutral-950/90 border border-white/15 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.9)] overflow-hidden flex flex-col justify-between"
+              >
+                {/* Top Subtle Shimmer Border */}
+                <div 
+                  className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" 
+                />
+
+                {/* Sleek Browser Window Chrome */}
+                <div className="px-2 sm:px-4 py-1.5 sm:py-2.5 bg-neutral-900/95 border-b border-white/10 flex items-center justify-between text-[10px] sm:text-xs font-mono">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <div className="flex items-center gap-1 sm:gap-1.5">
+                      <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-red-500/80" />
+                      <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-amber-500/80" />
+                      <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500/80" />
+                    </div>
+                    <div className="ml-1 sm:ml-2 hidden sm:flex items-center gap-1.5 px-3 py-0.5 rounded-lg bg-black/50 border border-white/10 text-[11px] text-white/70">
+                      <Lock className="w-3 h-3 text-emerald-400 shrink-0" />
+                      <span className="truncate max-w-[200px]">
+                        {activeProject.url !== '#' ? activeProject.url.replace(/^https?:\/\//, '') : `${activeProject.id}.ddev.studio`}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <span 
+                      className="px-1.5 sm:px-2.5 py-0.5 rounded-full text-[8px] sm:text-[10px] font-semibold border truncate max-w-[120px] sm:max-w-none"
+                      style={{ 
+                        color: activeProject.accentColor, 
+                        borderColor: `${activeProject.accentColor}40`,
+                        backgroundColor: `${activeProject.accentColor}15`
+                      }}
+                    >
+                      {activeProject.status}
+                    </span>
+                    <span className="text-[10px] text-white/70 hidden sm:inline-block">
+                      {activeProject.year}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Preview Image Stage (Clickable to open Case Study) */}
+                <div 
+                  onClick={() => setModalProject(activeProject)}
+                  className="relative w-full aspect-[16/9] overflow-hidden bg-neutral-900 group cursor-pointer"
+                  title="Klik untuk melihat Case Study & Spesifikasi Lengkap"
+                >
+                  <img
+                    src={activeProject.image}
+                    alt={activeProject.title}
+                    width="800"
+                    height="450"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent pointer-events-none" />
+
+                  {/* Hover Prompt Overlay */}
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                    <span className="px-4 py-2 rounded-xl bg-black/80 border border-white/30 text-xs font-mono text-white flex items-center gap-2 shadow-2xl backdrop-blur-md">
+                      <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>Buka Case Study & Specs</span>
+                    </span>
+                  </div>
+
+                  {/* Corner Metric Pill */}
+                  <div className="absolute bottom-1.5 right-1.5 sm:bottom-3 sm:right-3 pointer-events-none">
+                    <span className="px-1.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-[8px] sm:text-[11px] font-mono text-cyan-300 shadow-lg">
+                      {activeProject.highlightMetric}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Card Content & Action Bar */}
+                <div className="p-4 sm:p-6 flex flex-col justify-between gap-3 sm:gap-4">
+                  <div>
+                    <div className="flex flex-col gap-1 mb-1.5">
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="text-xs font-mono text-cyan-300 uppercase tracking-wider font-semibold">
+                          {activeProject.category}
+                        </span>
+                        <span className="text-[10px] text-white/50 font-mono sm:hidden">
+                          {activeProject.year}
+                        </span>
+                      </div>
+                      <h3 className="text-lg xs:text-xl sm:text-2xl font-display font-black text-white leading-tight break-words">
+                        {activeProject.title}
+                      </h3>
+                      <p className="text-xs font-sans text-cyan-400/90 font-medium sm:hidden">
+                        {activeProject.subtitle}
+                      </p>
+                    </div>
+
+                    <p className="text-xs sm:text-sm text-white/75 font-normal leading-relaxed line-clamp-2 sm:line-clamp-3">
+                      {activeProject.description}
+                    </p>
+
+                    {/* Quick Metric Points */}
+                    {activeProject.caseStudy?.metrics && (
+                      <div className="grid grid-cols-3 gap-2 mt-3 pt-2.5 border-t border-white/10">
+                        {activeProject.caseStudy.metrics.map((m, mIdx) => (
+                          <div key={mIdx} className="flex flex-col text-left min-w-0 bg-white/[0.02] p-2 rounded-xl border border-white/5">
+                            <span className="text-[9px] sm:text-[10px] font-mono text-white/50 uppercase tracking-tight truncate">{m.label}</span>
+                            <span className="text-xs sm:text-sm font-mono font-bold truncate mt-0.5" style={{ color: activeProject.accentColor }}>
+                              {m.val}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Tech Stack Pills & CTA */}
+                  <div className="pt-3 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {activeProject.tech.map((t, i) => (
+                        <span
+                          key={i}
+                          className="px-2.5 py-0.5 rounded-md text-[10px] sm:text-[11px] font-mono bg-white/[0.04] border border-white/10 text-white/80"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="flex items-center gap-2 w-full sm:w-auto">
+                      <button
+                        onClick={() => setModalProject(activeProject)}
+                        className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3 py-2 sm:px-3.5 sm:py-2 rounded-xl text-xs font-mono font-bold bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all duration-300 shadow-md cursor-pointer hover:scale-105 active:scale-95"
+                      >
+                        <Sparkles className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                        <span>Case Study & Specs</span>
+                      </button>
+
+                      {activeProject.url && activeProject.url !== '#' && (
+                        <a
+                          href={activeProject.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2 rounded-xl text-xs font-mono font-bold text-black transition-all duration-300 shadow-md cursor-pointer hover:scale-105 active:scale-95 shrink-0"
+                          style={{ backgroundColor: activeProject.accentColor }}
+                        >
+                          <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                          <span>Visit</span>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+        </div>
+
       </div>
 
-      {/* Deep-Dive Case Study Modal */}
+      {/* Deep-Dive Case Study & Specs Modal */}
       <AnimatePresence>
         {modalProject && (
-          <div className="fixed inset-0 z-[70] flex items-center justify-center p-3 sm:p-6 select-text">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 select-text">
+            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setModalProject(null)}
-              className="absolute inset-0 bg-ink/70 cursor-pointer"
+              className="absolute inset-0 bg-black/85 backdrop-blur-md cursor-pointer"
             />
 
+            {/* Modal Dialog Card */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 40 }}
-              transition={{ type: 'spring', stiffness: 320, damping: 32 }}
-              className="relative w-full max-w-3xl max-h-[90vh] bg-paper border-2 border-ink shadow-[10px_10px_0_#D97706] overflow-hidden flex flex-col z-10"
+              initial={{ opacity: 0, scale: 0.94, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 20 }}
+              transition={{ type: "spring", stiffness: 350, damping: 30 }}
+              className="relative w-full max-w-3xl max-h-[88vh] rounded-3xl bg-[#090a10] border border-white/20 shadow-[0_25px_80px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col z-10"
             >
-              {/* Header */}
-              <div className="px-4 sm:px-6 py-3 bg-ink text-paper flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="font-mono text-[11px] font-bold tracking-widest text-ochre uppercase">
-                    Case Study {modalProject.num}
+              {/* Header Bar */}
+              <div className="px-6 py-4 bg-neutral-900/90 border-b border-white/10 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
+                  <span className="text-xs font-mono font-bold tracking-wider text-white/75 uppercase">
+                    Case Study • {modalProject.num}
                   </span>
-                  <span className="text-paper/30">|</span>
-                  <span className="font-sans font-black uppercase text-sm truncate">{modalProject.title}</span>
+                  <span className="text-white/20">|</span>
+                  <span className="text-xs font-mono font-bold text-white truncate max-w-[200px] sm:max-w-none">
+                    {modalProject.title}
+                  </span>
                 </div>
+
                 <button
                   onClick={() => setModalProject(null)}
-                  className="w-8 h-8 shrink-0 border border-paper/40 flex items-center justify-center hover:bg-ochre hover:text-white hover:border-ochre transition-colors cursor-pointer"
+                  className="p-1.5 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 text-white/70 hover:text-white transition-all cursor-pointer"
                   aria-label="Tutup case study"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
-              {/* Content */}
-              <div className="p-4 sm:p-7 overflow-y-auto space-y-5">
-                <div className="relative w-full aspect-[21/9] overflow-hidden border-2 border-ink bg-ink/5">
+              {/* Scrollable Modal Content */}
+              <div className="p-6 sm:p-7 overflow-y-auto space-y-5">
+                {/* Banner Image Stage */}
+                <div className="relative w-full aspect-[21/9] rounded-2xl overflow-hidden border border-white/10 bg-neutral-900">
                   <img
                     src={modalProject.image}
                     alt={modalProject.title}
@@ -617,58 +710,77 @@ export default function Projects() {
                       e.currentTarget.style.display = 'none';
                     }}
                   />
-                  <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between gap-2">
-                    <span className="px-2 py-1 bg-paper border border-ink font-mono text-[10px] sm:text-xs truncate">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+                    <span className="text-xs font-mono text-white/80">
                       {modalProject.caseStudy?.client}
                     </span>
-                    <span className="px-2.5 py-1 bg-ochre text-white border-2 border-ink font-mono text-[10px] sm:text-xs font-bold uppercase shrink-0">
+                    <span 
+                      className="px-3 py-1 rounded-full text-xs font-mono font-bold text-black shadow-lg"
+                      style={{ backgroundColor: modalProject.accentColor }}
+                    >
                       {modalProject.status}
                     </span>
                   </div>
                 </div>
 
+                {/* Challenge & Solution Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 sm:p-5 border-2 border-ink bg-paper">
-                    <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase block mb-2 text-ink/60">
+                  <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10">
+                    <span className="text-[10px] font-mono font-bold tracking-widest text-red-400 uppercase block mb-1.5">
                       The Challenge
                     </span>
-                    <p className="font-sans text-sm text-[#333] leading-relaxed">{modalProject.caseStudy?.challenge}</p>
+                    <p className="text-xs sm:text-sm text-white/80 font-light leading-relaxed">
+                      {modalProject.caseStudy?.challenge}
+                    </p>
                   </div>
-                  <div className="p-4 sm:p-5 border-2 border-ink bg-paper-dark">
-                    <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase block mb-2 text-ochre">
+
+                  <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10">
+                    <span className="text-[10px] font-mono font-bold tracking-widest text-emerald-400 uppercase block mb-1.5">
                       Engineered Solution
                     </span>
-                    <p className="font-sans text-sm leading-relaxed">{modalProject.caseStudy?.solution}</p>
+                    <p className="text-xs sm:text-sm text-white/80 font-light leading-relaxed">
+                      {modalProject.caseStudy?.solution}
+                    </p>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 border-2 border-ink">
+                {/* 3 Key Metrics Cards */}
+                <div className="grid grid-cols-3 gap-3">
                   {modalProject.caseStudy?.metrics.map((m, mIdx) => (
-                    <div key={mIdx} className={`p-3 sm:p-4 text-center ${mIdx !== 2 ? 'border-r-2 border-ink' : ''}`}>
-                      <span className="block font-sans font-black text-lg sm:text-3xl tracking-tighter">{m.val}</span>
-                      <span className="block font-mono text-[10px] sm:text-xs uppercase tracking-wider text-ink/60 mt-0.5">{m.label}</span>
+                    <div 
+                      key={mIdx}
+                      className="p-3 sm:p-4 rounded-2xl bg-neutral-950/60 border border-white/10 text-center flex flex-col justify-center"
+                    >
+                      <span className="text-lg sm:text-2xl font-display font-black text-white" style={{ color: modalProject.accentColor }}>
+                        {m.val}
+                      </span>
+                      <span className="text-[10px] sm:text-xs font-mono text-white/75 mt-0.5">
+                        {m.label}
+                      </span>
                     </div>
                   ))}
                 </div>
 
+                {/* Deliverables & Tech Chips */}
                 <div>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/60 block mb-2">
-                    Key Deliverables &amp; Technology
+                  <span className="text-[10px] font-mono text-white/70 uppercase tracking-widest block mb-2">
+                    Key Deliverables & Technology
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {modalProject.caseStudy?.deliverables.map((del, dIdx) => (
                       <span
                         key={dIdx}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-ink text-paper text-[11px] font-mono"
+                        className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-mono"
                       >
-                        <CheckCircle2 className="w-3 h-3 text-violet" />
+                        <CheckCircle2 className="w-3 h-3 text-cyan-400" />
                         <span>{del}</span>
                       </span>
                     ))}
                     {modalProject.tech.map((t, tIdx) => (
                       <span
                         key={tIdx}
-                        className="px-3 py-1.5 border border-ink text-[11px] font-mono uppercase tracking-wide"
+                        className="px-3 py-1 rounded-xl bg-white/5 border border-white/10 text-white/70 text-xs font-mono"
                       >
                         {t}
                       </span>
@@ -677,36 +789,40 @@ export default function Projects() {
                 </div>
               </div>
 
-              {/* Footer */}
-              <div className="px-4 sm:px-6 py-3 border-t-2 border-ink flex items-center justify-between gap-3">
-                <span className="font-mono text-[11px] text-ink/60 hidden sm:inline">{modalProject.caseStudy?.location}</span>
-                <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+              {/* Footer Actions */}
+              <div className="px-6 py-4 bg-neutral-900/90 border-t border-white/10 flex items-center justify-between">
+                <span className="text-[11px] font-mono text-white/70">
+                  {modalProject.caseStudy?.location}
+                </span>
+
+                <div className="flex items-center gap-3">
                   <button
                     onClick={() => setModalProject(null)}
-                    className="px-4 py-2.5 border-2 border-ink font-sans font-black text-xs uppercase tracking-widest hover:bg-ink hover:text-paper transition-colors cursor-pointer"
+                    className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-mono text-white transition-all cursor-pointer"
                   >
                     Tutup
                   </button>
+
                   {modalProject.url && modalProject.url !== '#' && (
                     <a
                       href={modalProject.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="group relative"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-mono font-bold text-black transition-all shadow-md hover:scale-105 cursor-pointer"
+                      style={{ backgroundColor: modalProject.accentColor }}
                     >
-                      <div className="absolute inset-0 bg-ink translate-x-1 translate-y-1 transition-transform duration-200 group-hover:translate-x-0 group-hover:translate-y-0" />
-                      <div className="relative px-4 py-2.5 bg-violet border-2 border-ink flex items-center gap-2 transition-transform duration-200 group-hover:translate-x-1 group-hover:translate-y-1">
-                        <span className="font-sans font-black text-xs uppercase tracking-widest whitespace-nowrap">Kunjungi Platform</span>
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </div>
+                      <span>Kunjungi Platform</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                   )}
                 </div>
               </div>
+
             </motion.div>
           </div>
         )}
       </AnimatePresence>
+
     </section>
   );
 }

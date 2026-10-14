@@ -7,16 +7,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        paper: '#F6F5F1',
-        'paper-dark': '#ECEAE3',
+        paper: '#EDEEF0',
+        'paper-dark': '#E2E4E8',
         'paper-light': '#FFFFFF',
-        ink: '#141413',
-        'ink-muted': '#686660',
+        studio: '#EDEEF0',
+        'studio-card': '#FCFCFC',
+        obsidian: '#111111',
+        ink: '#111111',
+        'ink-muted': '#666666',
+        electric: '#684AFF',
         ochre: '#D97706',
         terracotta: '#C2412C',
         emerald: '#0D5C3A',
-        background: '#F6F5F1',
-        foreground: '#141413',
+        background: '#EDEEF0',
+        foreground: '#111111',
       },
       fontFamily: {
         sans: ['Geist', 'Inter', 'system-ui', 'sans-serif'],

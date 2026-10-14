@@ -1,73 +1,27 @@
-import { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
-import { DayakShieldEmblem, DayakBorderRibbon } from './components/DayakMotifs';
+import { DayakShieldEmblem } from './components/DayakMotifs';
 
 import Hero from './components/Hero';
 
 // Code-split below-the-fold sections
-const About = lazy(() => import('./components/About'));
 const Projects = lazy(() => import('./components/Projects'));
+const JourneySection = lazy(() => import('./components/JourneySection'));
 const Skills = lazy(() => import('./components/Skills'));
 const Contact = lazy(() => import('./components/Contact'));
 
 const sectionList = [
-  { id: 'hero', num: '00', name: 'Beranda', Component: Hero },
-  { id: 'work', num: '01', name: 'Karya', Component: Projects },
-  { id: 'about', num: '02', name: 'Akar & Visi', Component: About },
-  { id: 'expertise', num: '03', name: 'Keahlian', Component: Skills },
-  { id: 'contact', num: '04', name: 'Kontak', Component: Contact }
+  { id: 'hero', name: 'Beranda', Component: Hero },
+  { id: 'works', name: 'Karya Terpilih', Component: Projects },
+  { id: 'journey', name: 'Milestone 3D', Component: JourneySection },
+  { id: 'expertise', name: 'Kapabilitas', Component: Skills },
+  { id: 'contact', name: 'Kontak', Component: Contact }
 ];
-
-/* Refined Cultural Editorial Preloader */
-function Preloader({ onDone }) {
-  useEffect(() => {
-    const timer = setTimeout(onDone, 950);
-    return () => clearTimeout(timer);
-  }, [onDone]);
-
-  return (
-    <motion.div
-      initial={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5, ease: 'easeInOut' }}
-      className="fixed inset-0 z-[9999] bg-paper flex flex-col items-center justify-center p-6 pointer-events-auto"
-    >
-      <div className="flex flex-col items-center gap-4 text-center">
-        <motion.div
-          initial={{ scale: 0.8, rotate: -15, opacity: 0 }}
-          animate={{ scale: 1, rotate: 0, opacity: 1 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <DayakShieldEmblem className="w-14 h-14 text-ochre" color="#D97706" />
-        </motion.div>
-
-        <div className="flex flex-col items-center gap-1">
-          <span className="font-sans font-black text-ink text-sm uppercase tracking-[0.3em]">
-            Luigi Iram Rangi
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-ink/60">
-            Ddev Cultural Computing • West Borneo
-          </span>
-        </div>
-
-        <div className="w-36 h-[2px] bg-ink/10 relative overflow-hidden mt-3">
-          <motion.div
-            initial={{ x: '-100%' }}
-            animate={{ x: '100%' }}
-            transition={{ duration: 0.9, ease: 'easeInOut', repeat: Infinity }}
-            className="absolute inset-0 bg-ochre w-full"
-          />
-        </div>
-      </div>
-    </motion.div>
-  );
-}
 
 function App() {
   const [activeSection, setActiveSection] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [timeWIB, setTimeWIB] = useState('');
 
   // Live Pontianak WIB Clock
@@ -84,7 +38,7 @@ function App() {
         });
         setTimeWIB(formatter.format(now));
       } catch {
-        setTimeWIB('19:00:00');
+        setTimeWIB('01:00:00');
       }
     };
     updateTime();
@@ -92,19 +46,19 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Smooth navigation to a section
+  // Smooth scroll to section
   const scrollToSection = (index) => {
     if (index < 0 || index >= sectionList.length) return;
     setActiveSection(index);
     setIsMobileMenuOpen(false);
     const target = document.getElementById(sectionList[index]?.id);
     if (target) {
-      const top = index === 0 ? 0 : target.getBoundingClientRect().top + window.scrollY - 70;
+      const top = index === 0 ? 0 : target.getBoundingClientRect().top + window.scrollY - 80;
       window.scrollTo({ top, behavior: 'smooth' });
     }
   };
 
-  // Section observer for active highlight
+  // Section Observer for Active Nav Link
   useEffect(() => {
     const observers = [];
     sectionList.forEach((sec, index) => {
@@ -116,28 +70,12 @@ function App() {
             if (entry.isIntersecting) setActiveSection(index);
           });
         },
-        { rootMargin: '-40% 0px -40% 0px', threshold: 0 }
+        { rootMargin: '-35% 0px -35% 0px', threshold: 0 }
       );
       obs.observe(el);
       observers.push(obs);
     });
     return () => observers.forEach((o) => o.disconnect());
-  }, []);
-
-  // Preload below-the-fold sections
-  useEffect(() => {
-    const preload = () => {
-      import('./components/Projects');
-      import('./components/About');
-      import('./components/Skills');
-      import('./components/Contact');
-    };
-    if ('requestIdleCallback' in window) {
-      const h = window.requestIdleCallback(preload, { timeout: 3000 });
-      return () => window.cancelIdleCallback?.(h);
-    }
-    const timer = setTimeout(preload, 2000);
-    return () => clearTimeout(timer);
   }, []);
 
   // ESC to close mobile menu
@@ -150,85 +88,74 @@ function App() {
   }, []);
 
   return (
-    <main className="relative w-full bg-paper text-ink overflow-x-clip min-h-screen">
-
-      <AnimatePresence>
-        {isLoading && <Preloader onDone={() => setIsLoading(false)} />}
-      </AnimatePresence>
-
-      {/* ───────── Top Editorial Masthead Header ───────── */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-paper/90 backdrop-blur-md border-b border-ink/10 transition-colors">
-        <div className="w-full px-5 md:px-12 lg:px-20 h-16 md:h-20 flex items-center justify-between">
+    <main className="relative w-full bg-[#EDEEF0] text-[#111111] overflow-x-clip min-h-screen">
+      
+      {/* ───────────────── BESPOKE FLOATING GLASS HEADER ───────────────── */}
+      <header className="fixed top-0 left-0 w-full z-50 bg-[#EDEEF0]/85 backdrop-blur-md border-b border-[#111111]/10 transition-all duration-300">
+        <div className="max-w-[1440px] mx-auto px-5 sm:px-8 md:px-12 h-16 md:h-20 flex items-center justify-between">
           
-          {/* Brand Identity */}
+          {/* Left: Brand Identity with Minimalist Logo */}
           <button
             onClick={() => scrollToSection(0)}
             className="flex items-center gap-3 group text-left cursor-pointer"
             aria-label="Kembali ke beranda"
           >
-            <div className="w-8 h-8 rounded-sm bg-ink text-paper flex items-center justify-center group-hover:bg-ochre transition-colors">
-              <DayakShieldEmblem className="w-5 h-5 text-paper" color="currentColor" />
+            <div className="w-9 h-9 rounded-[10px] overflow-hidden flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+              <DayakShieldEmblem className="w-9 h-9" />
             </div>
             <div className="flex flex-col">
-              <span className="font-sans font-bold text-xs md:text-sm uppercase tracking-wider text-ink leading-tight">
+              <span className="font-sans font-bold text-xs md:text-sm uppercase tracking-wider text-[#111111] leading-tight">
                 Luigi Iram Rangi
               </span>
-              <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-ink/60 leading-none mt-0.5">
-                Ddev • West Borneo
+              <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-[#111111]/50 leading-none mt-0.5">
+                Ddev Studio • West Borneo
               </span>
             </div>
           </button>
 
-          {/* Center Navigation Links (Desktop) */}
-          <nav className="hidden md:flex items-center gap-8" aria-label="Navigasi Utama">
-            {sectionList.slice(1).map((item, idx) => {
-              const actualIdx = idx + 1;
-              const isActive = activeSection === actualIdx;
+          {/* Center: Desktop Clean Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-1 bg-white/70 backdrop-blur-md border border-[#111111]/10 px-3 py-1.5 rounded-full shadow-sm">
+            {sectionList.map((item, idx) => {
+              const isActive = activeSection === idx;
               return (
                 <button
                   key={item.id}
-                  onClick={() => scrollToSection(actualIdx)}
-                  className={`relative font-sans text-xs uppercase tracking-wider py-1 font-semibold transition-colors cursor-pointer ${
-                    isActive ? 'text-ink font-bold' : 'text-ink/60 hover:text-ink'
+                  onClick={() => scrollToSection(idx)}
+                  className={`relative px-4 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-[#111111] text-white font-bold shadow-sm'
+                      : 'text-[#111111]/60 hover:text-[#111111] hover:bg-black/5'
                   }`}
                 >
-                  <span className="font-mono text-[10px] text-ochre mr-1">{item.num}.</span>
+                  {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#684AFF]" />}
                   <span>{item.name}</span>
-                  {isActive && (
-                    <motion.div
-                      layoutId="nav-underline"
-                      className="absolute bottom-0 left-0 w-full h-[2px] bg-ochre"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
                 </button>
               );
             })}
           </nav>
 
-          {/* Right: Live Clock & Action Button */}
+          {/* Right: Live Clock & Action CTA */}
           <div className="flex items-center gap-4">
-            {/* Live Pontianak WIB Clock */}
-            <div className="hidden lg:flex items-center gap-2 font-mono text-xs text-ink/70 border-r border-ink/15 pr-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald animate-pulse" />
+            {/* Live Pontianak Clock */}
+            <div className="hidden sm:flex items-center gap-2 font-mono text-xs text-[#111111]/60 pr-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
               <span>PTK {timeWIB} WIB</span>
             </div>
 
-            {/* Quick Contact Button */}
+            {/* Direct Contact Button */}
             <a
               href="mailto:iramrangi@gmail.com"
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 bg-ink text-paper font-sans text-xs font-bold uppercase tracking-wider border border-ink hover:bg-ochre hover:border-ochre transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#111111] text-[#EDEEF0] font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#684AFF] transition-all duration-300 shadow-sm"
             >
               <span>Mulai Proyek</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-ochre" />
+              <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
 
-            {/* Mobile Hamburger Toggle */}
+            {/* Mobile Menu Toggle Button */}
             <button
               onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-              aria-label={isMobileMenuOpen ? 'Tutup menu' : 'Buka menu navigasi'}
-              aria-expanded={isMobileMenuOpen}
-              className="md:hidden w-10 h-10 border border-ink/20 rounded flex items-center justify-center hover:bg-ink hover:text-paper transition-colors cursor-pointer"
+              aria-label={isMobileMenuOpen ? 'Tutup navigasi' : 'Buka navigasi'}
+              className="lg:hidden w-10 h-10 rounded-full border border-[#111111]/15 bg-white flex items-center justify-center hover:bg-[#111111] hover:text-white transition-colors cursor-pointer shadow-sm"
             >
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -237,7 +164,7 @@ function App() {
         </div>
       </header>
 
-      {/* ───────── Mobile Full Drawer Navigation ───────── */}
+      {/* ───────────────── MOBILE SLIDE-DOWN DRAWER ───────────────── */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
@@ -246,60 +173,69 @@ function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 z-35 bg-ink/40 md:hidden"
+              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
             />
             <motion.div
-              initial={{ opacity: 0, y: -15 }}
+              initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
+              exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.25 }}
-              className="fixed inset-x-0 top-16 z-40 bg-paper border-b-2 border-ink p-6 pb-8 shadow-2xl flex flex-col gap-6 md:hidden"
+              className="fixed inset-x-4 top-20 z-50 rounded-[24px] bg-white border border-[#111111]/10 p-6 shadow-2xl flex flex-col gap-4 lg:hidden"
             >
-            <div className="flex flex-col gap-3">
-              {sectionList.map((item, idx) => {
-                const isActive = activeSection === idx;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollToSection(idx)}
-                    className={`flex items-center justify-between py-3 border-b border-ink/10 text-left font-sans text-base uppercase font-bold tracking-wider cursor-pointer ${
-                      isActive ? 'text-ochre' : 'text-ink'
-                    }`}
-                  >
-                    <span>{item.name}</span>
-                    <span className="font-mono text-xs text-ink/40">/{item.num}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="flex flex-col gap-3 pt-2">
-              <a
-                href="mailto:iramrangi@gmail.com"
-                className="w-full py-3 bg-ink text-paper text-center font-sans text-xs uppercase font-bold tracking-widest border border-ink flex items-center justify-center gap-2"
-              >
-                <span>Hubungi via Email</span>
-                <ArrowUpRight className="w-4 h-4 text-ochre" />
-              </a>
-              <div className="flex items-center justify-between text-xs font-mono text-ink/60 pt-2">
-                <span>0°01′S 109°20′E</span>
-                <span>PTK {timeWIB} WIB</span>
+              <div className="flex flex-col gap-1.5">
+                {sectionList.map((item, idx) => {
+                  const isActive = activeSection === idx;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => scrollToSection(idx)}
+                      className={`flex items-center justify-between px-4 py-3 rounded-[14px] text-left font-mono text-xs uppercase tracking-wider transition-all cursor-pointer ${
+                        isActive
+                          ? 'bg-[#111111] text-white font-bold'
+                          : 'text-[#111111] hover:bg-black/5'
+                      }`}
+                    >
+                      <span>{item.name}</span>
+                      {isActive && <span className="w-2 h-2 rounded-full bg-[#684AFF]" />}
+                    </button>
+                  );
+                })}
               </div>
-            </div>
 
-            <DayakBorderRibbon className="w-full h-3 pt-2" color="#141413" opacity={0.3} />
-          </motion.div>
+              <div className="pt-3 border-t border-[#111111]/10 flex flex-col gap-3">
+                <a
+                  href="mailto:iramrangi@gmail.com"
+                  className="w-full py-3 rounded-full bg-[#684AFF] text-white text-center font-sans text-xs uppercase font-bold tracking-widest flex items-center justify-center gap-2 shadow-md"
+                >
+                  <span>Mulai Proyek Bersama</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+
+                <div className="flex items-center justify-between font-mono text-[10px] text-[#111111]/50 px-2">
+                  <span>PTK {timeWIB} WIB</span>
+                  <span>0°01′S 109°20′E</span>
+                </div>
+              </div>
+            </motion.div>
           </>
         )}
       </AnimatePresence>
 
-      {/* ───────── Main Content Sections ───────── */}
+      {/* ───────────────── MAIN CONTENT SECTIONS ───────────────── */}
       <div className="relative z-10 w-full flex flex-col">
         {sectionList.map((section) => {
           const Component = section.Component;
           return (
             <div key={section.id} id={section.id} className="w-full relative">
-              <Suspense fallback={<div className="w-full min-h-[50vh] bg-paper" />}>
+              <Suspense
+                fallback={
+                  <div className="w-full min-h-[50vh] bg-[#EDEEF0] flex items-center justify-center">
+                    <span className="font-mono text-xs uppercase tracking-widest text-[#111111]/30">
+                      Memuat {section.name}...
+                    </span>
+                  </div>
+                }
+              >
                 <Component setActiveSection={scrollToSection} />
               </Suspense>
             </div>

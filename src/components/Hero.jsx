@@ -1,179 +1,154 @@
 import { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, ArrowUpRight, Compass, Sparkles } from 'lucide-react';
-import { DayakShieldEmblem, DayakBorderRibbon, DayakCulturalSeal, DayakCornerAccent } from './DayakMotifs';
+import { ArrowDown, ArrowUpRight, Compass, Sparkles, Box } from 'lucide-react';
+import { DayakShieldEmblem } from './DayakMotifs';
 
 const Dayak3DCanvas = lazy(() => import('./Dayak3DCanvas'));
 
 export default function Hero({ setActiveSection }) {
   return (
-    <section className="relative w-full min-h-[92vh] lg:min-h-screen flex flex-col justify-between pt-24 md:pt-32 pb-10 px-5 md:px-12 lg:px-20 bg-paper text-ink overflow-hidden border-b border-ink/15">
+    <section className="relative w-full min-h-screen flex flex-col justify-between pt-24 md:pt-28 pb-8 px-6 md:px-12 lg:px-20 bg-[#EDEEF0] text-[#111111] overflow-hidden">
+      
+      {/* Subtle Noise Texture Overlay */}
+      <div className="absolute inset-0 bg-noise pointer-events-none z-0" />
 
-      {/* Subtle Archival Grid Background */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.4]"
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, rgba(20,20,19,0.045) 1px, transparent 1px), linear-gradient(to bottom, rgba(20,20,19,0.045) 1px, transparent 1px)',
-          backgroundSize: '72px 72px'
-        }}
-      />
+      {/* Radial Studio Ambient Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] md:w-[900px] h-[500px] bg-gradient-to-r from-[#684AFF]/8 via-[#D97706]/6 to-transparent blur-[120px] pointer-events-none z-0" />
 
-      {/* Top Archival Issue Strip */}
+      {/* Top Editorial Archival Bar */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative z-10 w-full flex flex-col gap-2 pb-6"
+        className="relative z-10 w-full flex items-center justify-between text-[10px] md:text-[11px] font-mono tracking-[0.25em] uppercase text-[#111111]/50 border-b border-[#111111]/10 pb-4"
       >
-        <div className="flex flex-wrap items-center justify-between gap-3 text-[10px] md:text-[11px] font-mono tracking-[0.2em] uppercase text-ink/70">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-ochre animate-pulse" />
-            <span className="font-bold text-ink">EDISI 2026 // DDEV CULTURAL COMPUTING</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="hidden sm:inline">0°01′S 109°20′E</span>
-            <span>PONTIANAK, KALBAR</span>
-          </div>
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#684AFF] animate-pulse" />
+          <span className="font-bold text-[#111111]">DDEV STUDIO // CULTURAL COMPUTING</span>
         </div>
-        <DayakBorderRibbon className="w-full h-3" color="#141413" opacity={0.25} />
+        <div className="hidden sm:flex items-center gap-6">
+          <span>0°01′S 109°20′E</span>
+          <span className="text-[#111111]">PONTIANAK, KALBAR</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
+          <span>TERBUKA UNTUK KOLABORASI PILIHAN</span>
+        </div>
       </motion.div>
 
-      {/* Center Stage: Monumental Headline + 3D Three.js Artifact & Bio */}
-      <div className="relative z-10 w-full my-auto py-6 md:py-10">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 md:gap-12">
-          
-          {/* Giant Monumental Name */}
-          <div className="relative flex flex-col shrink-0">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              className="flex items-center gap-2 mb-2 md:mb-3"
-            >
-              <DayakShieldEmblem className="w-4 h-4 text-ochre" color="#D97706" />
-              <span className="font-mono text-[10px] md:text-xs uppercase tracking-[0.25em] font-bold text-ochre">
-                Founder of Ddev • Dayak Developer
-              </span>
-            </motion.div>
+      {/* Center Stage: Spatial 3D WebGL Kinetic Sculpture & Monumental Typography */}
+      <div className="relative z-10 w-full my-auto py-4 md:py-8 flex flex-col items-center justify-center">
+        
+        {/* Top Badges / Tagline */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.6 }}
+          className="flex flex-wrap items-center justify-center gap-2 md:gap-3 mb-4"
+        >
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111111] text-[#EDEEF0] text-[10px] md:text-[11px] font-mono uppercase tracking-[0.2em] shadow-sm">
+            <DayakShieldEmblem className="w-3.5 h-3.5 text-[#D97706]" color="#D97706" />
+            Founder of Ddev • Dayak Developer
+          </span>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/70 backdrop-blur-md border border-black/10 text-[#111111]/70 text-[10px] md:text-[11px] font-mono uppercase tracking-[0.18em]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#684AFF]" />
+            Creative Dev &amp; WebGL 3D
+          </span>
+        </motion.div>
 
-            <h1 className="flex flex-col font-sans text-ink font-bold uppercase leading-[0.82] tracking-tighter select-none">
-              <motion.span
-                initial={{ y: '30%', opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.25, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-block text-[17vw] sm:text-[15vw] md:text-[11vw] lg:text-[8.5vw] xl:text-[9.5vw]"
-              >
-                LUIGI
-              </motion.span>
-              <motion.span
-                initial={{ y: '30%', opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.35, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-block text-[17vw] sm:text-[15vw] md:text-[11vw] lg:text-[8.5vw] xl:text-[9.5vw]"
-              >
-                IRAM
-              </motion.span>
-              <motion.span
-                initial={{ y: '30%', opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.45, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-block text-[17vw] sm:text-[15vw] md:text-[11vw] lg:text-[8.5vw] xl:text-[9.5vw]"
-              >
-                RANGI
-              </motion.span>
-            </h1>
+        {/* Monumental Hero Headline with Depth */}
+        <div className="relative w-full text-center flex flex-col items-center justify-center">
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.25, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="font-sans font-black text-[#111111] uppercase tracking-[-0.04em] leading-[0.88] select-none text-[15vw] sm:text-[13vw] md:text-[10vw] lg:text-[120px] xl:text-[138px]"
+          >
+            <span>LUIGI </span>
+            <span className="text-[#684AFF]">IRAM</span>
+            <span className="text-[#111111]/20">.</span>
+          </motion.h1>
+
+          {/* 3D WebGL Kinetic Sculpture Viewport */}
+          <div className="w-full max-w-[850px] h-[340px] sm:h-[400px] md:h-[460px] lg:h-[500px] relative -my-4 sm:-my-6 md:-my-8 z-20">
+            <Suspense
+              fallback={
+                <div className="w-full h-full flex flex-col items-center justify-center text-center">
+                  <DayakShieldEmblem className="w-10 h-10 text-[#684AFF] animate-pulse mb-3" color="#684AFF" />
+                  <span className="font-mono text-xs uppercase tracking-widest text-[#111111]/40">
+                    Initializing WebGL 3D Engine...
+                  </span>
+                </div>
+              }
+            >
+              <Dayak3DCanvas />
+            </Suspense>
           </div>
 
-          {/* Right Column: Three.js 3D Artifact + Manifesto Paragraph */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="flex flex-col items-start lg:items-end justify-between gap-6 w-full lg:max-w-lg xl:max-w-xl"
+          <motion.h2
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.35, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="font-sans font-black text-[#111111] uppercase tracking-[-0.04em] leading-[0.88] select-none text-[12vw] sm:text-[10vw] md:text-[8vw] lg:text-[90px] xl:text-[105px] mt-2 sm:mt-4"
           >
-            {/* Live Three.js 3D Viewport Component */}
-            <div className="w-full">
-              <Suspense
-                fallback={
-                  <div className="w-full h-64 sm:h-72 md:h-80 bg-paper-dark border-2 border-ink shadow-[5px_5px_0_#D97706] flex flex-col items-center justify-center p-6 text-center">
-                    <DayakShieldEmblem className="w-8 h-8 text-ochre animate-pulse mb-3" color="#D97706" />
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-ink/70">
-                      Memuat Mesin WebGL 3D…
-                    </span>
-                  </div>
-                }
-              >
-                <Dayak3DCanvas className="w-full" />
-              </Suspense>
-            </div>
-
-            {/* Editorial Bio Statement & Seal */}
-            <div className="flex flex-col sm:flex-row lg:flex-row-reverse items-start sm:items-center gap-4">
-              <DayakCulturalSeal className="w-16 h-16 md:w-20 md:h-20 shrink-0" animated={true} />
-              <p className="font-sans text-xs sm:text-sm md:text-[15px] leading-[1.5] text-ink/80 text-left lg:text-right font-normal">
-                Merajut akar budaya <strong className="text-ink font-semibold">Dayak & Borneo</strong> dengan arsitektur web modern, visual 3D interaktif Three.js, serta sistem digital berkinerja tinggi.
-              </p>
-            </div>
-
-            {/* Direct Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-1">
-              <button
-                onClick={() => setActiveSection(2)}
-                className="group relative inline-flex items-center gap-2 px-5 py-3 bg-ink text-paper font-sans text-xs md:text-sm font-bold uppercase tracking-wider border-2 border-ink shadow-[4px_4px_0_#D97706] hover:shadow-[2px_2px_0_#D97706] hover:translate-x-[2px] hover:translate-y-[2px] transition-all cursor-pointer"
-              >
-                <span>Lihat Karya Terpilih</span>
-                <ArrowDown className="w-4 h-4 text-ochre group-hover:translate-y-0.5 transition-transform" />
-              </button>
-
-              <a
-                href="mailto:iramrangi@gmail.com"
-                className="inline-flex items-center gap-2 px-5 py-3 bg-paper text-ink font-sans text-xs md:text-sm font-bold uppercase tracking-wider border-2 border-ink hover:bg-ochre hover:text-white transition-colors"
-              >
-                <span>Kirim Pesan</span>
-                <ArrowUpRight className="w-4 h-4" />
-              </a>
-            </div>
-          </motion.div>
-
+            <span className="text-[#111111]/30">CULTURAL </span>
+            <span className="text-[#111111]">COMPUTING</span>
+          </motion.h2>
         </div>
+
+        {/* Narrative & Action Callouts */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.7 }}
+          className="w-full max-w-2xl text-center mt-6 md:mt-8 flex flex-col items-center gap-6"
+        >
+          <p className="font-sans text-sm sm:text-base md:text-lg text-[#111111]/60 leading-relaxed max-w-xl font-normal">
+            Merajut akar budaya <strong className="text-[#111111] font-semibold">Dayak &amp; Borneo</strong> dengan rekayasa web modern, visual 3D interaktif Three.js, serta ekosistem digital skala regional yang berkinerja tinggi.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <button
+              onClick={() => setActiveSection?.(1)}
+              className="px-6 py-3 rounded-full bg-[#111111] text-[#EDEEF0] font-sans text-xs font-bold uppercase tracking-[0.15em] hover:bg-[#684AFF] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 cursor-pointer flex items-center gap-2 group"
+            >
+              <span>Lihat Karya Terpilih</span>
+              <ArrowDown className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
+            </button>
+
+            <button
+              onClick={() => setActiveSection?.(2)}
+              className="px-6 py-3 rounded-full bg-white text-[#111111] border border-black/10 font-sans text-xs font-bold uppercase tracking-[0.15em] hover:border-[#684AFF] hover:text-[#684AFF] transition-all duration-300 shadow-sm hover:scale-105 cursor-pointer flex items-center gap-2"
+            >
+              <span>Telusuri Milestone Rekayasa</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </motion.div>
+
       </div>
 
-      {/* Bottom Archival Stats Grid */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.65, duration: 0.7 }}
-        className="relative z-10 w-full pt-6 border-t border-ink/15"
-      >
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          
-          <div className="relative p-3 md:p-4 bg-paper-dark border border-ink/15">
-            <DayakCornerAccent position="top-right" className="absolute top-1 right-1 w-2.5 h-2.5 text-ochre" />
-            <span className="block font-sans font-black text-2xl md:text-3xl text-ink leading-none">08+</span>
-            <span className="block font-mono text-[10px] md:text-xs uppercase tracking-wider text-ink/70 mt-1">Platform Produksi</span>
-          </div>
-
-          <div className="relative p-3 md:p-4 bg-paper-dark border border-ink/15">
-            <DayakCornerAccent position="top-right" className="absolute top-1 right-1 w-2.5 h-2.5 text-ochre" />
-            <span className="block font-sans font-black text-2xl md:text-3xl text-ink leading-none">120+</span>
-            <span className="block font-mono text-[10px] md:text-xs uppercase tracking-wider text-ink/70 mt-1">Sistem Web Teruji</span>
-          </div>
-
-          <div className="relative p-3 md:p-4 bg-paper-dark border border-ink/15">
-            <DayakCornerAccent position="top-right" className="absolute top-1 right-1 w-2.5 h-2.5 text-ochre" />
-            <span className="block font-sans font-black text-2xl md:text-3xl text-ochre leading-none">&lt; 0.6s</span>
-            <span className="block font-mono text-[10px] md:text-xs uppercase tracking-wider text-ink/70 mt-1">LCP &amp; 100/100 Vitals</span>
-          </div>
-
-          <div className="relative p-3 md:p-4 bg-paper-dark border border-ink/15">
-            <DayakCornerAccent position="top-right" className="absolute top-1 right-1 w-2.5 h-2.5 text-ochre" />
-            <span className="block font-sans font-black text-lg md:text-xl text-ink leading-tight">BORNEO GLOBE</span>
-            <span className="block font-mono text-[10px] md:text-xs uppercase tracking-wider text-ink/70 mt-1">Platform Aktif (2025–2026)</span>
-          </div>
-
+      {/* Bottom Studio Info Bar */}
+      <div className="relative z-10 w-full flex flex-col sm:flex-row items-center justify-between border-t border-[#111111]/10 pt-4 gap-3 text-[10px] md:text-[11px] font-mono tracking-[0.18em] uppercase text-[#111111]/50">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-[#10B981]" />
+          <span>Status: Aktif Membangun Proyek Terpilih</span>
         </div>
-      </motion.div>
+
+        <div className="hidden lg:flex items-center gap-4 text-[#111111]/60">
+          <span>120+ Sistem Web</span>
+          <span>•</span>
+          <span>100/100 Core Vitals</span>
+          <span>•</span>
+          <span>WebGL Three.js R186</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span>Ddev Studio</span>
+          <span className="text-[#684AFF] font-bold">/</span>
+          <span>Pontianak, Kalimantan Barat</span>
+        </div>
+      </div>
 
     </section>
   );

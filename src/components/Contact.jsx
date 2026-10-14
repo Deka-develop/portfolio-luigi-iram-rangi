@@ -1,67 +1,30 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Copy, Check, CheckCircle2 } from 'lucide-react';
-import { DayakShieldEmblem, DayakBorderRibbon, DayakCornerAccent } from './DayakMotifs';
-
-const reveal = {
-  initial: { opacity: 0, y: 40 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-60px' },
-  transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
-};
-
-const channels = [
-  {
-    label: 'Email',
-    value: 'iramrangi@gmail.com',
-    href: 'mailto:iramrangi@gmail.com',
-    external: false,
-    cta: 'Kirim'
-  },
-  {
-    label: 'Instagram DM',
-    value: '@iramrangi_dev',
-    href: 'https://www.instagram.com/iramrangi_dev/',
-    external: true,
-    cta: 'DM'
-  },
-  {
-    label: 'Live Platform',
-    value: 'borneoglobe.org',
-    href: 'https://www.borneoglobe.org/',
-    external: true,
-    cta: 'Visit'
-  }
-];
-
-const inputClass =
-  'w-full bg-transparent border-0 border-b-2 border-ink px-0 py-3 text-base font-sans text-ink placeholder-ink/35 focus:outline-none focus:border-ochre transition-colors rounded-none';
+import { ArrowUpRight, Copy, Check, Send, Mail, MessageSquare } from 'lucide-react';
+import { DayakShieldEmblem } from './DayakMotifs';
 
 export default function Contact() {
   const [timeStr, setTimeStr] = useState('');
   const [copied, setCopied] = useState(false);
-
-  // Quick form state
   const [formState, setFormState] = useState({ name: '', contact: '', message: '' });
-  const [isSent, setIsSent] = useState(false);
-  const [sendResult, setSendResult] = useState({ type: 'direct', message: '', urls: null });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSent, setIsSent] = useState(false);
 
-  // Live WIB / UTC+7 West Borneo Clock
+  // Live WIB Pontianak Clock
   useEffect(() => {
     const updateTime = () => {
-      const now = new Date();
-      const options = {
-        timeZone: 'Asia/Jakarta',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      };
       try {
-        setTimeStr(new Intl.DateTimeFormat('en-GB', options).format(now));
+        const now = new Date();
+        const options = {
+          timeZone: 'Asia/Pontianak',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        };
+        setTimeStr(new Intl.DateTimeFormat('id-ID', options).format(now));
       } catch {
-        setTimeStr(now.toTimeString().split(' ')[0]);
+        setTimeStr('01:00:00');
       }
     };
     updateTime();
@@ -72,317 +35,229 @@ export default function Contact() {
   const handleCopyEmail = () => {
     navigator.clipboard.writeText('iramrangi@gmail.com');
     setCopied(true);
-    setTimeout(() => setCopied(false), 2200);
-  };
-
-  // Helper to construct mail compose URLs (both mailto and web Gmail)
-  const getMailUrls = (name, contact, message) => {
-    const subject = encodeURIComponent(`[Portofolio] Pesan Proyek dari ${name}`);
-    const body = encodeURIComponent(
-      `Halo Luigi,\n\nSaya: ${name}\nKontak: ${contact || 'N/A'}\n\nPesan Proyek:\n${message}\n\n--\nDikirim via Portfolio Terminal`
-    );
-    return {
-      mailto: `mailto:iramrangi@gmail.com?subject=${subject}&body=${body}`,
-      gmail: `https://mail.google.com/mail/?view=cm&fs=1&to=iramrangi@gmail.com&su=${subject}&body=${body}`
-    };
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!formState.name || !formState.message) return;
-
     setIsSubmitting(true);
-    const urls = getMailUrls(formState.name, formState.contact, formState.message);
 
     try {
-      const res = await fetch('https://formsubmit.co/ajax/iramrangi@gmail.com', {
+      await fetch('https://formsubmit.co/ajax/iramrangi@gmail.com', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           name: formState.name,
           contact: formState.contact || 'N/A',
           message: formState.message,
-          _subject: `[Portofolio] Pesan Proyek Baru dari ${formState.name}`,
-          _template: 'table',
-          _captcha: 'false'
+          _subject: `[Portfolio Inquiry] ${formState.name}`
         })
       });
-
-      const data = await res.json().catch(() => ({}));
-      if (res.ok && (data.success === 'true' || data.success === true)) {
-        setSendResult({
-          type: 'direct',
-          message: 'Pesan transmisi berhasil terkirim langsung ke inbox iramrangi@gmail.com.'
-        });
-        setIsSent(true);
-      } else if (data.message && data.message.toLowerCase().includes('activation')) {
-        setSendResult({
-          type: 'activation',
-          message: 'FormSubmit memerlukan aktivasi 1x via email masuk di iramrangi@gmail.com. Pesan tetap dapat Anda teruskan langsung lewat Gmail atau aplikasi email sekarang:',
-          urls
-        });
-        setIsSent(true);
-      } else {
-        throw new Error(data.message || 'Auto-relay pending');
-      }
-    } catch {
-      setSendResult({
-        type: 'fallback',
-        message: 'Pengiriman otomatis dialihkan. Silakan klik tombol di bawah untuk meneruskan pesan via Gmail Web atau aplikasi email:',
-        urls
-      });
       setIsSent(true);
+    } catch {
+      // Fallback mailto
+      window.open(
+        `mailto:iramrangi@gmail.com?subject=Inquiry from ${formState.name}&body=${encodeURIComponent(
+          formState.message
+        )}`
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <section className="relative w-full bg-ink text-paper px-5 md:px-12 lg:px-20 pt-28 md:pt-36 pb-8 overflow-hidden">
-
-      {/* Section tag */}
-      <motion.div {...reveal} className="flex flex-col gap-2 mb-8 md:mb-14">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <DayakShieldEmblem className="w-3.5 h-3.5 text-ochre" color="#D97706" />
-            <span className="font-mono text-[11px] uppercase tracking-[0.25em] font-bold text-ochre">04 / Kontak &amp; Kolaborasi</span>
-          </div>
-          <div className="flex-1 h-[1px] bg-paper/20" />
-          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-paper/60 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald animate-pulse" />
-            <span>Pontianak {timeStr || '00:00:00'} WIB</span>
-          </span>
+    <section className="relative w-full bg-[#EDEEF0] text-[#111111] px-6 md:px-12 lg:px-20 pt-28 md:pt-36 pb-16 md:pb-24 select-none">
+      
+      {/* Metadata Bar */}
+      <div className="max-w-[1400px] mx-auto flex items-center justify-between mb-8 text-[10px] md:text-[11px] font-mono uppercase tracking-[0.25em] text-[#111111]/50 border-b border-[#111111]/10 pb-4">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111111] text-[#EDEEF0] text-[10px] md:text-[11px] font-mono uppercase tracking-[0.2em]">
+          <DayakShieldEmblem className="w-3.5 h-3.5 text-[#D97706]" color="#D97706" />
+          Inisiasi Proyek &amp; Kolaborasi
         </div>
-        <DayakBorderRibbon className="w-full h-2.5" color="#FFFFFF" opacity={0.15} />
-      </motion.div>
+        <span>Terbuka Untuk Penugasan Terpilih</span>
+      </div>
 
-      {/* Giant heading */}
-      <motion.h2
-        {...reveal}
-        className="font-sans font-black uppercase tracking-tighter leading-[0.84] text-[16vw] md:text-[11vw] lg:text-[10vw] mb-12 md:mb-18"
-      >
-        Let’s work<br />
-        <span className="text-ochre">together.</span>
-      </motion.h2>
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 mb-20 md:mb-28">
-
-        {/* Direct channels */}
-        <motion.div {...reveal} className="lg:col-span-5 flex flex-col gap-8">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="px-3 py-1.5 bg-ochre text-white font-mono text-[10px] font-bold uppercase tracking-widest">
-              Respon &lt; 24 Jam
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-paper/60">Available for collaboration</span>
+      <div className="max-w-[1400px] mx-auto">
+        
+        {/* Bespoke Headline & Actions */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 mb-16 md:mb-24">
+          <div>
+            <h2 className="font-sans font-black text-4xl sm:text-5xl md:text-6xl lg:text-[72px] text-[#111111] tracking-[-0.03em] leading-[1.05]">
+              Mari Wujudkan Solusi Digital Anda<span className="text-[#684AFF]">.</span>
+            </h2>
+            <p className="text-[#111111]/60 text-sm md:text-base max-w-xl leading-relaxed mt-4">
+              Siap berdiskusi mengenai perancangan arsitektur sistem web baru, platform regional, optimasi performa berkecepatan tinggi, atau visual 3D interaktif.
+            </p>
           </div>
 
-          <p className="font-sans text-base md:text-lg leading-relaxed text-paper/80 max-w-md">
-            Punya ide proyek, kebutuhan platform web kustom, visual 3D WebGL, atau kolaborasi arsitektur modern? Silakan hubungi langsung.
-          </p>
+          <div className="flex flex-col gap-6 max-w-md">
+            <div>
+              <span className="font-mono text-xs uppercase tracking-[0.25em] text-[#111111]/40 block mb-2">
+                Kolaborasi &amp; Konsultasi
+              </span>
+              <p className="text-xl sm:text-2xl font-bold text-[#111111] tracking-tight leading-snug">
+                Arsitektur Web / Platform Berkelanjutan / Eksplorasi 3D
+              </p>
+            </div>
 
-          <ul className="border-t-2 border-paper">
-            {channels.map((c) => (
-              <li key={c.label} className="border-b border-paper/30">
-                <a
-                  href={c.href}
-                  target={c.external ? '_blank' : undefined}
-                  rel={c.external ? 'noreferrer' : undefined}
-                  aria-label={`${c.label}: ${c.value}`}
-                  className="group flex items-center justify-between gap-4 py-4 hover:bg-paper hover:text-ink hover:px-4 transition-all duration-300"
-                >
-                  <span className="min-w-0">
-                    <span className="block font-mono text-[10px] uppercase tracking-[0.2em] opacity-60">{c.label}</span>
-                    <span className="block font-sans font-bold text-lg md:text-xl truncate">{c.value}</span>
-                  </span>
-                  <span className="flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-widest shrink-0">
-                    <span className="hidden sm:inline">{c.cta}</span>
-                    <span className="w-9 h-9 rounded-full border-2 border-current flex items-center justify-center group-hover:bg-ochre group-hover:text-white group-hover:border-ochre transition-colors">
-                      <ArrowUpRight className="w-4 h-4" />
-                    </span>
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <a
+                href="mailto:iramrangi@gmail.com"
+                className="px-8 py-4 rounded-full bg-[#111111] text-white font-sans text-xs font-bold uppercase tracking-[0.2em] hover:bg-[#684AFF] transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:scale-105"
+              >
+                <span>Mulai Diskusi via Email</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </a>
 
-          <button
-            onClick={handleCopyEmail}
-            aria-label="Salin alamat email"
-            className="self-start flex items-center gap-2 px-4 py-2.5 border-2 border-paper font-mono text-xs font-bold uppercase tracking-widest hover:bg-ochre hover:text-white hover:border-ochre transition-colors cursor-pointer"
-          >
-            {copied ? (
-              <>
-                <Check className="w-3.5 h-3.5 text-ochre" />
-                <span>Tersalin!</span>
-              </>
-            ) : (
-              <>
-                <Copy className="w-3.5 h-3.5" />
-                <span>Salin email</span>
-              </>
-            )}
-          </button>
-        </motion.div>
+              <button
+                onClick={handleCopyEmail}
+                className="px-5 py-4 rounded-full bg-white border border-[#111111]/10 font-mono text-xs uppercase tracking-wider text-[#111111] hover:border-[#684AFF] transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                {copied ? <Check className="w-4 h-4 text-[#10B981]" /> : <Copy className="w-4 h-4 text-[#111111]/60" />}
+                <span>{copied ? 'Copied!' : 'Copy Email'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
 
-        {/* Quick message form */}
-        <motion.div {...reveal} className="lg:col-span-7 bg-paper text-ink border-2 border-paper p-5 md:p-9 select-text self-start shadow-[8px_8px_0_#D97706] md:shadow-[12px_12px_0_#D97706] relative">
-          <DayakCornerAccent position="top-right" className="absolute top-2 right-2 w-3.5 h-3.5 text-ochre" />
-          <div className="flex items-center justify-between mb-6 md:mb-8 pb-4 border-b-2 border-ink">
-            <h3 className="font-sans font-black uppercase tracking-tight text-2xl md:text-3xl leading-none">Pesan Langsung</h3>
-            <span className="font-mono text-[10px] uppercase tracking-widest flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald animate-pulse" />
-              Relay aktif
-            </span>
+        {/* Interactive Direct Message Box */}
+        <div className="rounded-[28px] md:rounded-[36px] bg-white border border-[#111111]/10 p-8 md:p-12 shadow-lg mb-16">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-[#111111]/8">
+            <div>
+              <h3 className="text-2xl md:text-3xl font-bold text-[#111111] tracking-tight mb-1">
+                Kirim Pesan Cepat Langsung
+              </h3>
+              <p className="text-sm text-[#111111]/50">
+                Respon dijamin dalam 1x24 jam untuk proyek baru atau kolaborasi.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 font-mono text-xs text-[#111111]/60">
+              <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
+              <span>PTK {timeStr} WIB</span>
+            </div>
           </div>
 
           {isSent ? (
-            <div className="py-6 flex flex-col items-start gap-5">
-              <div className="w-12 h-12 bg-ochre text-white border-2 border-ink flex items-center justify-center">
-                <CheckCircle2 className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="font-sans font-black uppercase text-2xl md:text-3xl tracking-tight leading-none mb-2">
-                  {sendResult.type === 'direct'
-                    ? 'Pesan Berhasil Terkirim!'
-                    : sendResult.type === 'activation'
-                    ? 'Aktivasi Form Diperlukan'
-                    : 'Pesan Siap Diteruskan'}
-                </h4>
-                <p className="font-sans text-sm md:text-base text-[#333] max-w-md leading-relaxed">{sendResult.message}</p>
-              </div>
-
-              {sendResult.urls && (
-                <div className="flex flex-wrap items-center gap-3">
-                  <a
-                    href={sendResult.urls.gmail}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group relative"
-                  >
-                    <div className="absolute inset-0 bg-ink translate-x-1 translate-y-1 transition-transform group-hover:translate-x-0 group-hover:translate-y-0" />
-                    <div className="relative px-4 py-3 bg-ochre text-white border-2 border-ink flex items-center gap-2 transition-transform group-hover:translate-x-1 group-hover:translate-y-1">
-                      <span className="font-sans font-black text-xs uppercase tracking-widest">Buka di Gmail Web</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </div>
-                  </a>
-                  <a
-                    href={sendResult.urls.mailto}
-                    className="px-4 py-3 border-2 border-ink font-sans font-black text-xs uppercase tracking-widest hover:bg-ink hover:text-paper transition-colors"
-                  >
-                    Buka Mail Client
-                  </a>
-                </div>
-              )}
-
+            <div className="p-8 rounded-[20px] bg-[#10B981]/10 border border-[#10B981]/20 text-center flex flex-col items-center gap-3">
+              <span className="text-2xl">✨</span>
+              <h4 className="text-xl font-bold text-[#0D5C3A]">Pesan Terkirim Berhasil!</h4>
+              <p className="text-sm text-[#0D5C3A]/80 max-w-md">
+                Terima kasih telah menghubungi Luigi Iram Rangi. Saya akan segera merespon via email Anda secepatnya.
+              </p>
               <button
-                onClick={() => {
-                  setIsSent(false);
-                  setSendResult({ type: 'direct', message: '', urls: null });
-                  setFormState({ name: '', contact: '', message: '' });
-                }}
-                className="font-mono text-xs uppercase tracking-[0.2em] underline underline-offset-4 decoration-2 hover:text-ochre transition-colors cursor-pointer"
+                onClick={() => setIsSent(false)}
+                className="mt-2 px-5 py-2 rounded-full bg-[#0D5C3A] text-white font-mono text-xs uppercase tracking-wider"
               >
-                Kirim pesan lain
+                Kirim Pesan Lain
               </button>
             </div>
           ) : (
-            <form onSubmit={handleFormSubmit} className="flex flex-col gap-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="contact-name" className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/60 block">
-                    01 — Nama / Brand
-                  </label>
-                  <input
-                    id="contact-name"
-                    type="text"
-                    required
-                    aria-label="Nama atau nama brand Anda"
-                    placeholder="Alex Pratama"
-                    value={formState.name}
-                    onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                    className={inputClass}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="contact-channel" className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/60 block">
-                    02 — Email / Kontak
-                  </label>
-                  <input
-                    id="contact-channel"
-                    type="text"
-                    aria-label="Email atau kontak alternatif Anda"
-                    placeholder="alex@domain.com / @alex"
-                    value={formState.contact}
-                    onChange={(e) => setFormState({ ...formState, contact: e.target.value })}
-                    className={inputClass}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="contact-message" className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/60 block">
-                  03 — Kebutuhan proyek / pesan
+            <form onSubmit={handleFormSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex flex-col gap-2">
+                <label className="font-mono text-xs uppercase tracking-wider text-[#111111]/60">
+                  Nama Anda *
                 </label>
-                <textarea
-                  id="contact-message"
+                <input
+                  type="text"
                   required
-                  rows={3}
-                  aria-label="Deskripsi kebutuhan proyek atau pesan Anda"
-                  placeholder="Ceritakan gambaran proyek web, platform kustom, visual 3D, atau perkiraan timeline…"
-                  value={formState.message}
-                  onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                  className={`${inputClass} resize-none`}
+                  placeholder="Contoh: Alex Pradipta"
+                  value={formState.name}
+                  onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                  className="w-full px-4 py-3 rounded-[14px] bg-[#EDEEF0]/60 border border-[#111111]/10 text-sm font-sans text-[#111111] focus:outline-none focus:border-[#684AFF] focus:bg-white transition-all"
                 />
               </div>
 
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="group relative self-start mt-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                <div className="absolute inset-0 bg-ink translate-x-1.5 translate-y-1.5 transition-transform duration-200 group-hover:translate-x-0 group-hover:translate-y-0" />
-                <div className="relative px-7 py-4 bg-ochre text-white border-2 border-ink flex items-center justify-center gap-2 transition-transform duration-200 group-hover:translate-x-1.5 group-hover:translate-y-1.5">
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      <span className="font-sans font-black text-sm uppercase tracking-widest">Mengirim…</span>
-                    </>
-                  ) : (
-                    <span className="font-sans font-black text-sm uppercase tracking-widest">
-                      Kirim pesan <span className="ml-1">↗</span>
-                    </span>
-                  )}
-                </div>
-              </button>
+              <div className="flex flex-col gap-2">
+                <label className="font-mono text-xs uppercase tracking-wider text-[#111111]/60">
+                  Email atau WhatsApp *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Contoh: alex@company.com / 0812..."
+                  value={formState.contact}
+                  onChange={(e) => setFormState({ ...formState, contact: e.target.value })}
+                  className="w-full px-4 py-3 rounded-[14px] bg-[#EDEEF0]/60 border border-[#111111]/10 text-sm font-sans text-[#111111] focus:outline-none focus:border-[#684AFF] focus:bg-white transition-all"
+                />
+              </div>
+
+              <div className="md:col-span-2 flex flex-col gap-2">
+                <label className="font-mono text-xs uppercase tracking-wider text-[#111111]/60">
+                  Detail Proyek atau Pertanyaan *
+                </label>
+                <textarea
+                  rows={4}
+                  required
+                  placeholder="Ceritakan gambaran proyek web, target peluncuran, atau ide kolaborasi..."
+                  value={formState.message}
+                  onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                  className="w-full px-4 py-3 rounded-[14px] bg-[#EDEEF0]/60 border border-[#111111]/10 text-sm font-sans text-[#111111] focus:outline-none focus:border-[#684AFF] focus:bg-white transition-all resize-none"
+                />
+              </div>
+
+              <div className="md:col-span-2 flex items-center justify-end">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-8 py-3.5 rounded-full bg-[#111111] text-white font-sans text-xs font-bold uppercase tracking-[0.2em] hover:bg-[#684AFF] transition-colors flex items-center gap-2 cursor-pointer shadow-md disabled:opacity-50"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>{isSubmitting ? 'Mengirim...' : 'Kirim Pesan Sekarang'}</span>
+                </button>
+              </div>
             </form>
           )}
-        </motion.div>
+        </div>
+
+        {/* Channels & Social Links */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-16">
+          {[
+            { label: 'Direct Email', val: 'iramrangi@gmail.com', href: 'mailto:iramrangi@gmail.com' },
+            { label: 'Instagram DM', val: '@iramrangi_dev', href: 'https://www.instagram.com/iramrangi_dev/' },
+            { label: 'Live Platform', val: 'borneoglobe.org', href: 'https://www.borneoglobe.org/' }
+          ].map((ch) => (
+            <a
+              key={ch.label}
+              href={ch.href}
+              target="_blank"
+              rel="noreferrer"
+              className="p-5 rounded-[20px] bg-white border border-[#111111]/10 hover:border-[#684AFF] transition-all duration-300 flex items-center justify-between group shadow-sm"
+            >
+              <div>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-[#111111]/40 block mb-1">
+                  {ch.label}
+                </span>
+                <span className="font-sans font-bold text-sm text-[#111111] group-hover:text-[#684AFF] transition-colors">
+                  {ch.val}
+                </span>
+              </div>
+              <ArrowUpRight className="w-4 h-4 text-[#111111]/40 group-hover:text-[#684AFF] transition-transform group-hover:rotate-45" />
+            </a>
+          ))}
+        </div>
+
+        {/* Bottom Colophon Footer */}
+        <div className="pt-8 border-t border-[#111111]/10 flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] md:text-[11px] font-mono uppercase tracking-[0.2em] text-[#111111]/40">
+          <div className="flex items-center gap-2">
+            <DayakShieldEmblem className="w-4 h-4 text-[#D97706]" color="#D97706" />
+            <span>LUIGI IRAM RANGI • FOUNDER OF DDEV</span>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <span>0°01′S 109°20′E</span>
+            <span>•</span>
+            <span>PONTIANAK, KALBAR</span>
+            <span>•</span>
+            <span>EDISI 2026</span>
+          </div>
+
+          <span>BUILT WITH REACT 19 &amp; THREE.JS</span>
+        </div>
+
       </div>
 
-      {/* Footer */}
-      <footer className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pt-6 border-t border-paper/30 font-mono text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-paper/70">
-        <div className="flex items-center gap-5">
-          <a href="https://github.com" target="_blank" rel="noreferrer" aria-label="Kunjungi akun GitHub" className="hover:text-ochre transition-colors">GitHub</a>
-          <a
-            href="https://www.instagram.com/iramrangi_dev/"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Kunjungi akun Instagram @iramrangi_dev"
-            className="hover:text-ochre transition-colors"
-          >
-            Instagram
-          </a>
-          <a href="https://www.borneoglobe.org/" target="_blank" rel="noreferrer" aria-label="Kunjungi situs Borneo Globe" className="hover:text-ochre transition-colors">
-            Borneo Globe
-          </a>
-        </div>
-        <span>© {new Date().getFullYear()} Luigi Iram Rangi · Dayak Developer</span>
-        <span>Pontianak, West Borneo</span>
-      </footer>
     </section>
   );
 }
