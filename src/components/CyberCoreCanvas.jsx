@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Sparkles, 
@@ -58,254 +59,53 @@ const COLOR_THEMES = {
   }
 };
 
-// Procedural Cybernetic AI Face Sculptor (High-Tech Humanoid Anatomy)
-function createCyberFaceGroup(isLowPower, theme) {
+// Authentic 3D Anatomical Human Face (with Cyber Holographic Shader & Wireframe Lattice)
+function createHumanFaceGroup(theme, onLoaded) {
   const group = new THREE.Group();
   const materials = [];
 
-  const segmentsW = isLowPower ? 44 : 64;
-  const segmentsH = isLowPower ? 36 : 52;
-  const headGeo = new THREE.SphereGeometry(1.15, segmentsW, segmentsH);
-  const pos = headGeo.attributes.position;
-
-  for (let i = 0; i < pos.count; i++) {
-    let x = pos.getX(i);
-    let y = pos.getY(i);
-    let z = pos.getZ(i);
-
-    let ny = y / 1.15; // Normalized height (-1 to 1)
-
-    // 1. Basic Human Head Width Profile (temples, cheek, jaw)
-    let widthRatio = 0.88;
-    if (ny > 0.4) {
-      widthRatio = 0.88 - (ny - 0.4) * 0.15;
-    } else if (ny > -0.2 && ny <= 0.4) {
-      widthRatio = 0.92;
-    } else if (ny > -0.55 && ny <= -0.2) {
-      widthRatio = 0.82;
-    } else {
-      widthRatio = 0.55 + (ny + 1.0) * 0.6;
-    }
-    x *= widthRatio;
-
-    // 2. Depth Profile (Z axis)
-    if (z < 0) {
-      z *= 0.95 + Math.max(0, ny) * 0.22;
-      if (ny < -0.4) {
-        z *= Math.max(0.35, 1.0 + (ny + 0.4) * 1.1);
-      }
-    } else {
-      z *= 0.92;
-
-      // Forehead
-      if (ny > 0.35 && ny < 0.75) {
-        z = z * 0.92 + 0.08;
-      }
-
-      // Brow Ridge & Glabella
-      if (ny > 0.18 && ny < 0.32) {
-        let bY = Math.sin((ny - 0.18) / 0.14 * Math.PI);
-        let bX = Math.max(0, 1.0 - Math.abs(x) / 0.6);
-        z += 0.16 * bY * bX;
-      }
-
-      // Recessed Eye Cavities
-      let eyeDistL = Math.hypot(x - 0.3, ny - 0.14);
-      let eyeDistR = Math.hypot(x + 0.3, ny - 0.14);
-      if (eyeDistL < 0.22) {
-        z -= 0.24 * Math.cos((eyeDistL / 0.22) * (Math.PI / 2));
-      }
-      if (eyeDistR < 0.22) {
-        z -= 0.24 * Math.cos((eyeDistR / 0.22) * (Math.PI / 2));
-      }
-
-      // Cheekbones
-      let cheekL = Math.hypot(x - 0.44, ny + 0.02);
-      let cheekR = Math.hypot(x + 0.44, ny + 0.02);
-      if (cheekL < 0.28) {
-        z += 0.16 * Math.cos((cheekL / 0.28) * (Math.PI / 2));
-      }
-      if (cheekR < 0.28) {
-        z += 0.16 * Math.cos((cheekR / 0.28) * (Math.PI / 2));
-      }
-
-      // Defined Cyber Nose Bridge & Tip
-      if (ny > -0.22 && ny < 0.2 && Math.abs(x) < 0.18) {
-        let nX = 1.0 - Math.abs(x) / 0.18;
-        let nY = Math.cos((ny + 0.02) / 0.22 * (Math.PI / 2));
-        z += 0.38 * Math.max(0, nX * nY);
-      }
-
-      // Upper Lip & Mouth Slit
-      if (ny > -0.42 && ny < -0.26 && Math.abs(x) < 0.3) {
-        let mX = 1.0 - Math.abs(x) / 0.3;
-        let mY = Math.sin((ny + 0.42) / 0.16 * Math.PI);
-        z += 0.06 * mX * mY;
-      }
-
-      // Strong Sculpted Cyber Chin
-      if (ny < -0.48 && ny > -0.92 && Math.abs(x) < 0.24) {
-        let cX = 1.0 - Math.abs(x) / 0.24;
-        let cY = Math.sin((ny + 0.48) / 0.44 * Math.PI);
-        z += 0.28 * cX * cY;
-      }
-    }
-
-    pos.setXYZ(i, x, y, z);
-  }
-  headGeo.computeVertexNormals();
-
-  // Glossy Cyan Cyber Skin Material
+  // 1. Glossy Cyber Human Skin Material
   const faceMat = new THREE.MeshPhysicalMaterial({
     color: theme.primary,
     emissive: theme.primary,
     emissiveIntensity: 0.22,
     metalness: 0.35,
-    roughness: 0.15,
+    roughness: 0.18,
     clearcoat: 1.0,
     clearcoatRoughness: 0.1,
     transparent: true,
     opacity: 0.78
   });
   materials.push(faceMat);
-  const faceMesh = new THREE.Mesh(headGeo, faceMat);
-  group.add(faceMesh);
 
-  // Luminous Wireframe Lattice Overlay (matches screenshot aesthetic)
-  const wireGeo = new THREE.WireframeGeometry(headGeo);
+  // 2. Glowing Magenta Wireframe Lattice Material
   const faceWireMat = new THREE.LineBasicMaterial({
     color: theme.accent,
     transparent: true,
-    opacity: 0.52,
+    opacity: 0.45,
     blending: THREE.AdditiveBlending
   });
   faceWireMat.userData = { forceWireframe: true };
   materials.push(faceWireMat);
-  const faceWireMesh = new THREE.LineSegments(wireGeo, faceWireMat);
-  faceWireMesh.scale.set(1.002, 1.002, 1.002);
-  group.add(faceWireMesh);
 
-  // Glowing Cyber Eyes (Optic Lenses)
-  const eyeMat = new THREE.MeshStandardMaterial({
-    color: theme.primary,
-    emissive: theme.primary,
-    emissiveIntensity: 3.5,
-    roughness: 0.1
-  });
-  materials.push(eyeMat);
+  let faceMesh = null;
+  let faceWireMesh = null;
 
-  const eyeGeo = new THREE.SphereGeometry(0.075, 18, 18);
-  const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
-  eyeL.position.set(0.3, 0.14, 0.78);
-  group.add(eyeL);
-
-  const eyeR = new THREE.Mesh(eyeGeo, eyeMat);
-  eyeR.position.set(-0.3, 0.14, 0.78);
-  group.add(eyeR);
-
-  // Concentric Ocular HUD Rings
-  const ocularRingGeo = new THREE.RingGeometry(0.1, 0.12, 20);
-  const ocularRingMat = new THREE.MeshBasicMaterial({
-    color: theme.primary,
-    side: THREE.DoubleSide,
-    transparent: true,
-    opacity: 0.85
-  });
-  materials.push(ocularRingMat);
-  const ringL = new THREE.Mesh(ocularRingGeo, ocularRingMat);
-  ringL.position.set(0.3, 0.14, 0.81);
-  group.add(ringL);
-
-  const ringR = new THREE.Mesh(ocularRingGeo, ocularRingMat);
-  ringR.position.set(-0.3, 0.14, 0.81);
-  group.add(ringR);
-
-  // Cyber Visor Optical Band
-  const visorCurve = new THREE.CubicBezierCurve3(
-    new THREE.Vector3(-0.65, 0.14, 0.5),
-    new THREE.Vector3(-0.35, 0.16, 0.95),
-    new THREE.Vector3(0.35, 0.16, 0.95),
-    new THREE.Vector3(0.65, 0.14, 0.5)
-  );
-  const visorGeo = new THREE.TubeGeometry(visorCurve, 28, 0.02, 6, false);
-  const visorMat = new THREE.MeshBasicMaterial({
-    color: theme.primary,
-    transparent: true,
-    opacity: 0.9
-  });
-  materials.push(visorMat);
-  const visorMesh = new THREE.Mesh(visorGeo, visorMat);
-  group.add(visorMesh);
-
-  // Ear Telemetry Nodes & Spinning Mini Rings
-  const earNodeGeo = new THREE.CylinderGeometry(0.12, 0.14, 0.08, 14);
-  const earNodeMat = new THREE.MeshStandardMaterial({
-    color: 0x0a1628,
-    emissive: theme.primary,
-    emissiveIntensity: 0.5,
-    roughness: 0.2,
-    metalness: 0.8
-  });
-  materials.push(earNodeMat);
-
-  const earL = new THREE.Mesh(earNodeGeo, earNodeMat);
-  earL.position.set(0.72, 0.08, 0.0);
-  earL.rotation.z = Math.PI / 2;
-  group.add(earL);
-
-  const earR = new THREE.Mesh(earNodeGeo, earNodeMat);
-  earR.position.set(-0.72, 0.08, 0.0);
-  earR.rotation.z = -Math.PI / 2;
-  group.add(earR);
-
-  const earRingGeo = new THREE.RingGeometry(0.14, 0.16, 18);
-  const earRingMat = new THREE.MeshBasicMaterial({
-    color: theme.accent,
-    side: THREE.DoubleSide,
-    transparent: true,
-    opacity: 0.8
-  });
-  materials.push(earRingMat);
-
-  const earRingL = new THREE.Mesh(earRingGeo, earRingMat);
-  earRingL.position.set(0.75, 0.08, 0.0);
-  earRingL.rotation.y = Math.PI / 2;
-  group.add(earRingL);
-
-  const earRingR = new THREE.Mesh(earRingGeo, earRingMat);
-  earRingR.position.set(-0.75, 0.08, 0.0);
-  earRingR.rotation.y = -Math.PI / 2;
-  group.add(earRingR);
-
-  // Forehead Neural Processor Octahedron
-  const neuralCoreGeo = new THREE.OctahedronGeometry(0.09, 0);
+  // 3. Forehead Neural Processor Octahedron
+  const neuralCoreGeo = new THREE.OctahedronGeometry(0.08, 0);
   const neuralCoreMat = new THREE.MeshStandardMaterial({
     color: theme.primary,
     emissive: theme.primary,
-    emissiveIntensity: 2.8,
+    emissiveIntensity: 3.0,
     roughness: 0.1
   });
   materials.push(neuralCoreMat);
   const neuralCore = new THREE.Mesh(neuralCoreGeo, neuralCoreMat);
-  neuralCore.position.set(0, 0.46, 0.84);
+  neuralCore.position.set(0, 0.45, 0.82);
   group.add(neuralCore);
 
-  // Inner Rotating Brain Matrix (visible inside translucent skull)
-  const brainGeo = new THREE.IcosahedronGeometry(0.55, 1);
-  const brainMat = new THREE.MeshStandardMaterial({
-    color: theme.accent,
-    wireframe: true,
-    emissive: theme.accent,
-    emissiveIntensity: 0.6
-  });
-  brainMat.userData = { forceWireframe: true };
-  materials.push(brainMat);
-  const brainMesh = new THREE.Mesh(brainGeo, brainMat);
-  brainMesh.position.set(0, 0.2, -0.05);
-  group.add(brainMesh);
-
-  // Outer Floating Gimbal Rings
-  const gimbalGeo1 = new THREE.RingGeometry(1.65, 1.68, 40);
+  // 4. Floating Holographic Gimbal Rings
+  const gimbalGeo1 = new THREE.RingGeometry(1.65, 1.68, 48);
   const gimbalMat1 = new THREE.MeshBasicMaterial({
     color: theme.primary,
     side: THREE.DoubleSide,
@@ -317,7 +117,7 @@ function createCyberFaceGroup(isLowPower, theme) {
   gimbal1.rotation.x = Math.PI / 3;
   group.add(gimbal1);
 
-  const gimbalGeo2 = new THREE.RingGeometry(1.82, 1.84, 40);
+  const gimbalGeo2 = new THREE.RingGeometry(1.82, 1.84, 48);
   const gimbalMat2 = new THREE.MeshBasicMaterial({
     color: theme.accent,
     side: THREE.DoubleSide,
@@ -329,23 +129,46 @@ function createCyberFaceGroup(isLowPower, theme) {
   gimbal2.rotation.y = Math.PI / 4;
   group.add(gimbal2);
 
+  // 5. Load Real Human Face Scan (LeePerrySmith GLB)
+  const modelUrl = (import.meta.env.BASE_URL || './') + 'models/human_face.glb';
+  const loader = new GLTFLoader();
+  loader.load(modelUrl, (gltf) => {
+    let sourceMesh = null;
+    gltf.scene.traverse((child) => {
+      if (child.isMesh) {
+        sourceMesh = child;
+      }
+    });
+
+    if (sourceMesh) {
+      const geo = sourceMesh.geometry;
+      geo.center();
+
+      faceMesh = new THREE.Mesh(geo, faceMat);
+      faceMesh.scale.set(0.3, 0.3, 0.3);
+      group.add(faceMesh);
+
+      const wireGeo = new THREE.WireframeGeometry(geo);
+      faceWireMesh = new THREE.LineSegments(wireGeo, faceWireMat);
+      faceWireMesh.scale.set(0.3008, 0.3008, 0.3008);
+      group.add(faceWireMesh);
+
+      if (onLoaded) {
+        onLoaded({ faceMesh, faceWireMesh });
+      }
+    }
+  }, undefined, (err) => {
+    console.warn('Failed to load human face GLB:', err);
+  });
+
   return {
     group,
     materials,
     elements: {
-      faceMesh,
-      faceWireMesh,
       faceMat,
       faceWireMat,
-      eyeMat,
       neuralCore,
       neuralCoreMat,
-      brainMesh,
-      brainMat,
-      visorMat,
-      earRingL,
-      earRingR,
-      earRingMat,
       gimbal1,
       gimbal2,
       gimbalMat1,
@@ -355,7 +178,7 @@ function createCyberFaceGroup(isLowPower, theme) {
 }
 
 const GEOMETRY_MODES = [
-  { id: 'face', label: 'AI Cyber Face', shortLabel: 'AI Face', icon: ScanFace },
+  { id: 'face', label: 'Human AI Avatar', shortLabel: 'AI Human', icon: ScanFace },
   { id: 'core', label: 'Quantum Core', shortLabel: 'Core', icon: Atom },
   { id: 'nebula', label: 'Vortex Cloud', shortLabel: 'Cloud', icon: Sparkles },
   { id: 'lattice', label: 'Cyber Lattice', shortLabel: 'Lattice', icon: Layers }
@@ -444,35 +267,21 @@ export default function CyberCoreCanvas() {
       const { 
         faceMat, 
         faceWireMat, 
-        eyeMat, 
         neuralCoreMat, 
-        brainMat, 
-        visorMat, 
         gimbalMat1, 
-        gimbalMat2, 
-        earRingMat 
+        gimbalMat2
       } = stateRef.current.faceElements;
       if (faceMat) {
         faceMat.color.setHex(theme.primary);
         faceMat.emissive.setHex(theme.primary);
       }
       if (faceWireMat) faceWireMat.color.setHex(theme.accent);
-      if (eyeMat) {
-        eyeMat.color.setHex(theme.primary);
-        eyeMat.emissive.setHex(theme.primary);
-      }
       if (neuralCoreMat) {
         neuralCoreMat.color.setHex(theme.primary);
         neuralCoreMat.emissive.setHex(theme.primary);
       }
-      if (brainMat) {
-        brainMat.color.setHex(theme.accent);
-        brainMat.emissive.setHex(theme.accent);
-      }
-      if (visorMat) visorMat.color.setHex(theme.primary);
       if (gimbalMat1) gimbalMat1.color.setHex(theme.primary);
       if (gimbalMat2) gimbalMat2.color.setHex(theme.accent);
-      if (earRingMat) earRingMat.color.setHex(theme.accent);
     }
   };
 
@@ -498,7 +307,7 @@ export default function CyberCoreCanvas() {
 
     // Update telemetry counts
     if (stateRef.current.activeMode === 'face') {
-      setTelemetry(prev => ({ ...prev, vertices: 6656, faces: 13312 }));
+      setTelemetry(prev => ({ ...prev, vertices: 9279, faces: 18558 }));
     } else if (stateRef.current.activeMode === 'core') {
       setTelemetry(prev => ({ ...prev, vertices: 6240, faces: 12480 }));
     } else if (stateRef.current.activeMode === 'nebula') {
@@ -579,8 +388,12 @@ export default function CyberCoreCanvas() {
 
     const materialsList = [];
 
-    // --- Mode 0: AI Cyber Face (Holographic Cybernetic Head & Neural Core) ---
-    const faceData = createCyberFaceGroup(isLowPower, COLOR_THEMES[activeTheme] || COLOR_THEMES.cyan);
+    // --- Mode 0: Real Anatomical Human Face (Holographic Cyber Shader) ---
+    const faceData = createHumanFaceGroup(COLOR_THEMES[activeTheme] || COLOR_THEMES.cyan, () => {
+      if (stateRef.current.activeMode === 'face') {
+        setTelemetry(prev => ({ ...prev, vertices: 9279, faces: 18558 }));
+      }
+    });
     mainGroup.add(faceData.group);
     materialsList.push(...faceData.materials);
     stateRef.current.faceElements = faceData.elements;
@@ -892,11 +705,6 @@ export default function CyberCoreCanvas() {
         faceElements.neuralCore.rotation.y = elapsedTime * 1.8;
         faceElements.neuralCore.rotation.z = elapsedTime * 0.9;
         faceElements.neuralCoreMat.emissiveIntensity = 2.0 + Math.sin(elapsedTime * 4.0) * 1.2;
-        faceElements.eyeMat.emissiveIntensity = 3.2 + Math.sin(elapsedTime * 3.0) * 0.8;
-        faceElements.brainMesh.rotation.y = -elapsedTime * 0.4;
-        faceElements.brainMesh.rotation.x = elapsedTime * 0.2;
-        faceElements.earRingL.rotation.z = elapsedTime * 1.5;
-        faceElements.earRingR.rotation.z = -elapsedTime * 1.5;
         faceElements.gimbal1.rotation.z = elapsedTime * 0.25;
         faceElements.gimbal2.rotation.x = -elapsedTime * 0.2;
       } else if (activeMode === 'core' && subEntities?.torusMesh) {
