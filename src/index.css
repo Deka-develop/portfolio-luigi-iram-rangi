@@ -4,41 +4,27 @@
 
 @layer base {
   html {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Geist', 'Inter', system-ui, sans-serif;
     scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: none;
-    scroll-snap-type: y proximity;
+    -webkit-text-size-adjust: 100%;
+    background-color: #EDEEF0;
   }
   body {
-    @apply bg-background text-foreground;
-    overflow-x: hidden;
-    overscroll-behavior-y: none;
+    @apply bg-paper text-ink;
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Outfit', system-ui, sans-serif;
+    font-family: 'Geist', 'Inter', system-ui, sans-serif;
   }
-}
-
-.snap-section {
-  scroll-snap-align: start;
-}
-
-/* Strict slide snap on desktop / tablet screens */
-@media (min-width: 768px) {
-  html {
-    scroll-snap-type: y mandatory;
+  ::selection {
+    background: #684AFF;
+    color: #EDEEF0;
   }
-  .snap-section {
-    scroll-snap-stop: always;
-  }
-}
-
-/* Mobile: soften heavy blur effects that are expensive on phone GPUs */
-@media (max-width: 767px) {
-  .backdrop-blur-2xl, .backdrop-blur-xl {
-    --tw-backdrop-blur: blur(10px);
+  button, a {
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -52,27 +38,37 @@
   }
 }
 
-/* Custom Scrollbar for better UI */
+/* Editorial scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: #EDEEF0;
 }
 ::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
+  background: #111111;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #684AFF;
 }
 
-/* Typography Effects */
-.stroke-text {
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+/* Hide scrollbar on horizontal chip rails */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Typography effects */
+.outline-text {
+  -webkit-text-stroke: 2px #111111;
   color: transparent;
 }
-.stroke-text:hover {
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 1);
+@media (min-width: 768px) {
+  .outline-text {
+    -webkit-text-stroke: 3px #111111;
+  }
 }
-

@@ -1,241 +1,253 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
-import { ArrowDown, Sparkles, Code2, Cpu, Zap, Layers, Activity } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 
-// Code-split Three.js (~540KB) — load on user interaction or idle to guarantee 0ms TBT
-const CyberCoreCanvas = lazy(() => import('./CyberCoreCanvas'));
+// Words of the manifesto that reveal one-by-one while scrolling (b = emphasised)
+const MANIFESTO = [
+  'I', 'build', ['the', 1], ['web', 1], 'the', 'way', 'it', 'should', 'feel', '—',
+  ['fast,', 1], ['honest', 1], 'and', ['rooted.', 1], 'From', 'the', 'heart', 'of', 'Borneo,',
+  'I', 'turn', 'ideas', 'into', ['interactive', 1], ['platforms,', 1], ['3D', 1], ['experiences', 1],
+  'and', 'brand', 'systems', 'that', 'load', 'instantly,', 'work', 'everywhere', 'and', 'are', 'remembered.',
+  'Because', 'for', 'me,', 'code', 'isn’t', 'just', 'about', 'shipping', '—', 'it’s', 'about', 'making',
+  'ideas', ['seen,', 1], ['felt,', 1], ['and', 1], ['trusted.', 1]
+].map((w) => (Array.isArray(w) ? { t: w[0], b: true } : { t: w, b: false }));
 
-const CanvasPlaceholder = ({ onActivate }) => (
-  <div 
-    onClick={onActivate}
-    className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[420px] lg:max-w-[480px] aspect-square rounded-3xl bg-neutral-950/80 border border-white/15 flex flex-col items-center justify-between p-4 sm:p-7 select-none shadow-[0_20px_60px_rgba(0,0,0,0.8)] backdrop-blur-xl group cursor-pointer overflow-hidden"
-    title="Klik untuk mengaktifkan WebGL 3D AI Cyber Avatar"
-  >
-    {/* Ambient Internal Glow */}
-    <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 via-purple-600/10 to-transparent pointer-events-none" />
-    
-    {/* Top Status Bar */}
-    <div className="w-full flex items-center justify-between z-10">
-      <div className="flex items-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-        <span className="text-[11px] font-mono font-bold tracking-wider text-cyan-300 uppercase">
-          AI CYBER CORE • 3D
-        </span>
-      </div>
-      <span className="px-2 py-0.5 rounded text-[9px] font-mono bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 uppercase tracking-widest">
-        WEBGL 2.0
-      </span>
-    </div>
+function Word({ progress, start, end, bold, children }) {
+  const opacity = useTransform(progress, [start, end], [0.12, 1]);
+  return (
+    <motion.span
+      style={{ opacity }}
+      className={`inline-block mr-[0.28em] ${bold ? 'font-black' : 'font-normal'}`}
+    >
+      {children}
+    </motion.span>
+  );
+}
 
-    {/* Center Cyber Hologram Rings (Pure GPU CSS) */}
-    <div className="relative flex items-center justify-center my-auto">
-      {/* Outer Glow Halo */}
-      <div className="absolute w-44 h-44 rounded-full bg-cyan-500/15 blur-2xl animate-pulse" />
-      
-      {/* Outer Dashed Ring */}
-      <div className="w-36 h-36 rounded-full border border-dashed border-cyan-400/40 animate-[spin_20s_linear_infinite]" />
-      
-      {/* Middle Solid Ring */}
-      <div className="absolute w-28 h-28 rounded-full border border-purple-500/50 animate-[spin_12s_linear_infinite_reverse]" />
-      
-      {/* Inner Glowing Core */}
-      <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400/30 via-purple-500/30 to-blue-600/30 border border-cyan-400/60 shadow-[0_0_25px_rgba(0,240,255,0.4)] flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-        <Sparkles className="w-6 h-6 text-cyan-300 animate-pulse" />
-      </div>
-    </div>
-
-    {/* Bottom Interaction Cue */}
-    <div className="w-full flex items-center justify-between z-10 pt-2 border-t border-white/10 text-[11px] font-mono text-white/60">
-      <div className="flex items-center gap-1.5 text-cyan-300">
-        <Zap className="w-3.5 h-3.5" />
-        <span className="group-hover:text-white transition-colors">Hover / Touch to Engage</span>
-      </div>
-      <span className="text-white/40">120 FPS</span>
-    </div>
-  </div>
-);
+const STAGE_BREAKS = [0.22, 0.47, 0.77];
 
 const Hero = ({ setActiveSection }) => {
-  const [shouldLoad3D, setShouldLoad3D] = useState(false);
+  const ref = useRef(null);
+  const [stage, setStage] = useState(0);
 
-  useEffect(() => {
-    let triggered = false;
-    const trigger3D = () => {
-      if (triggered) return;
-      triggered = true;
-      setShouldLoad3D(true);
-      removeListeners();
-    };
+  const { scrollYProgress: p } = useScroll({
+    target: ref,
+    offset: ['start start', 'end end']
+  });
 
-    const removeListeners = () => {
-      window.removeEventListener('pointermove', trigger3D);
-      window.removeEventListener('scroll', trigger3D);
-      window.removeEventListener('touchstart', trigger3D);
-      window.removeEventListener('keydown', trigger3D);
-    };
+  useMotionValueEvent(p, 'change', (v) => {
+    const next = v < STAGE_BREAKS[0] ? 0 : v < STAGE_BREAKS[1] ? 1 : v < STAGE_BREAKS[2] ? 2 : 3;
+    setStage((prev) => (prev === next ? prev : next));
+  });
 
-    // Load immediately when user interacts
-    window.addEventListener('pointermove', trigger3D, { passive: true, once: true });
-    window.addEventListener('scroll', trigger3D, { passive: true, once: true });
-    window.addEventListener('touchstart', trigger3D, { passive: true, once: true });
-    window.addEventListener('keydown', trigger3D, { passive: true, once: true });
+  // Stage A — giant name (clamped so opacity cannot go negative and invalidate CSS)
+  const aOpacity = useTransform(p, [0, 0.14, 0.22], [1, 1, 0], { clamp: true });
+  const aDisplay = useTransform(p, (v) => (v < 0.25 ? 'flex' : 'none'));
+  const aRotate = useTransform(p, [0, 0.22], [0, 62], { clamp: true });
+  const aY = useTransform(p, [0, 0.22], [0, -70], { clamp: true });
+  const aScale = useTransform(p, [0, 0.22], [1, 0.88], { clamp: true });
 
-    // Fallback on idle for passive sessions (after main-thread metrics complete)
-    let idleHandle;
-    if ('requestIdleCallback' in window) {
-      idleHandle = window.requestIdleCallback(trigger3D, { timeout: 3500 });
-    } else {
-      const timer = setTimeout(trigger3D, 3500);
-      return () => {
-        removeListeners();
-        clearTimeout(timer);
-      };
-    }
+  // Stage B — numbers
+  const bOpacity = useTransform(p, [0.18, 0.27, 0.41, 0.49], [0, 1, 1, 0], { clamp: true });
+  const bDisplay = useTransform(p, (v) => (v >= 0.16 && v < 0.52 ? 'block' : 'none'));
+  const bLeftX = useTransform(p, [0.18, 0.3], [-80, 0], { clamp: true });
+  const bRightX = useTransform(p, [0.2, 0.32], [80, 0], { clamp: true });
 
-    return () => {
-      removeListeners();
-      if (idleHandle && 'cancelIdleCallback' in window) {
-        window.cancelIdleCallback(idleHandle);
-      }
-    };
-  }, []);
+  // Stage C — manifesto
+  const cOpacity = useTransform(p, [0.45, 0.52, 0.71, 0.79], [0, 1, 1, 0], { clamp: true });
+  const cDisplay = useTransform(p, (v) => (v >= 0.43 && v < 0.82 ? 'flex' : 'none'));
+
+  // Stage D — call to action
+  const dOpacity = useTransform(p, [0.75, 0.84], [0, 1], { clamp: true });
+  const dDisplay = useTransform(p, (v) => (v >= 0.73 ? 'flex' : 'none'));
+  const dY = useTransform(p, [0.75, 0.86], [60, 0], { clamp: true });
+
+  const barScale = useTransform(p, [0, 1], [0, 1], { clamp: true });
 
   return (
-    <section className="relative w-full min-h-screen bg-transparent flex flex-col justify-between">
-      {/* Decorative Grid & Vignette */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-15 pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)] pointer-events-none" />
+    <section ref={ref} className="relative w-full h-[520vh] bg-paper z-10">
+      <div className="sticky top-0 left-0 w-full h-[100svh] overflow-hidden">
 
-      {/* Atmospheric Ambient Glows */}
-      <div className="absolute top-1/4 -right-20 w-[550px] h-[550px] max-w-full bg-gradient-to-br from-indigo-500/15 via-purple-600/10 to-transparent rounded-full blur-[120px] pointer-events-none hidden md:block" />
-      <div className="absolute -bottom-20 -left-20 w-[500px] h-[500px] bg-gradient-to-tr from-cyan-500/10 via-blue-600/10 to-transparent rounded-full blur-[120px] pointer-events-none hidden md:block" />
+        {/* Subtle paper grid */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.5]"
+          style={{
+            backgroundImage:
+              'linear-gradient(to right, rgba(17,17,17,0.045) 1px, transparent 1px), linear-gradient(to bottom, rgba(17,17,17,0.045) 1px, transparent 1px)',
+            backgroundSize: '80px 80px'
+          }}
+        />
 
-      {/* Main Hero Content */}
-      <div className="flex-1 w-full max-w-7xl mx-auto px-5 sm:px-10 lg:px-16 flex flex-col lg:flex-row items-center justify-center gap-5 sm:gap-10 lg:gap-14 pt-16 sm:pt-24 md:pt-20 pb-3 md:pb-6 relative z-10">
-        
-        {/* Left Column: Heading & CTA */}
-        <div className="w-full lg:w-[52%] flex flex-col justify-center">
+        {/* ───────── Stage A: giant name ───────── */}
+        <motion.div
+          style={{ opacity: aOpacity, display: aDisplay, perspective: 1500 }}
+          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+        >
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            style={{ rotateX: aRotate, y: aY, scale: aScale, transformOrigin: '50% 100%' }}
+            className="relative flex items-center justify-center"
           >
-            {/* Availability Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl mb-3 sm:mb-5 shadow-sm max-w-full">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
-              <span className="text-[10px] sm:text-xs font-mono font-medium tracking-wider text-white/80 uppercase">
-                Founder of Ddev • Currently at{' '}
-                <a 
-                  href="https://www.borneoglobe.org/" 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  className="text-cyan-300 hover:text-white underline decoration-cyan-400/50 underline-offset-2 transition-colors pointer-events-auto"
-                >
-                  Borneo Globe
-                </a>
-              </span>
-            </div>
-
-            {/* Main Headline */}
-            <h1 className="text-3xl sm:text-6xl lg:text-7xl font-display font-black tracking-tight text-white uppercase leading-[1.05] mb-3 sm:mb-5">
-              LUIGI IRAM <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-purple-500">
+            <h1 className="font-sans text-ink text-[27vw] md:text-[21vw] lg:text-[19vw] font-bold uppercase leading-[0.78] tracking-tighter select-none">
+              <motion.span
+                initial={{ y: '40%', opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 1.7, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-block"
+              >
                 RANGI
-              </span>
+              </motion.span>
             </h1>
 
-            {/* Sub-Headline & Bio */}
-            <p className="text-xs sm:text-base lg:text-lg text-white/75 font-sans font-normal max-w-lg mb-3 sm:mb-5 leading-relaxed">
-              Creative Developer & Founder of <span className="text-cyan-300 font-medium">Ddev</span>. Merancang web modern, visual 3D/WebGL, dan arsitektur performa tinggi dari Borneo.
-            </p>
-
-            {/* Kinetic Animated Points Ticker (Zero-bloat, To The Point) */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35, duration: 0.6 }}
-              className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-4 sm:mb-7"
+            {/* LUIGI IRAM label (left of the word on desktop, above on mobile) */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 2.0, duration: 0.7 }}
+              className="absolute left-0 bottom-[104%] md:bottom-[6%] md:right-[101%] md:left-auto md:mr-6 flex flex-col items-start md:items-end"
             >
-              {[
-                { label: '120 FPS WebGL 3D', icon: Zap, color: '#00f0ff' },
-                { label: '100/100 Core Vitals', icon: Activity, color: '#38bdf8' },
-                { label: '8 Live Platforms', icon: Layers, color: '#d946ef' },
-                { label: 'West Borneo Origin', icon: Sparkles, color: '#10b981' }
-              ].map((pt, pIdx) => {
-                const Icon = pt.icon;
-                return (
-                  <motion.div
-                    key={pIdx}
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-white/[0.04] border border-white/10 hover:border-white/30 backdrop-blur-md shadow-sm transition-all cursor-default group"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full animate-ping" style={{ backgroundColor: pt.color }} />
-                    <span className="text-[10px] sm:text-[11px] font-mono font-medium text-white/80 group-hover:text-white transition-colors">
-                      {pt.label}
-                    </span>
-                  </motion.div>
-                );
-              })}
+              <div className="w-8 md:w-14 h-[1.5px] bg-ink mb-1.5 md:mb-2" />
+              <span className="font-sans font-bold text-[11px] md:text-[17px] lg:text-[20px] uppercase tracking-[0.1em] text-ink whitespace-nowrap">
+                LUIGI IRAM
+              </span>
             </motion.div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-              <button
-                onClick={() => setActiveSection(2)}
-                className="group relative inline-flex items-center gap-2.5 px-5 py-2.5 sm:px-7 sm:py-3.5 font-medium tracking-wide text-black transition-all duration-300 ease-out bg-white rounded-full hover:bg-cyan-400 hover:shadow-[0_0_25px_rgba(0,240,255,0.6)] cursor-pointer text-xs sm:text-sm"
-              >
-                <span>Lihat Portofolio</span>
-                <Sparkles className="w-3.5 h-3.5 transition-transform group-hover:rotate-12" />
-              </button>
-
-              <button
-                onClick={() => setActiveSection(4)}
-                className="inline-flex items-center justify-center px-5 py-2.5 sm:px-7 sm:py-3.5 font-medium tracking-wide text-white/80 transition-all duration-300 ease-out rounded-full border border-white/20 hover:border-white/60 hover:text-white hover:bg-white/[0.05] cursor-pointer text-xs sm:text-sm"
-              >
-                Get in Touch
-              </button>
-            </div>
+            {/* Role (right under the word) */}
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 2.1, duration: 0.7 }}
+              className="absolute left-0 md:left-auto md:right-0 top-[108%] mt-2 md:mt-5 flex flex-col items-start"
+            >
+              <h2 className="font-sans text-[12px] md:text-[16px] lg:text-[20px] font-bold uppercase tracking-widest text-ink">
+                Creative Developer
+              </h2>
+              <p className="font-sans font-normal text-[10px] md:text-[14px] lg:text-[18px] text-[#555] tracking-wide mt-1 whitespace-nowrap">
+                Web 3D · Brand Systems · Interactive Web
+              </p>
+            </motion.div>
           </motion.div>
-        </div>
 
-        {/* Right Column: Live Interactive WebGL 3D Showcase */}
-        <div className="w-full lg:w-[48%] flex justify-center items-center relative">
+          {/* Rotating Ddev sticker */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: "easeOut", delay: 0.15 }}
-            className="w-full flex justify-center"
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 2.3, duration: 0.7, type: 'spring' }}
+            className="absolute right-[7%] top-[16%] md:right-[11%] md:top-[18%] w-20 h-20 md:w-28 md:h-28"
           >
-            {shouldLoad3D ? (
-              <Suspense fallback={<CanvasPlaceholder onActivate={() => setShouldLoad3D(true)} />}>
-                <CyberCoreCanvas />
-              </Suspense>
-            ) : (
-              <CanvasPlaceholder onActivate={() => setShouldLoad3D(true)} />
-            )}
+            <div className="absolute inset-0 rounded-full bg-violet border-2 border-ink animate-[spin_16s_linear_infinite]">
+              <svg viewBox="0 0 100 100" className="w-full h-full">
+                <defs>
+                  <path id="ring" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0" />
+                </defs>
+                <text className="font-mono" fontSize="9.4" fontWeight="700" letterSpacing="2.4" fill="#111">
+                  <textPath href="#ring">DDEV • DAYAK DEVELOPER • BORNEO •</textPath>
+                </text>
+              </svg>
+            </div>
+            <span className="absolute inset-0 flex items-center justify-center font-sans font-black text-xl md:text-3xl text-ink">
+              ✦
+            </span>
           </motion.div>
-        </div>
-
-      </div>
-
-      {/* Scroll to Explore Indicator */}
-      <motion.div
-        onClick={() => setActiveSection(1)}
-        className="w-full hidden md:flex flex-col items-center gap-2 pb-6 z-10 cursor-pointer pointer-events-auto hover:opacity-100 transition-opacity"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
-      >
-        <span className="text-xs font-semibold tracking-[0.2em] text-white/60 drop-shadow-md">
-          SCROLL TO EXPLORE
-        </span>
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <ArrowDown className="w-4 h-4 text-white/60 drop-shadow-md" />
         </motion.div>
-      </motion.div>
+
+        {/* ───────── Stage B: numbers ───────── */}
+        <motion.div
+          style={{ opacity: bOpacity, display: bDisplay }}
+          className="absolute inset-0 pointer-events-none"
+        >
+          <motion.div
+            style={{ x: bLeftX }}
+            className="absolute left-[7%] md:left-[12%] lg:left-[15%] top-[28%] md:top-[36%] -translate-y-1/2 flex flex-col items-start"
+          >
+            <span className="font-sans font-black text-[34vw] md:text-[16vw] lg:text-[14vw] uppercase tracking-tighter text-ink leading-[0.85]">
+              08+
+            </span>
+            <span className="font-sans font-bold text-[14px] md:text-[20px] lg:text-[22px] uppercase tracking-wide text-ink mt-2">
+              Live Platforms.
+            </span>
+          </motion.div>
+
+          <motion.div
+            style={{ x: bRightX }}
+            className="absolute right-[7%] md:right-[12%] lg:right-[15%] top-[66%] md:top-[64%] -translate-y-1/2 flex flex-col items-start"
+          >
+            <span className="font-sans font-black text-[34vw] md:text-[16vw] lg:text-[14vw] uppercase tracking-tighter text-violet leading-[0.85]" style={{ WebkitTextStroke: '2px #111' }}>
+              120+
+            </span>
+            <span className="font-sans font-bold text-[14px] md:text-[20px] lg:text-[22px] uppercase tracking-wide text-ink mt-2">
+              Web Systems.
+            </span>
+          </motion.div>
+
+          <span className="absolute left-1/2 -translate-x-1/2 bottom-[17%] md:bottom-[20%] font-mono text-[10px] md:text-[12px] uppercase tracking-[0.25em] text-ink whitespace-nowrap">
+            100 / 100 Core Vitals · &lt; 0.6s LCP
+          </span>
+        </motion.div>
+
+        {/* ───────── Stage C: manifesto ───────── */}
+        <motion.div
+          style={{ opacity: cOpacity, display: cDisplay }}
+          className="absolute inset-0 flex items-center justify-center px-6 md:px-12 lg:px-24 pointer-events-none"
+        >
+          <p className="font-sans text-[22px] sm:text-[28px] md:text-[34px] lg:text-[42px] leading-[1.35] text-ink text-left md:text-center max-w-[92%] md:max-w-5xl">
+            {MANIFESTO.map((w, i) => {
+              const start = 0.49 + (i / MANIFESTO.length) * 0.2;
+              return (
+                <Word key={i} progress={p} start={start} end={start + 0.025} bold={w.b}>
+                  {w.t}
+                </Word>
+              );
+            })}
+          </p>
+        </motion.div>
+
+        {/* ───────── Stage D: call to action ───────── */}
+        <motion.div
+          style={{ opacity: dOpacity, display: dDisplay, y: dY, pointerEvents: stage === 3 ? 'auto' : 'none' }}
+          className="absolute inset-0 flex flex-col md:flex-row md:items-center justify-center md:justify-between gap-10 px-6 md:px-12 lg:px-20"
+        >
+          <h2 className="flex flex-col font-sans font-black uppercase text-[15vw] md:text-[9vw] lg:text-[100px] leading-[0.92] tracking-tighter text-ink">
+            <span>Have an</span>
+            <span className="text-[#555]">idea?</span>
+            <span>Let’s</span>
+            <span className="text-violet" style={{ WebkitTextStroke: '2px #111' }}>build it.</span>
+          </h2>
+
+          <div className="flex flex-col items-start gap-5 md:max-w-[300px]">
+            <p className="font-sans font-bold text-[#111] text-sm md:text-base lg:text-[18px] uppercase tracking-tight leading-[1.3]">
+              Let’s talk<br />
+              Hire / Collaborate / General inquiries
+            </p>
+
+            <a
+              href="mailto:iramrangi@gmail.com"
+              className="group relative inline-block mt-1"
+            >
+              <div className="absolute inset-0 bg-ink translate-x-1.5 translate-y-1.5 transition-transform duration-200 group-hover:translate-x-0 group-hover:translate-y-0" />
+              <div className="relative px-6 py-4 bg-violet border-2 border-ink flex items-center justify-center transition-transform duration-200 group-hover:translate-x-1.5 group-hover:translate-y-1.5">
+                <span className="font-sans font-black text-ink text-sm md:text-base uppercase tracking-widest whitespace-nowrap">
+                  Send Email <span className="ml-1 inline-block">↗</span>
+                </span>
+              </div>
+            </a>
+
+            <button
+              onClick={() => setActiveSection(2)}
+              className="font-mono text-[11px] md:text-xs uppercase tracking-[0.2em] text-ink underline underline-offset-4 decoration-2 hover:text-violet transition-colors cursor-pointer"
+            >
+              See selected works ↓
+            </button>
+          </div>
+        </motion.div>
+
+        {/* Bottom scroll bar */}
+        <div className="absolute bottom-6 md:bottom-10 left-4 md:left-12 lg:left-20 right-4 md:right-12 lg:right-20 flex items-center justify-between z-40 pointer-events-none">
+          <span className="font-mono text-[8px] md:text-[10px] uppercase tracking-[0.2em] text-ink">Scroll</span>
+          <div className="flex-1 mx-4 md:mx-8 h-[1px] bg-ink/20 relative overflow-hidden">
+            <motion.div style={{ scaleX: barScale }} className="absolute top-0 left-0 w-full h-full bg-ink origin-left" />
+          </div>
+          <span className="font-mono text-[8px] md:text-[10px] uppercase tracking-[0.2em] text-ink">V. 1.0</span>
+        </div>
+      </div>
     </section>
   );
 };
