@@ -11,8 +11,8 @@ const MilestonePage = lazy(() => import('./pages/MilestonePage'));
 const SkillsPage = lazy(() => import('./pages/SkillsPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 
-
-
+// Scroll-driven animated introduction journey
+const IntroductionJourney = lazy(() => import('./components/IntroductionJourney'));
 function getRouteFromHash() {
   if (typeof window === 'undefined') return 'home';
   const hash = window.location.hash.toLowerCase().replace(/^#\/?/, '');
@@ -430,11 +430,14 @@ function App() {
 
           {route === 'home' && (
             <div className="relative z-10 w-full flex flex-col">
-              {/* Monumental Introduction Section (Perkenalan) */}
+              {/* Monumental Hero Opening */}
               <Hero
                 onNavigateToProjects={() => navigateTo('karya')}
                 onNavigateToMilestone={() => navigateTo('milestone-3d')}
               />
+
+              {/* Scroll-Driven Animated Introduction Journey */}
+              <IntroductionJourney onNavigate={navigateTo} />
             </div>
           )}
         </Suspense>

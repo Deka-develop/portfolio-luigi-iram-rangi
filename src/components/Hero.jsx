@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ArrowDown } from 'lucide-react';
 import { DayakShieldEmblem } from './DayakMotifs';
 
 const Dayak3DCanvas = lazy(() => import('./Dayak3DCanvas'));
@@ -101,7 +101,7 @@ export default function Hero({ setActiveSection, onNavigateToProjects, onNavigat
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.7 }}
-          className="w-full max-w-2xl text-center mt-6 md:mt-8 flex flex-col items-center gap-6"
+          className="w-full max-w-2xl text-center mt-6 md:mt-8 flex flex-col items-center gap-5"
         >
           <p className="font-sans text-sm sm:text-base md:text-lg text-[#111111]/60 leading-relaxed max-w-xl font-normal">
             Merajut akar budaya <strong className="text-[#111111] font-semibold">Dayak &amp; Borneo</strong> dengan rekayasa web modern, visual 3D interaktif Three.js, serta ekosistem digital skala regional yang berkinerja tinggi.
@@ -136,6 +136,19 @@ export default function Hero({ setActiveSection, onNavigateToProjects, onNavigat
               <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
             </button>
           </div>
+
+          {/* Animated Scroll Down Indicator for Introduction Story */}
+          <button
+            onClick={() => {
+              const el = document.getElementById('introduction-story');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            aria-label="Gulir ke cerita perkenalan dan filosofi"
+            className="mt-1 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/5 hover:bg-[#684AFF]/10 text-[#111111]/70 hover:text-[#684AFF] font-mono text-[10px] uppercase tracking-widest transition-all cursor-pointer group focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none"
+          >
+            <span>Eksplorasi Cerita &amp; Filosofi</span>
+            <ArrowDown className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform animate-bounce" aria-hidden="true" />
+          </button>
         </motion.div>
 
       </div>
