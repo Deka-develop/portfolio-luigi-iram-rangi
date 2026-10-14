@@ -188,11 +188,11 @@ function App() {
       <button
         onClick={() => scrollToSection(0)}
         aria-label="Kembali ke atas"
-        className={`fixed top-5 md:top-8 left-1/2 -translate-x-1/2 z-50 mix-blend-difference text-[#EDEEF0] font-sans font-bold text-[10px] md:text-[11px] uppercase tracking-[0.35em] transition-all duration-500 cursor-pointer ${
+        className={`fixed top-5 md:top-8 left-1/2 -translate-x-1/2 z-50 mix-blend-difference text-[#EDEEF0] font-sans font-bold text-[10px] md:text-[11px] uppercase tracking-[0.35em] whitespace-nowrap transition-all duration-500 cursor-pointer ${
           scrolled && !isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
         }`}
       >
-        Rangi
+        Iram Rangi
       </button>
 
       {/* Fan-out numbered menu (top-right) */}
