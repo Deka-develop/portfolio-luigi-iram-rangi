@@ -344,7 +344,7 @@ export default function Contact() {
                       <div>
                         <h4 className="text-base font-display font-bold text-white mb-1">
                           {sendResult.type === 'direct'
-                            ? 'Transmisi Berhasil Terkirim! 🚀'
+                            ? 'Transmisi Berhasil Terkirim!'
                             : sendResult.type === 'activation'
                             ? 'Aktivasi Form Diperlukan'
                             : 'Transmisi Siap Diteruskan'}
@@ -450,7 +450,7 @@ export default function Contact() {
                         ) : (
                           <>
                             <Send className="w-3.5 h-3.5" />
-                            <span>Kirim Transmisi Pesan 🚀</span>
+                            <span>Kirim Transmisi Pesan</span>
                           </>
                         )}
                       </button>
