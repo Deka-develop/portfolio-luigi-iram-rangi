@@ -9,7 +9,7 @@ const CanvasPlaceholder = ({ onActivate }) => (
   <div 
     onClick={onActivate}
     className="relative w-full max-w-[480px] aspect-square rounded-3xl bg-neutral-950/80 border border-white/15 flex flex-col items-center justify-between p-7 select-none shadow-[0_20px_60px_rgba(0,0,0,0.8)] backdrop-blur-xl group cursor-pointer overflow-hidden"
-    title="Klik untuk mengaktifkan WebGL 3D Quantum Core"
+    title="Klik untuk mengaktifkan WebGL 3D AI Cyber Avatar"
   >
     {/* Ambient Internal Glow */}
     <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 via-purple-600/10 to-transparent pointer-events-none" />
@@ -19,7 +19,7 @@ const CanvasPlaceholder = ({ onActivate }) => (
       <div className="flex items-center gap-2">
         <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
         <span className="text-[11px] font-mono font-bold tracking-wider text-cyan-300 uppercase">
-          QUANTUM CORE • 3D
+          AI CYBER CORE • 3D
         </span>
       </div>
       <span className="px-2 py-0.5 rounded text-[9px] font-mono bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 uppercase tracking-widest">
