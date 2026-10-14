@@ -145,9 +145,38 @@ const Hero = ({ setActiveSection }) => {
             </h1>
 
             {/* Sub-Headline & Bio */}
-            <p className="text-base sm:text-lg text-white/75 font-sans font-normal max-w-lg mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg text-white/75 font-sans font-normal max-w-lg mb-5 leading-relaxed">
               Creative Developer & Founder of <span className="text-cyan-300 font-medium">Ddev</span>. Merancang web modern, visual 3D/WebGL, dan arsitektur performa tinggi dari Borneo.
             </p>
+
+            {/* Kinetic Animated Points Ticker (Zero-bloat, To The Point) */}
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35, duration: 0.6 }}
+              className="flex flex-wrap items-center gap-2 mb-7"
+            >
+              {[
+                { label: '120 FPS WebGL 3D', icon: Zap, color: '#00f0ff' },
+                { label: '100/100 Core Vitals', icon: Activity, color: '#38bdf8' },
+                { label: '8 Live Platforms', icon: Layers, color: '#d946ef' },
+                { label: 'West Borneo Origin', icon: Sparkles, color: '#10b981' }
+              ].map((pt, pIdx) => {
+                const Icon = pt.icon;
+                return (
+                  <motion.div
+                    key={pIdx}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 hover:border-white/30 backdrop-blur-md shadow-sm transition-all cursor-default group"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full animate-ping" style={{ backgroundColor: pt.color }} />
+                    <span className="text-[11px] font-mono font-medium text-white/80 group-hover:text-white transition-colors">
+                      {pt.label}
+                    </span>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
 
             {/* Action Buttons */}
             <div className="flex flex-wrap items-center gap-4">

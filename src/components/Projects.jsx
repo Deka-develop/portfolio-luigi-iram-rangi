@@ -481,6 +481,20 @@ export default function Projects() {
                     <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed line-clamp-2">
                       {activeProject.description}
                     </p>
+
+                    {/* Quick Metric Points */}
+                    {activeProject.caseStudy?.metrics && (
+                      <div className="grid grid-cols-3 gap-2 mt-3 pt-2.5 border-t border-white/10">
+                        {activeProject.caseStudy.metrics.map((m, mIdx) => (
+                          <div key={mIdx} className="flex flex-col text-left">
+                            <span className="text-[9px] font-mono text-white/50 uppercase tracking-wider truncate">{m.label}</span>
+                            <span className="text-xs font-mono font-bold truncate" style={{ color: activeProject.accentColor }}>
+                              {m.val}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   {/* Tech Stack Pills & CTA */}

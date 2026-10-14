@@ -24,7 +24,7 @@ const pillars = [
       'Sub-0.6s LCP & Perfect 100/100 Core Web Vitals',
       'Zero-Bloat Runtime & Modular Non-Blocking CSS',
       'Semantic Schema JSON-LD & Dynamic Dark Mode',
-      'Live Production Engines (YPPT & SMA Santo Paulus)'
+      'Live Production Engines (8 Multi-Sector Platforms)'
     ],
     techStack: ['Core Web Vitals', 'PageSpeed 100', 'Schema SEO', 'Publishing Engines']
   },
@@ -323,9 +323,10 @@ export default function Skills() {
                         {/* Animated Micro-Stats Row */}
                         <div className="grid grid-cols-3 gap-1.5 mb-3">
                           {pillar.highlights.map((h, hIdx) => (
-                            <div
+                            <motion.div
                               key={hIdx}
-                              className="p-1.5 rounded-xl bg-black/60 border border-white/10 flex flex-col justify-between text-center group-hover:border-white/20 transition-all"
+                              whileHover={{ scale: 1.04, y: -1 }}
+                              className="p-1.5 rounded-xl bg-black/60 border border-white/10 hover:border-white/30 flex flex-col justify-between text-center transition-all cursor-default"
                             >
                               <span className="text-[9px] font-mono text-white/50 truncate uppercase">{h.label}</span>
                               <span className="text-xs font-display font-black tracking-tight" style={{ color: pillar.color }}>
@@ -334,19 +335,44 @@ export default function Skills() {
                               <span className="text-[8px] font-mono px-1 rounded bg-white/5 text-white/70 mx-auto mt-0.5">
                                 {h.tag}
                               </span>
-                            </div>
+                            </motion.div>
                           ))}
                         </div>
 
-                        {/* Bullet Highlights */}
-                        <div className="flex flex-col gap-1.5 mb-3 pt-2.5 border-t border-white/10">
+                        {/* Animated Bullet Highlights */}
+                        <motion.div 
+                          variants={{
+                            hidden: { opacity: 0 },
+                            visible: { opacity: 1, transition: { staggerChildren: 0.06 } }
+                          }}
+                          initial="hidden"
+                          whileInView="visible"
+                          viewport={{ once: true }}
+                          className="flex flex-col gap-1.5 mb-3 pt-2.5 border-t border-white/10"
+                        >
                           {pillar.features.map((feat, fIdx) => (
-                            <div key={fIdx} className="flex items-center gap-2 text-[11px] font-mono text-white/80 group/feat">
-                              <CheckCircle2 className="w-3.5 h-3.5 shrink-0 transition-transform group-hover/feat:scale-110" style={{ color: pillar.color }} />
-                              <span className="truncate">{feat}</span>
-                            </div>
+                            <motion.div 
+                              key={fIdx} 
+                              variants={{
+                                hidden: { opacity: 0, x: -8 },
+                                visible: { opacity: 1, x: 0 }
+                              }}
+                              whileHover={{ x: 4 }}
+                              className="flex items-center gap-2 text-[11px] font-mono text-white/75 hover:text-white transition-colors group/feat p-0.5 rounded cursor-default"
+                            >
+                              <div className="relative flex h-3.5 w-3.5 shrink-0 items-center justify-center">
+                                <CheckCircle2 
+                                  className="w-3.5 h-3.5 shrink-0 transition-transform group-hover/feat:scale-125" 
+                                  style={{ 
+                                    color: pillar.color,
+                                    filter: `drop-shadow(0 0 4px ${pillar.color}80)`
+                                  }} 
+                                />
+                              </div>
+                              <span className="truncate font-medium">{feat}</span>
+                            </motion.div>
                           ))}
-                        </div>
+                        </motion.div>
                       </div>
 
                       {/* Tech Stack Chips */}

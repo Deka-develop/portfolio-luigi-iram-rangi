@@ -39,6 +39,26 @@ const quickStats = [
   { icon: Compass, label: 'ACTIVE IMPACT', val: 'Borneo Globe Hub', color: '#10b981' }
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.05
+    }
+  }
+};
+
+const pointItemVariants = {
+  hidden: { opacity: 0, x: -10 },
+  visible: { 
+    opacity: 1, 
+    x: 0,
+    transition: { type: 'spring', damping: 20, stiffness: 220 }
+  }
+};
+
 const About = () => {
   const [activeMilestone, setActiveMilestone] = useState(2); // Default to current 2025
   const current = milestones[activeMilestone];
@@ -115,14 +135,14 @@ const About = () => {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.3, delay: idx * 0.05 }}
-                      whileHover={{ scale: 1.02 }}
-                      className="p-2 sm:p-2.5 rounded-xl bg-white/[0.03] border border-white/10 hover:border-cyan-400/40 backdrop-blur-md transition-all flex flex-col justify-between"
+                      whileHover={{ scale: 1.03, y: -2 }}
+                      className="p-2 sm:p-2.5 rounded-xl bg-white/[0.03] border border-white/10 hover:border-cyan-400/40 backdrop-blur-md transition-all flex flex-col justify-between group cursor-default"
                     >
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-[9px] font-mono text-white/50 tracking-wider uppercase">{item.label}</span>
-                        <Icon className="w-3 h-3" style={{ color: item.color }} />
+                        <Icon className="w-3 h-3 group-hover:scale-110 transition-transform" style={{ color: item.color }} />
                       </div>
-                      <span className="text-xs font-display font-bold tracking-tight truncate" style={{ color: item.color }}>
+                      <span className="text-xs font-display font-bold tracking-tight truncate group-hover:brightness-125 transition-all" style={{ color: item.color }}>
                         {item.val}
                       </span>
                     </motion.div>
@@ -144,24 +164,38 @@ const About = () => {
                       Founder
                     </span>
                   </div>
-                  <span className="text-cyan-400 text-[10px] uppercase tracking-widest block mb-2 font-mono font-semibold">
+                  <span className="text-cyan-400 text-[10px] uppercase tracking-widest block mb-2.5 font-mono font-semibold">
                     Creative Tech & Web Lab
                   </span>
 
-                  {/* Animated Bullet Points */}
-                  <div className="flex flex-col gap-1.5">
+                  {/* Animated Bullet Points with Stagger & Radar Pulse */}
+                  <motion.div 
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    className="flex flex-col gap-1.5"
+                  >
                     {[
                       'Interactive 3D WebGL & Custom GLSL Shaders',
                       'Skor 100/100 Core Web Vitals & Sub-0.6s LCP',
-                      'SMA Santo Paulus & Panca Palma Platforms',
+                      'Anyarmart, Buku Dayak & 8 Client Platforms',
                       '120+ Web Systems & Token Design Architecture'
                     ].map((pt, pIdx) => (
-                      <div key={pIdx} className="flex items-center gap-2 text-[11px] font-mono text-white/80">
-                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0 shadow-[0_0_6px_#22d3ee]" />
-                        <span className="truncate">{pt}</span>
-                      </div>
+                      <motion.div 
+                        key={pIdx} 
+                        variants={pointItemVariants}
+                        whileHover={{ x: 4 }}
+                        className="flex items-center gap-2 text-[11px] font-mono text-white/75 hover:text-cyan-200 transition-colors group/item cursor-default"
+                      >
+                        <span className="relative flex h-2 w-2 shrink-0 items-center justify-center">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-60" />
+                          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan-300 shadow-[0_0_8px_#22d3ee]" />
+                        </span>
+                        <span className="truncate group-hover/item:text-white transition-colors">{pt}</span>
+                      </motion.div>
                     ))}
-                  </div>
+                  </motion.div>
                 </div>
               </motion.div>
               
@@ -180,25 +214,39 @@ const About = () => {
                     target="_blank" 
                     rel="noreferrer" 
                     aria-label="Kunjungi situs Borneo Globe"
-                    className="text-emerald-400 hover:text-white text-[10px] uppercase tracking-widest block mb-2 font-mono font-semibold transition-colors pointer-events-auto"
+                    className="text-emerald-400 hover:text-white text-[10px] uppercase tracking-widest block mb-2.5 font-mono font-semibold transition-colors pointer-events-auto"
                   >
                     Active Role • borneoglobe.org ↗
                   </a>
 
-                  {/* Animated Bullet Points */}
-                  <div className="flex flex-col gap-1.5">
+                  {/* Animated Bullet Points with Stagger & Radar Pulse */}
+                  <motion.div 
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    className="flex flex-col gap-1.5"
+                  >
                     {[
                       'Platform Pemantauan Lingkungan Pulau Borneo',
                       '2,800+ Penerima Manfaat Program Digital',
                       'Jembatan Riset & Kemitraan Konservasi Global',
                       '100% Mobile Ready & Resisten Koneksi Pelosok'
                     ].map((pt, pIdx) => (
-                      <div key={pIdx} className="flex items-center gap-2 text-[11px] font-mono text-white/80">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_6px_#34d399]" />
-                        <span className="truncate">{pt}</span>
-                      </div>
+                      <motion.div 
+                        key={pIdx} 
+                        variants={pointItemVariants}
+                        whileHover={{ x: 4 }}
+                        className="flex items-center gap-2 text-[11px] font-mono text-white/75 hover:text-emerald-200 transition-colors group/item cursor-default"
+                      >
+                        <span className="relative flex h-2 w-2 shrink-0 items-center justify-center">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+                          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-300 shadow-[0_0_8px_#34d399]" />
+                        </span>
+                        <span className="truncate group-hover/item:text-white transition-colors">{pt}</span>
+                      </motion.div>
                     ))}
-                  </div>
+                  </motion.div>
                 </div>
               </motion.div>
             </div>
@@ -253,18 +301,35 @@ const About = () => {
                     </div>
 
                     {/* Animated Points Grid */}
-                    <div className="grid grid-cols-2 gap-1">
+                    <motion.div 
+                      variants={containerVariants}
+                      initial="hidden"
+                      animate="visible"
+                      className="grid grid-cols-2 gap-1"
+                    >
                       {current.points.map((pt, pIdx) => (
-                        <div key={pIdx} className="flex items-center gap-1.5 text-[11px] font-mono text-white/80">
-                          <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: current.color }} />
+                        <motion.div 
+                          key={pIdx} 
+                          variants={pointItemVariants}
+                          whileHover={{ x: 3 }}
+                          className="flex items-center gap-1.5 text-[11px] font-mono text-white/80 hover:text-white transition-colors cursor-default"
+                        >
+                          <span 
+                            className="w-1.5 h-1.5 rounded-full shrink-0 shadow-sm" 
+                            style={{ 
+                              backgroundColor: current.color,
+                              boxShadow: `0 0 6px ${current.color}`
+                            }} 
+                          />
                           <span className="truncate">{pt}</span>
-                        </div>
+                        </motion.div>
                       ))}
-                    </div>
+                    </motion.div>
                   </div>
 
-                  <span 
-                    className="shrink-0 self-start sm:self-center px-2.5 py-1 rounded-xl text-xs font-mono font-bold border shadow-md"
+                  <motion.span 
+                    whileHover={{ scale: 1.05 }}
+                    className="shrink-0 self-start sm:self-center px-2.5 py-1 rounded-xl text-xs font-mono font-bold border shadow-md transition-transform"
                     style={{ 
                       color: current.color, 
                       borderColor: `${current.color}40`,
@@ -272,7 +337,7 @@ const About = () => {
                     }}
                   >
                     {current.badge}
-                  </span>
+                  </motion.span>
                 </motion.div>
               </AnimatePresence>
             </div>
