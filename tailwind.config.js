@@ -7,11 +7,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        paper: '#EDEEF0',
-        ink: '#111111',
-        violet: '#684AFF',
-        background: '#EDEEF0',
-        foreground: '#111111',
+        paper: '#F6F5F1',
+        'paper-dark': '#ECEAE3',
+        'paper-light': '#FFFFFF',
+        ink: '#141413',
+        'ink-muted': '#686660',
+        ochre: '#D97706',
+        terracotta: '#C2412C',
+        emerald: '#0D5C3A',
+        background: '#F6F5F1',
+        foreground: '#141413',
       },
       fontFamily: {
         sans: ['Geist', 'Inter', 'system-ui', 'sans-serif'],

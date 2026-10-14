@@ -1,6 +1,7 @@
 import { useState, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Gamepad2, ExternalLink, Zap, Check } from 'lucide-react';
+import { DayakShieldEmblem, DayakBorderRibbon, DayakCornerAccent } from './DayakMotifs';
 
 const CyberArcadeGame = lazy(() => import('./CyberArcadeGame'));
 
@@ -44,12 +45,12 @@ const pillars = [
   {
     id: 'modern-architecture',
     number: '03',
-    title: 'Modern Web Architecture',
+    title: 'Borneo Digital Ecosystem',
     category: 'Production Scale',
     gaugeVal: '8+',
     gaugeUnit: 'LIVE',
     gaugeLabel: 'Regional & Multi-Sector Hubs',
-    tone: 'violet',
+    tone: 'ochre',
     points: [
       { label: 'Modern Frontend', val: 'React 19 & Vite', percent: 96, tag: 'Component' },
       { label: 'Borneo Impact Hub', val: '2,800+ Users', percent: 92, tag: 'Live Hub' },
@@ -74,9 +75,9 @@ const techArsenal = [
 ];
 
 const toneClass = {
-  paper: { card: 'bg-paper text-ink', sub: 'text-ink/60', bar: 'bg-ink', track: 'bg-ink/15', border: 'border-ink', chip: 'bg-violet text-ink border-ink' },
-  ink: { card: 'bg-ink text-paper', sub: 'text-paper/60', bar: 'bg-violet', track: 'bg-paper/20', border: 'border-paper/40', chip: 'bg-violet text-ink border-violet' },
-  violet: { card: 'bg-violet text-ink', sub: 'text-ink/70', bar: 'bg-ink', track: 'bg-ink/20', border: 'border-ink', chip: 'bg-ink text-paper border-ink' }
+  paper: { card: 'bg-paper text-ink', sub: 'text-ink/60', bar: 'bg-ink', track: 'bg-ink/15', border: 'border-ink', chip: 'bg-ochre text-white border-ink' },
+  ink: { card: 'bg-ink text-paper', sub: 'text-paper/60', bar: 'bg-ochre', track: 'bg-paper/20', border: 'border-paper/40', chip: 'bg-ochre text-white border-ochre' },
+  ochre: { card: 'bg-paper-dark text-ink', sub: 'text-ink/70', bar: 'bg-ochre', track: 'bg-ink/20', border: 'border-ink', chip: 'bg-ink text-paper border-ink' }
 };
 
 const reveal = {
@@ -101,30 +102,36 @@ export default function Skills() {
   };
 
   return (
-    <section className="relative w-full bg-paper text-ink px-5 md:px-12 lg:px-20 pt-28 md:pt-40 pb-24 md:pb-36 overflow-hidden">
+    <section className="relative w-full bg-paper text-ink px-5 md:px-12 lg:px-20 pt-28 md:pt-36 pb-24 md:pb-32 overflow-hidden border-b border-ink/15">
 
       {/* Section tag */}
-      <motion.div {...reveal} className="flex items-center gap-4 mb-8 md:mb-14">
-        <span className="font-mono text-[11px] uppercase tracking-[0.25em]">04 / Expertise</span>
-        <div className="flex-1 h-[1px] bg-ink/25" />
-        <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-ink/60 hidden sm:inline">Core Competencies &amp; Tech Arsenal</span>
+      <motion.div {...reveal} className="flex flex-col gap-2 mb-8 md:mb-12">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <DayakShieldEmblem className="w-3.5 h-3.5 text-ochre" color="#D97706" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.25em] font-bold">03 / Keahlian &amp; Arsitektur</span>
+          </div>
+          <div className="flex-1 h-[1px] bg-ink/20" />
+          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-ink/60 hidden sm:inline">Standar Produksi &amp; Kinerja</span>
+        </div>
+        <DayakBorderRibbon className="w-full h-2.5" color="#141413" opacity={0.2} />
       </motion.div>
 
       {/* Giant heading + mode toggle */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12 md:mb-20">
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12 md:mb-16">
         <motion.h2
           {...reveal}
-          className="font-sans font-black uppercase tracking-tighter leading-[0.86] text-[14vw] md:text-[9.5vw] lg:text-[8.5vw]"
+          className="font-sans font-black uppercase tracking-tighter leading-[0.86] text-[13vw] md:text-[9vw] lg:text-[8vw]"
         >
-          Engineered<br />for <span className="text-violet" style={{ WebkitTextStroke: '2px #111' }}>velocity</span><br />&amp; depth.
+          Engineered<br />for <span className="text-ochre">velocity</span><br />&amp; cultural depth.
         </motion.h2>
 
-        <motion.div {...reveal} className="flex items-stretch border-2 border-ink self-start lg:self-auto shrink-0">
+        <motion.div {...reveal} className="flex items-stretch border-2 border-ink self-start lg:self-auto shrink-0 bg-paper">
           <button
             onClick={() => setViewMode('specs')}
             aria-label="Lihat Matrix & Spesifikasi Keahlian"
             className={`px-4 py-3 font-mono text-xs font-bold uppercase tracking-widest transition-colors cursor-pointer border-r-2 border-ink ${
-              viewMode === 'specs' ? 'bg-ink text-paper' : 'hover:bg-violet'
+              viewMode === 'specs' ? 'bg-ink text-paper' : 'hover:bg-ochre hover:text-white'
             }`}
           >
             Specs Matrix
@@ -133,12 +140,12 @@ export default function Skills() {
             onClick={() => setViewMode('game')}
             aria-label="Mainkan Mini Game Cyber Arcade Interaktif"
             className={`px-4 py-3 flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest transition-colors cursor-pointer ${
-              viewMode === 'game' ? 'bg-ink text-paper' : 'hover:bg-violet'
+              viewMode === 'game' ? 'bg-ink text-paper' : 'hover:bg-ochre hover:text-white'
             }`}
           >
             <Gamepad2 className="w-4 h-4" />
             <span>Play Arcade</span>
-            {viewMode !== 'game' && <span className="w-2 h-2 rounded-full bg-violet border border-ink animate-ping" />}
+            {viewMode !== 'game' && <span className="w-2 h-2 rounded-full bg-ochre border border-ink animate-ping" />}
           </button>
         </motion.div>
       </div>
@@ -231,7 +238,7 @@ export default function Skills() {
                           <button
                             onClick={runSpeedTest}
                             disabled={speedTestActive}
-                            className="w-full flex items-center justify-center gap-2 py-3 px-3 bg-ink text-paper hover:bg-violet hover:text-ink transition-colors font-mono text-xs font-bold uppercase tracking-widest cursor-pointer disabled:opacity-70"
+                            className="w-full flex items-center justify-center gap-2 py-3 px-3 bg-ink text-paper hover:bg-ochre hover:text-white transition-colors font-mono text-xs font-bold uppercase tracking-widest cursor-pointer disabled:opacity-70"
                           >
                             <Zap className={`w-3.5 h-3.5 ${speedTestActive ? 'animate-spin' : ''}`} />
                             <span>{speedTestActive ? 'Scanning Latency & LCP…' : pillar.interactiveAction}</span>
@@ -240,7 +247,7 @@ export default function Skills() {
                             <motion.div
                               initial={{ opacity: 0, height: 0 }}
                               animate={{ opacity: 1, height: 'auto' }}
-                              className="px-3 py-2 bg-violet border-2 border-ink text-[11px] font-mono text-ink flex items-center justify-between"
+                              className="px-3 py-2 bg-ochre text-white border-2 border-ink text-[11px] font-mono flex items-center justify-between"
                             >
                               <span className="flex items-center gap-1.5">
                                 <Check className="w-3.5 h-3.5" />
@@ -255,7 +262,7 @@ export default function Skills() {
                       {pillar.interactiveType === 'game' && (
                         <button
                           onClick={() => setViewMode('game')}
-                          className="w-full flex items-center justify-center gap-2 py-3 px-3 bg-violet text-ink border-2 border-ink hover:bg-paper transition-colors font-mono text-xs font-bold uppercase tracking-widest cursor-pointer"
+                          className="w-full flex items-center justify-center gap-2 py-3 px-3 bg-ochre text-white border-2 border-ink hover:bg-ink transition-colors font-mono text-xs font-bold uppercase tracking-widest cursor-pointer"
                         >
                           <Gamepad2 className="w-4 h-4" />
                           <span>{pillar.interactiveAction}</span>
@@ -295,7 +302,7 @@ export default function Skills() {
                   >
                     <div className="flex items-center justify-between gap-2 mb-6">
                       <span className="font-mono text-[10px] uppercase tracking-widest opacity-60">{item.tag}</span>
-                      <span className="font-sans font-black text-xl tracking-tighter group-hover:text-violet transition-colors">{item.level}</span>
+                      <span className="font-sans font-black text-xl tracking-tighter group-hover:text-ochre transition-colors">{item.level}</span>
                     </div>
                     <h4 className="font-sans font-black uppercase tracking-tight text-base md:text-lg leading-tight">{item.name}</h4>
                     <p className="font-mono text-[10px] uppercase tracking-wider opacity-60 mt-1">{item.role}</p>
@@ -306,7 +313,7 @@ export default function Skills() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.9, delay: idx * 0.05, ease: 'easeOut' }}
                         style={{ transformOrigin: 'left' }}
-                        className="h-full w-full bg-ink group-hover:bg-violet"
+                        className="h-full w-full bg-ink group-hover:bg-ochre"
                       />
                     </div>
                   </li>

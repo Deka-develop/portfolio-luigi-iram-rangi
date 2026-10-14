@@ -451,7 +451,7 @@ export default function CyberArcadeGame({ onExit }) {
   }, [highScore]);
 
   return (
-    <div className="relative w-full bg-[#111111] border-2 border-[#111111] shadow-[8px_8px_0_#684AFF] overflow-hidden flex flex-col justify-between">
+    <div className="relative w-full bg-[#111111] border-2 border-[#111111] shadow-[8px_8px_0_#D97706] overflow-hidden flex flex-col justify-between">
 
       
       {/* Top Arcade HUD Header */}

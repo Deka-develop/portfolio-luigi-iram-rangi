@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { DayakShieldEmblem, DayakBorderRibbon, DayakCornerAccent } from './DayakMotifs';
 
 const milestones = [
   {
@@ -26,10 +27,10 @@ const milestones = [
 ];
 
 const quickStats = [
-  { label: 'Specialty', val: 'WebGL 3D & 120 FPS' },
-  { label: 'Architecture', val: '100/100 PageSpeed' },
-  { label: 'Ecosystem', val: 'Ddev Founder' },
-  { label: 'Active Impact', val: 'Borneo Globe Hub' }
+  { label: 'Spesialisasi', val: 'Creative Web & WebGL' },
+  { label: 'Arsitektur', val: '100/100 Core Vitals' },
+  { label: 'Studio Lab', val: 'Founder of Ddev' },
+  { label: 'Dampak Nyata', val: 'Borneo Globe Hub' }
 ];
 
 const reveal = {
@@ -44,24 +45,30 @@ const About = () => {
   const current = milestones[activeMilestone];
 
   return (
-    <section className="relative w-full bg-paper text-ink px-5 md:px-12 lg:px-20 pt-28 md:pt-40 pb-24 md:pb-36 overflow-hidden">
+    <section className="relative w-full bg-paper text-ink px-5 md:px-12 lg:px-20 pt-28 md:pt-36 pb-24 md:pb-32 overflow-hidden border-b border-ink/15">
 
       {/* Section tag */}
-      <motion.div {...reveal} className="flex items-center gap-4 mb-10 md:mb-16">
-        <span className="font-mono text-[11px] uppercase tracking-[0.25em]">02 / About</span>
-        <div className="flex-1 h-[1px] bg-ink/25" />
-        <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-ink/60 hidden sm:inline">Pontianak · 0°00′00″</span>
+      <motion.div {...reveal} className="flex flex-col gap-2 mb-10 md:mb-14">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <DayakShieldEmblem className="w-3.5 h-3.5 text-ochre" color="#D97706" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.25em] font-bold">02 / Akar &amp; Visi</span>
+          </div>
+          <div className="flex-1 h-[1px] bg-ink/20" />
+          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-ink/60 hidden sm:inline">Pontianak, Kalimantan Barat</span>
+        </div>
+        <DayakBorderRibbon className="w-full h-2.5" color="#141413" opacity={0.2} />
       </motion.div>
 
       {/* Giant statement */}
       <motion.h2
         {...reveal}
-        className="font-sans font-black uppercase tracking-tighter leading-[0.86] text-[15vw] md:text-[10.5vw] lg:text-[9.5vw] mb-14 md:mb-24"
+        className="font-sans font-black uppercase tracking-tighter leading-[0.86] text-[14vw] md:text-[9.5vw] lg:text-[8.5vw] mb-14 md:mb-20"
       >
         Borneo rooted.<br />
         Code crafted.<br />
-        <span className="outline-text">Future</span>{' '}
-        <span className="text-violet" style={{ WebkitTextStroke: '2px #111' }}>focused.</span>
+        <span className="outline-text">Cultural</span>{' '}
+        <span className="text-ochre">computing.</span>
       </motion.h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
@@ -83,11 +90,11 @@ const About = () => {
               href="https://www.borneoglobe.org/"
               target="_blank"
               rel="noreferrer"
-              className="font-bold text-ink underline decoration-2 underline-offset-4 hover:text-violet transition-colors"
+              className="font-bold text-ink underline decoration-2 underline-offset-4 hover:text-ochre transition-colors"
             >
               Borneo Globe
             </a>
-            . I design and engineer fast, honest web platforms from the equator line of West Borneo.
+            . Saya merancang dan merekayasa platform web berkinerja tinggi langsung dari garis khatulistiwa Pontianak, Kalimantan Barat.
           </p>
 
           {/* Quick stats as editorial table */}
@@ -111,11 +118,12 @@ const About = () => {
             {/* Ddev card */}
             <motion.article
               {...reveal}
-              className="group relative bg-ink text-paper border-2 border-ink p-5 md:p-6 transition-transform duration-200 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0_#684AFF]"
+              className="group relative bg-ink text-paper border-2 border-ink p-5 md:p-6 transition-transform duration-200 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0_#D97706]"
             >
+              <DayakCornerAccent position="top-right" className="absolute top-2 right-2 w-3 h-3 text-ochre" />
               <div className="flex items-start justify-between gap-3 mb-1">
                 <h4 className="font-sans font-black uppercase text-2xl md:text-3xl tracking-tight leading-none">Ddev Studio</h4>
-                <span className="shrink-0 px-2.5 py-1 bg-violet text-ink font-mono text-[10px] font-bold uppercase tracking-widest">Founder</span>
+                <span className="shrink-0 px-2.5 py-1 bg-ochre text-white font-mono text-[10px] font-bold uppercase tracking-widest">Founder</span>
               </div>
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-paper/60 mb-5">Creative Tech &amp; Web Lab</p>
               <ul className="flex flex-col gap-2.5">
@@ -126,7 +134,7 @@ const About = () => {
                   '120+ Web Systems Architecture'
                 ].map((pt) => (
                   <li key={pt} className="flex items-start gap-3 font-sans text-sm leading-snug">
-                    <span className="mt-[7px] w-1.5 h-1.5 bg-violet shrink-0" />
+                    <span className="mt-[7px] w-1.5 h-1.5 bg-ochre shrink-0" />
                     <span>{pt}</span>
                   </li>
                 ))}
@@ -137,18 +145,19 @@ const About = () => {
             <motion.article
               {...reveal}
               transition={{ ...reveal.transition, delay: 0.1 }}
-              className="group relative bg-violet text-ink border-2 border-ink p-5 md:p-6 transition-transform duration-200 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0_#111]"
+              className="group relative bg-paper-dark text-ink border-2 border-ink p-5 md:p-6 transition-transform duration-200 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0_#D97706]"
             >
+              <DayakCornerAccent position="top-right" className="absolute top-2 right-2 w-3 h-3 text-ochre" />
               <div className="flex items-start justify-between gap-3 mb-1">
                 <h4 className="font-sans font-black uppercase text-2xl md:text-3xl tracking-tight leading-none">Borneo Globe</h4>
-                <span className="mt-1 w-2.5 h-2.5 rounded-full bg-ink animate-pulse shrink-0" />
+                <span className="mt-1 w-2.5 h-2.5 rounded-full bg-emerald animate-pulse shrink-0" />
               </div>
               <a
                 href="https://www.borneoglobe.org/"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Kunjungi situs Borneo Globe"
-                className="inline-block font-mono text-[10px] uppercase tracking-[0.2em] mb-5 underline underline-offset-4 decoration-2 hover:opacity-70 transition-opacity"
+                className="inline-block font-mono text-[10px] uppercase tracking-[0.2em] text-ochre font-bold mb-5 underline underline-offset-4 decoration-2 hover:opacity-70 transition-opacity"
               >
                 Active Role · borneoglobe.org ↗
               </a>
@@ -160,7 +169,7 @@ const About = () => {
                   '100% Mobile Ready & Resisten Pelosok'
                 ].map((pt) => (
                   <li key={pt} className="flex items-start gap-3 font-sans text-sm leading-snug">
-                    <span className="mt-[7px] w-1.5 h-1.5 bg-ink shrink-0" />
+                    <span className="mt-[7px] w-1.5 h-1.5 bg-ochre shrink-0" />
                     <span>{pt}</span>
                   </li>
                 ))}
@@ -172,7 +181,7 @@ const About = () => {
           <motion.div {...reveal} className="border-2 border-ink bg-paper">
             <div className="flex items-stretch border-b-2 border-ink">
               <span className="hidden sm:flex items-center px-5 font-mono text-[10px] uppercase tracking-[0.2em] border-r-2 border-ink">
-                Evolution
+                Evolusi
               </span>
               {milestones.map((m, idx) => (
                 <button
@@ -181,7 +190,7 @@ const About = () => {
                   aria-label={`Lihat milestone tahun ${m.year}: ${m.phase}`}
                   className={`flex-1 py-3 md:py-4 font-sans font-black text-xl md:text-3xl tracking-tighter transition-colors cursor-pointer ${
                     idx !== milestones.length - 1 ? 'border-r-2 border-ink' : ''
-                  } ${activeMilestone === idx ? 'bg-ink text-paper' : 'hover:bg-violet'}`}
+                  } ${activeMilestone === idx ? 'bg-ink text-paper' : 'hover:bg-ochre hover:text-white'}`}
                 >
                   {m.year}
                 </button>
@@ -202,7 +211,7 @@ const About = () => {
                     <h4 className="font-sans font-black text-xl md:text-2xl uppercase tracking-tight leading-tight">{current.title}</h4>
                     <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-ink/60">{current.phase}</span>
                   </div>
-                  <span className="px-3 py-1.5 bg-violet border-2 border-ink font-mono text-[11px] font-bold uppercase tracking-wider">
+                  <span className="px-3 py-1.5 bg-ochre text-white border-2 border-ink font-mono text-[11px] font-bold uppercase tracking-wider">
                     {current.badge}
                   </span>
                 </div>
@@ -210,7 +219,7 @@ const About = () => {
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5">
                   {current.points.map((pt) => (
                     <li key={pt} className="flex items-center gap-3 font-sans text-sm md:text-[15px] font-medium border-b border-ink/15 pb-2">
-                      <span className="w-1.5 h-1.5 bg-ink shrink-0" />
+                      <span className="w-1.5 h-1.5 bg-ochre shrink-0" />
                       <span>{pt}</span>
                     </li>
                   ))}

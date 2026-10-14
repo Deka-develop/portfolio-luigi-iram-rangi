@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, ExternalLink, Sparkles, Lock, X, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { DayakShieldEmblem, DayakBorderRibbon, DayakCornerAccent } from './DayakMotifs';
 
 import borneoGlobeImg from '../assets/projects/borneo-globe.webp';
 import anyarmartImg from '../assets/projects/anyarmart.webp';
@@ -305,21 +306,27 @@ export default function Projects() {
   const goNext = () => setActiveIdx((prev) => (prev < projects.length - 1 ? prev + 1 : 0));
 
   return (
-    <section className="relative w-full bg-paper text-ink px-5 md:px-12 lg:px-20 pt-28 md:pt-40 pb-24 md:pb-36 select-none">
+    <section className="relative w-full bg-paper text-ink px-5 md:px-12 lg:px-20 pt-28 md:pt-36 pb-24 md:pb-32 select-none border-b border-ink/15">
 
       {/* Section tag */}
-      <div className="flex items-center gap-4 mb-8 md:mb-14">
-        <span className="font-mono text-[11px] uppercase tracking-[0.25em]">03 / Works</span>
-        <div className="flex-1 h-[1px] bg-ink/25" />
-        <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-ink/60 hidden sm:inline">Ddev Studio · Borneo Globe Active</span>
+      <div className="flex flex-col gap-2 mb-8 md:mb-12">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <DayakShieldEmblem className="w-3.5 h-3.5 text-ochre" color="#D97706" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.25em] font-bold">01 / Karya Terpilih</span>
+          </div>
+          <div className="flex-1 h-[1px] bg-ink/20" />
+          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-ink/60 hidden sm:inline">Ddev Studio • West Borneo</span>
+        </div>
+        <DayakBorderRibbon className="w-full h-2.5" color="#141413" opacity={0.2} />
       </div>
 
       {/* Giant heading */}
-      <div className="flex items-start gap-3 mb-10 md:mb-16">
-        <h2 className="font-sans font-black uppercase tracking-tighter leading-[0.86] text-[16vw] md:text-[10.5vw] lg:text-[9.5vw]">
+      <div className="flex items-start gap-3 mb-10 md:mb-14">
+        <h2 className="font-sans font-black uppercase tracking-tighter leading-[0.86] text-[15vw] md:text-[9.5vw] lg:text-[8.5vw]">
           Selected<br />Works
         </h2>
-        <span className="mt-2 md:mt-4 px-2.5 py-1 bg-violet border-2 border-ink font-mono text-xs md:text-sm font-bold">
+        <span className="mt-2 md:mt-4 px-2.5 py-1 bg-ochre text-white border-2 border-ink font-mono text-xs md:text-sm font-bold">
           {String(projects.length).padStart(2, '0')}
         </span>
       </div>
@@ -340,14 +347,14 @@ export default function Projects() {
                   isSelected ? 'bg-ink text-paper' : 'bg-paper text-ink'
                 }`}
               >
-                <span className={`font-mono text-[10px] ${isSelected ? 'text-violet' : 'text-ink/50'}`}>{project.num}</span>
+                <span className={`font-mono text-[10px] ${isSelected ? 'text-ochre' : 'text-ink/50'}`}>{project.num}</span>
                 <span className="whitespace-nowrap">{project.title}</span>
               </button>
             );
           })}
         </div>
 
-        <div className="flex items-center justify-between border-2 border-ink px-3 py-2">
+        <div className="flex items-center justify-between border-2 border-ink px-3 py-2 bg-paper-dark">
           <div className="flex items-center gap-2 min-w-0 font-mono text-xs">
             <span className="font-bold tracking-wider">
               {activeProject.num} / {String(projects.length).padStart(2, '0')}
@@ -391,7 +398,7 @@ export default function Projects() {
                     isSelected ? 'bg-ink text-paper pl-6' : 'hover:pl-5'
                   }`}
                 >
-                  <span className={`font-mono text-xs font-bold w-6 shrink-0 ${isSelected ? 'text-violet' : 'text-ink/50'}`}>
+                  <span className={`font-mono text-xs font-bold w-6 shrink-0 ${isSelected ? 'text-ochre' : 'text-ink/50'}`}>
                     {project.num}
                   </span>
                   <span className="flex-1 min-w-0">
@@ -404,7 +411,7 @@ export default function Projects() {
                   </span>
                   <span
                     className={`w-9 h-9 shrink-0 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
-                      isSelected ? 'bg-violet border-violet text-ink rotate-0' : 'border-ink/30 text-ink/60 -rotate-45 group-hover:rotate-0'
+                      isSelected ? 'bg-ochre border-ochre text-white rotate-0' : 'border-ink/30 text-ink/60 -rotate-45 group-hover:rotate-0'
                     }`}
                   >
                     <ArrowUpRight className="w-4 h-4" />
@@ -446,7 +453,7 @@ export default function Projects() {
                   </span>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <span className="px-2 py-0.5 bg-violet border border-ink text-[9px] sm:text-[10px] font-bold uppercase tracking-wider truncate max-w-[130px] sm:max-w-none">
+                  <span className="px-2 py-0.5 bg-ochre text-white border border-ink text-[9px] sm:text-[10px] font-bold uppercase tracking-wider truncate max-w-[130px] sm:max-w-none">
                     {activeProject.status}
                   </span>
                   <span className="text-ink/60 hidden sm:inline">{activeProject.year}</span>
@@ -472,7 +479,7 @@ export default function Projects() {
                   }}
                 />
                 <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/55 transition-colors duration-300 flex items-center justify-center">
-                  <span className="opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 px-4 py-2 bg-violet border-2 border-ink font-mono text-xs font-bold uppercase tracking-wider text-ink">
+                  <span className="opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 px-4 py-2 bg-ochre text-white border-2 border-ink font-mono text-xs font-bold uppercase tracking-wider">
                     Open Case Study ↗
                   </span>
                 </div>
@@ -485,7 +492,7 @@ export default function Projects() {
               <div className="p-4 sm:p-6 flex flex-col gap-4">
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <span className="font-mono text-[11px] uppercase tracking-[0.2em] font-bold text-violet" style={{ WebkitTextStroke: '0.4px #111' }}>
+                    <span className="font-mono text-[11px] uppercase tracking-[0.2em] font-bold text-ochre">
                       {activeProject.category}
                     </span>
                     <span className="font-mono text-[10px] text-ink/50 sm:hidden">{activeProject.year}</span>
@@ -532,7 +539,7 @@ export default function Projects() {
                   >
                     <div className="absolute inset-0 bg-ink translate-x-1 translate-y-1 transition-transform duration-200 group-hover:translate-x-0 group-hover:translate-y-0" />
                     <div className="relative px-4 py-3 bg-paper border-2 border-ink flex items-center justify-center gap-2 transition-transform duration-200 group-hover:translate-x-1 group-hover:translate-y-1">
-                      <Sparkles className="w-3.5 h-3.5" />
+                      <Sparkles className="w-3.5 h-3.5 text-ochre" />
                       <span className="font-sans font-black text-[11px] sm:text-xs uppercase tracking-widest whitespace-nowrap">Case Study</span>
                     </div>
                   </button>
@@ -545,7 +552,7 @@ export default function Projects() {
                       className="group relative shrink-0"
                     >
                       <div className="absolute inset-0 bg-ink translate-x-1 translate-y-1 transition-transform duration-200 group-hover:translate-x-0 group-hover:translate-y-0" />
-                      <div className="relative px-4 py-3 bg-violet border-2 border-ink flex items-center justify-center gap-2 transition-transform duration-200 group-hover:translate-x-1 group-hover:translate-y-1">
+                      <div className="relative px-4 py-3 bg-ochre text-white border-2 border-ink flex items-center justify-center gap-2 transition-transform duration-200 group-hover:translate-x-1 group-hover:translate-y-1">
                         <span className="font-sans font-black text-[11px] sm:text-xs uppercase tracking-widest">Visit</span>
                         <ExternalLink className="w-3.5 h-3.5" />
                       </div>
@@ -575,12 +582,12 @@ export default function Projects() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 40 }}
               transition={{ type: 'spring', stiffness: 320, damping: 32 }}
-              className="relative w-full max-w-3xl max-h-[90vh] bg-paper border-2 border-ink shadow-[10px_10px_0_#684AFF] overflow-hidden flex flex-col z-10"
+              className="relative w-full max-w-3xl max-h-[90vh] bg-paper border-2 border-ink shadow-[10px_10px_0_#D97706] overflow-hidden flex flex-col z-10"
             >
               {/* Header */}
               <div className="px-4 sm:px-6 py-3 bg-ink text-paper flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0">
-                  <span className="font-mono text-[11px] font-bold tracking-widest text-violet uppercase">
+                  <span className="font-mono text-[11px] font-bold tracking-widest text-ochre uppercase">
                     Case Study {modalProject.num}
                   </span>
                   <span className="text-paper/30">|</span>
@@ -588,7 +595,7 @@ export default function Projects() {
                 </div>
                 <button
                   onClick={() => setModalProject(null)}
-                  className="w-8 h-8 shrink-0 border border-paper/40 flex items-center justify-center hover:bg-violet hover:text-ink hover:border-violet transition-colors cursor-pointer"
+                  className="w-8 h-8 shrink-0 border border-paper/40 flex items-center justify-center hover:bg-ochre hover:text-white hover:border-ochre transition-colors cursor-pointer"
                   aria-label="Tutup case study"
                 >
                   <X className="w-4 h-4" />
@@ -614,21 +621,21 @@ export default function Projects() {
                     <span className="px-2 py-1 bg-paper border border-ink font-mono text-[10px] sm:text-xs truncate">
                       {modalProject.caseStudy?.client}
                     </span>
-                    <span className="px-2.5 py-1 bg-violet border-2 border-ink font-mono text-[10px] sm:text-xs font-bold uppercase shrink-0">
+                    <span className="px-2.5 py-1 bg-ochre text-white border-2 border-ink font-mono text-[10px] sm:text-xs font-bold uppercase shrink-0">
                       {modalProject.status}
                     </span>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 sm:p-5 border-2 border-ink">
+                  <div className="p-4 sm:p-5 border-2 border-ink bg-paper">
                     <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase block mb-2 text-ink/60">
                       The Challenge
                     </span>
                     <p className="font-sans text-sm text-[#333] leading-relaxed">{modalProject.caseStudy?.challenge}</p>
                   </div>
-                  <div className="p-4 sm:p-5 border-2 border-ink bg-violet">
-                    <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase block mb-2">
+                  <div className="p-4 sm:p-5 border-2 border-ink bg-paper-dark">
+                    <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase block mb-2 text-ochre">
                       Engineered Solution
                     </span>
                     <p className="font-sans text-sm leading-relaxed">{modalProject.caseStudy?.solution}</p>
