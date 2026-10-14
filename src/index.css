@@ -68,9 +68,3 @@
   -webkit-text-stroke: 1px rgba(255, 255, 255, 1);
 }
 
-/* Custom Cyber Cursor on Devices with Fine Pointer */
-@media (pointer: fine) {
-  body, a, button, [role="button"], input, select, textarea, .cursor-pointer {
-    cursor: none !important;
-  }
-}

@@ -6,23 +6,27 @@ const CyberArcadeGame = lazy(() => import('./CyberArcadeGame'));
 
 const pillars = [
   {
-    id: 'template-engineering',
+    id: 'performance-architecture',
     number: '01',
-    title: 'Ddev Template Engineering',
-    category: 'FLAGSHIP SPECIALTY',
+    title: 'High-Velocity Web Architecture',
+    category: 'PERFORMANCE CORE',
     color: '#00f0ff',
     badgeClass: 'bg-cyan-500/10 border-cyan-500/30 text-cyan-300',
     icon: Code2,
     metric: '100 / 100',
-    metricLabel: 'Google PageSpeed Score',
-    description: 'Arsitektur native XML Blogger & engine template performa tinggi: Skor PageSpeed 100/100, valid Schema.org semantik, optimasi Google AdSense siap pakai, dan pemuatan instan.',
-    features: [
-      'Native XML Architecture & Clean Logic',
-      'Perfect 100/100 Core Web Vitals',
-      'Dynamic Dark/Light Mode & AdSense Ready',
-      '120+ Templates Created in Ddev Studio'
+    metricLabel: 'Google PageSpeed & Core Vitals',
+    highlights: [
+      { label: 'LCP SPEED', val: '< 0.6s', tag: 'Fast' },
+      { label: 'CORE VITALS', val: '100 / 100', tag: 'Perfect' },
+      { label: 'SCHEMA SEO', val: 'Valid LD', tag: 'Rank 1' }
     ],
-    techStack: ['Native XML', 'PageSpeed 100', 'SEO Schema', 'AdSense Ready']
+    features: [
+      'Sub-0.6s LCP & Perfect 100/100 Core Web Vitals',
+      'Zero-Bloat Runtime & Modular Non-Blocking CSS',
+      'Semantic Schema JSON-LD & Dynamic Dark Mode',
+      'Live Production Engines (YPPT & SMA Santo Paulus)'
+    ],
+    techStack: ['Core Web Vitals', 'PageSpeed 100', 'Schema SEO', 'Publishing Engines']
   },
   {
     id: 'creative-webgl',
@@ -34,12 +38,16 @@ const pillars = [
     icon: Sparkles,
     metric: '120 FPS',
     metricLabel: 'Hardware Accelerated Render',
-    description: 'Membangun pengalaman visual 3D interaktif Three.js, visual partikel, animasi fisika lerp, audio-reaktif, serta interaksi mikro yang hidup dan responsif pada 120 FPS.',
+    highlights: [
+      { label: 'FPS TARGET', val: '120 FPS', tag: 'Hardware' },
+      { label: '3D PIPELINE', val: 'Three.js', tag: 'GLSL' },
+      { label: 'KINETIC', val: 'Physics Lerp', tag: 'Fluid' }
+    ],
     features: [
-      'Three.js 3D Geometries & Scene Graph',
-      'Custom GLSL Shaders & Wireframe Modes',
-      'Fluid Cursor Parallax & Inertia Drag',
-      'Spatial Ambient Canvas & Starfields'
+      'Three.js 3D Geometries & Scene Graph Hierarchy',
+      'Custom GPU GLSL Shaders & Wireframe Modes',
+      'Fluid Cursor Parallax, Drag & Inertia Physics',
+      'Spatial Ambient Canvas & Interactive Starfields'
     ],
     techStack: ['Three.js', 'WebGL 2.0', 'GLSL Shaders', 'Framer Motion']
   },
@@ -53,12 +61,16 @@ const pillars = [
     icon: Cpu,
     metric: 'Production',
     metricLabel: 'Borneo Globe Active Hub',
-    description: 'Pengembangan web app modern berbasis React, Vite, Next.js, dan Tailwind CSS dengan arsitektur modular, integrasi visual data regional, dan skalabilitas jangka panjang.',
+    highlights: [
+      { label: 'FRONTEND', val: 'React 19', tag: 'Vite' },
+      { label: 'IMPACT HUB', val: 'Borneo Globe', tag: '2.8k Users' },
+      { label: 'UI SYSTEM', val: 'Tailwind CSS', tag: 'Tokens' }
+    ],
     features: [
-      'Component-Driven Architecture (React & Vite)',
-      'Borneo Globe Regional Environmental Hub',
-      'Tailwind CSS Custom Design Systems',
-      'Ultra-Fast Zero-Lag User Experience'
+      'Component-Driven Architecture (React 19 & Vite)',
+      'Borneo Globe Regional Impact Data Ecosystem',
+      'Custom Design Token Systems & Micro-Interactions',
+      '100% Mobile Ready with Zero-Lag User Experience'
     ],
     techStack: ['React 19', 'Next.js', 'Tailwind CSS', 'TypeScript']
   }
@@ -66,13 +78,13 @@ const pillars = [
 
 const techArsenal = [
   { name: 'Three.js / WebGL', level: '94%', role: '3D Graphics Specialist', tag: '3D Core' },
-  { name: 'Blogger XML Engine', level: '98%', role: 'Template Architecture', tag: 'Flagship' },
-  { name: 'React & Vite', level: '95%', role: 'Interactive Web Apps', tag: 'Frontend' },
+  { name: 'High-Perf Web Engines', level: '98%', role: 'Zero-Bloat & Publishing Systems', tag: 'Architecture' },
+  { name: 'React 19 & Vite', level: '95%', role: 'Interactive Web Apps', tag: 'Frontend' },
   { name: 'Tailwind CSS', level: '96%', role: 'Design Tokens & UI/UX', tag: 'Styling' },
   { name: 'TypeScript', level: '88%', role: 'Type-Safe Logic', tag: 'Language' },
   { name: 'Framer Motion', level: '92%', role: 'Kinetic Physics Animation', tag: 'Motion' },
   { name: 'Schema SEO & Core Vitals', level: '96%', role: 'Rank 1 Performance', tag: 'SEO 100' },
-  { name: 'Borneo Regional Data', level: '90%', role: 'Impact Platform Development', tag: 'Ecosystem' }
+  { name: 'Borneo Regional Hub', level: '90%', role: 'Impact Platform Development', tag: 'Ecosystem' }
 ];
 
 export default function Skills() {
@@ -308,15 +320,29 @@ export default function Skills() {
                           </div>
                         </div>
 
-                        <p className="text-xs text-white/75 font-light leading-relaxed mb-3 line-clamp-2">
-                          {pillar.description}
-                        </p>
+                        {/* Animated Micro-Stats Row */}
+                        <div className="grid grid-cols-3 gap-1.5 mb-3">
+                          {pillar.highlights.map((h, hIdx) => (
+                            <div
+                              key={hIdx}
+                              className="p-1.5 rounded-xl bg-black/60 border border-white/10 flex flex-col justify-between text-center group-hover:border-white/20 transition-all"
+                            >
+                              <span className="text-[9px] font-mono text-white/50 truncate uppercase">{h.label}</span>
+                              <span className="text-xs font-display font-black tracking-tight" style={{ color: pillar.color }}>
+                                {h.val}
+                              </span>
+                              <span className="text-[8px] font-mono px-1 rounded bg-white/5 text-white/70 mx-auto mt-0.5">
+                                {h.tag}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
 
                         {/* Bullet Highlights */}
                         <div className="flex flex-col gap-1.5 mb-3 pt-2.5 border-t border-white/10">
                           {pillar.features.map((feat, fIdx) => (
-                            <div key={fIdx} className="flex items-center gap-2 text-[11px] font-mono text-white/70">
-                              <CheckCircle2 className="w-3 h-3 text-cyan-400 shrink-0" />
+                            <div key={fIdx} className="flex items-center gap-2 text-[11px] font-mono text-white/80 group/feat">
+                              <CheckCircle2 className="w-3.5 h-3.5 shrink-0 transition-transform group-hover/feat:scale-110" style={{ color: pillar.color }} />
                               <span className="truncate">{feat}</span>
                             </div>
                           ))}
@@ -372,8 +398,20 @@ export default function Skills() {
                           {item.name}
                         </div>
                       </div>
-                      <div className="text-[9px] font-mono text-white/70 truncate mt-0.5">
-                        {item.role}
+                      
+                      <div className="mt-1">
+                        <div className="text-[9px] font-mono text-white/70 truncate">
+                          {item.role}
+                        </div>
+                        <div className="w-full bg-white/10 h-1 rounded-full overflow-hidden mt-1.5">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            whileInView={{ width: item.level }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, ease: "easeOut", delay: idx * 0.04 }}
+                            className="h-full bg-gradient-to-r from-cyan-400 to-fuchsia-400 rounded-full"
+                          />
+                        </div>
                       </div>
                     </div>
                   ))}

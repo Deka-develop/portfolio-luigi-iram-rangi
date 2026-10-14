@@ -5,7 +5,7 @@ const TECH_TARGETS = [
   { name: 'Three.js', color: '#00f0ff', points: 100, type: 'gem' },
   { name: 'WebGL 3D', color: '#d946ef', points: 120, type: 'gem' },
   { name: 'PageSpeed 100', color: '#10b981', points: 150, type: 'gem' },
-  { name: 'Blogger XML', color: '#f59e0b', points: 110, type: 'gem' },
+  { name: 'Architecture', color: '#f59e0b', points: 110, type: 'gem' },
   { name: 'React 19', color: '#38bdf8', points: 90, type: 'gem' },
   { name: 'Borneo Globe', color: '#2dd4bf', points: 200, type: 'gem' },
   { name: 'Memory Leak', color: '#ef4444', points: -50, type: 'bug' },

@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X, ArrowUpRight, Mail, Globe, Sparkles } from 'lucide-react';
 
 import Hero from './components/Hero';
-import CyberCursor from './components/CyberCursor';
 import GlobalBackgroundCanvas from './components/GlobalBackgroundCanvas';
 
 // Code-split below-the-fold sections for instant FCP/TBT
@@ -34,7 +33,7 @@ const InstagramIcon = ({ className = "w-4 h-4" }) => (
 const sectionList = [
   { id: 'hero', name: 'HOME', label: 'Overview & 3D Core', Component: Hero, color: '#050505' },
   { id: 'about', name: 'ABOUT', label: 'Borneo Roots & Ddev', Component: About, color: '#0a0b0f' },
-  { id: 'work', name: 'WORK', label: 'Borneo Globe & Templates', Component: Projects, color: '#070709' },
+  { id: 'work', name: 'WORK', label: 'Borneo Globe & Systems', Component: Projects, color: '#070709' },
   { id: 'expertise', name: 'EXPERTISE', label: 'Creative Tech & WebGL', Component: Skills, color: '#0a0d12' },
   { id: 'contact', name: 'CONTACT', label: 'Get In Touch', Component: Contact, color: '#050505' }
 ];
@@ -193,8 +192,6 @@ function App() {
   return (
     <main className="relative w-full text-foreground bg-black overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
       
-      {/* 120 FPS High-Precision Cyber Cursor */}
-      <CyberCursor />
 
       {/* Global Header */}
       <header className="fixed top-0 left-0 w-full z-40 flex justify-between items-center px-5 sm:px-10 py-3 md:py-5 pointer-events-none bg-black/70 backdrop-blur-md border-b border-white/5 md:bg-transparent md:backdrop-blur-none md:border-b-0">

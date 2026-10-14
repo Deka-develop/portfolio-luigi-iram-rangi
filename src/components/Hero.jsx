@@ -145,8 +145,8 @@ const Hero = ({ setActiveSection }) => {
             </h1>
 
             {/* Sub-Headline & Bio */}
-            <p className="text-base sm:text-lg text-white/75 font-sans font-normal max-w-xl mb-8 leading-relaxed">
-              Creative Developer & Founder of <span className="text-cyan-300 font-medium">Ddev (Dayak Developer)</span>, saat ini aktif berkontribusi untuk <span className="text-emerald-400 font-medium">Borneo Globe</span>. Memadukan arsitektur web modern, Three.js 3D/WebGL, dan template digital berkecepatan tinggi dengan sentuhan motif panggung global.
+            <p className="text-base sm:text-lg text-white/75 font-sans font-normal max-w-lg mb-8 leading-relaxed">
+              Creative Developer & Founder of <span className="text-cyan-300 font-medium">Ddev</span>. Merancang web modern, visual 3D/WebGL, dan arsitektur performa tinggi dari Borneo.
             </p>
 
             {/* Action Buttons */}

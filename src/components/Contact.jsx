@@ -163,7 +163,7 @@ export default function Contact() {
                 Saluran Komunikasi Langsung
               </h3>
               <p className="text-xs text-white/75 font-light mb-4 leading-relaxed">
-                Punya ide proyek, kebutuhan template khusus, atau kerja sama arsitektur web modern? Silakan hubungi langsung:
+                Punya ide proyek, kebutuhan platform web kustom, visual 3D WebGL, atau kolaborasi arsitektur modern? Silakan hubungi langsung:
               </p>
 
               {/* 1. Primary Email Address Card */}
@@ -377,7 +377,7 @@ export default function Contact() {
                           required
                           rows={3}
                           aria-label="Deskripsi kebutuhan proyek atau pesan Anda"
-                          placeholder="Ceritakan gambaran proyek web, kebutuhan template kustom, atau perkiraan timeline..."
+                          placeholder="Ceritakan gambaran proyek web, platform kustom, visual 3D, atau perkiraan timeline..."
                           value={formState.message}
                           onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                           className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/20 focus:border-cyan-400 focus:outline-none text-xs font-mono text-white placeholder-white/40 resize-none transition-colors"
@@ -450,7 +450,7 @@ export default function Contact() {
                       </span>
                     </div>
                     <p className="text-xs text-white/75 font-light leading-relaxed">
-                      Studio template Blogger berkecepatan tinggi, 3D WebGL, dan arsitektur web modern Pontianak.
+                      Studio rekayasa web interaktif berkinerja tinggi, visual 3D WebGL imersif, dan platform digital modern dari Pontianak.
                     </p>
                   </div>
                 </div>
