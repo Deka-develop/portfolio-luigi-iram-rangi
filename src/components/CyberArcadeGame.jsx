@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Play, RotateCcw, Volume2, VolumeX, Shield, Trophy, Zap, Sparkles } from 'lucide-react';
+import { RotateCcw, Shield, Trophy, Zap } from 'lucide-react';
 
 const TECH_TARGETS = [
   { name: 'Three.js', color: '#00f0ff', points: 100, type: 'gem' },
@@ -20,7 +20,6 @@ export default function CyberArcadeGame({ onExit }) {
   });
   const [shield, setShield] = useState(100);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
   const [combo, setCombo] = useState(1);
 
   // References for live game loop without React re-render lag
@@ -81,7 +80,7 @@ export default function CyberArcadeGame({ onExit }) {
         osc.start();
         osc.stop(ctx.currentTime + 0.18);
       }
-    } catch (e) {
+    } catch {
       // Audio autoplay may be restricted by browser until user gesture
     }
   };
@@ -139,7 +138,7 @@ export default function CyberArcadeGame({ onExit }) {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Mouse / Touch interaction
+    // Mouse / Touch / Keyboard interaction
     const handlePointerMove = (e) => {
       const rect = canvas.getBoundingClientRect();
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -147,8 +146,19 @@ export default function CyberArcadeGame({ onExit }) {
       gameState.current.targetX = Math.max(30, Math.min(rect.width - 30, x));
     };
 
+    const handleKeyDown = (e) => {
+      const step = 25;
+      const rect = canvas.getBoundingClientRect();
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        gameState.current.targetX = Math.max(30, gameState.current.targetX - step);
+      } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        gameState.current.targetX = Math.min(rect.width - 30, gameState.current.targetX + step);
+      }
+    };
+
     canvas.addEventListener('mousemove', handlePointerMove);
     canvas.addEventListener('touchmove', handlePointerMove, { passive: true });
+    window.addEventListener('keydown', handleKeyDown);
 
     // Main 120 FPS Arcade Game Loop
     let lastTime = performance.now();
@@ -445,6 +455,7 @@ export default function CyberArcadeGame({ onExit }) {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('keydown', handleKeyDown);
       canvas.removeEventListener('mousemove', handlePointerMove);
       canvas.removeEventListener('touchmove', handlePointerMove);
     };
@@ -508,8 +519,15 @@ export default function CyberArcadeGame({ onExit }) {
       <div className="relative w-full h-[360px] sm:h-[400px] overflow-hidden bg-[#06070a]">
         <canvas 
           ref={canvasRef} 
-          className="w-full h-full block cursor-crosshair touch-none"
+          tabIndex={0}
+          aria-label="Simulator Arcade Cyber: gunakan mouse, sentuhan layar, atau tombol panah kiri dan kanan pada keyboard untuk mengendalikan pesawat laser"
+          className="w-full h-full block cursor-crosshair touch-none focus:outline-none focus:ring-2 focus:ring-cyan-400"
         />
+
+        {/* Live ARIA announcement for game status */}
+        <div className="sr-only" aria-live="polite">
+          {isGameOver ? `Permainan berakhir. Skor akhir: ${score}. Rekor: ${highScore}` : `Skor: ${score}, Shield: ${shield}%`}
+        </div>
 
         {/* Game Over Overlay */}
         {isGameOver && (

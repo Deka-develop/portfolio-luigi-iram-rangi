@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { RotateCcw, Eye, Sparkles, Box, Compass, Globe } from 'lucide-react';
+import { RotateCcw, Box } from 'lucide-react';
 
 /* ─────────────────────────────────────────────────────────────
    1. HERO MASTERPIECE: 3D Dayak Cyber Crystal & Kinetic Gyroscope
@@ -21,9 +21,12 @@ export default function Dayak3DCanvas({ className = '' }) {
   const speedRef = useRef(spinSpeed);
   const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
 
-  wireframeRef.current = wireframeOnly;
-  themeRef.current = themeColor;
-  speedRef.current = spinSpeed;
+  // Update refs safely inside useEffect without mutating during render
+  useEffect(() => {
+    wireframeRef.current = wireframeOnly;
+    themeRef.current = themeColor;
+    speedRef.current = spinSpeed;
+  }, [wireframeOnly, themeColor, spinSpeed]);
 
   useEffect(() => {
     const container = mountRef.current;
@@ -353,22 +356,28 @@ export default function Dayak3DCanvas({ className = '' }) {
   return (
     <div className={`relative w-full h-full flex flex-col items-center justify-center select-none ${className}`}>
       {/* Three.js Canvas Container */}
-      <div
+      <section
         ref={mountRef}
+        aria-label="Kanvas Interaktif 3D Perisai Dayak Talawang"
         className="w-full h-full min-h-[380px] sm:min-h-[440px] md:min-h-[520px] lg:min-h-[580px] cursor-grab active:cursor-grabbing relative z-10"
         title="Geser mouse untuk memutar 360°"
-      />
+      >
+        <span className="sr-only">
+          Model 3D interaktif Perisai Dayak kontemporer bertenaga WebGL Three.js. Anda dapat menggunakan tombol kontrol di bawah untuk mengatur mode tampilan, palet warna, dan kecepatan rotasi.
+        </span>
+      </section>
 
       {/* Floating Spatial Micro-Controls Bar */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 backdrop-blur-md border border-black/10 shadow-lg text-[10px] md:text-[11px] font-mono tracking-wider">
         <button
           onClick={() => setWireframeOnly((prev) => !prev)}
-          className={`px-2.5 py-1 rounded-full transition-colors cursor-pointer flex items-center gap-1.5 ${
+          aria-label={wireframeOnly ? 'Aktifkan mode solid' : 'Aktifkan mode wireframe'}
+          className={`px-2.5 py-1 rounded-full transition-colors cursor-pointer flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none ${
             wireframeOnly ? 'bg-[#111111] text-white font-bold' : 'hover:bg-black/5 text-[#111111]'
           }`}
           title="Toggle Wireframe mode"
         >
-          <Box className="w-3 h-3" />
+          <Box className="w-3 h-3" aria-hidden="true" />
           <span>{wireframeOnly ? 'Wireframe' : 'Solid'}</span>
         </button>
 

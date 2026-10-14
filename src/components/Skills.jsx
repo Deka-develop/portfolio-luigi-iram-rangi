@@ -1,6 +1,6 @@
 import { useState, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Gamepad2, ExternalLink, Zap, Check, Cpu, Sparkles, Activity, Layers } from 'lucide-react';
+import { Gamepad2, Zap } from 'lucide-react';
 import { DayakShieldEmblem } from './DayakMotifs';
 
 const CyberArcadeGame = lazy(() => import('./CyberArcadeGame'));

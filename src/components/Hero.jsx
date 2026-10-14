@@ -1,11 +1,11 @@
 import { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, ArrowUpRight, Compass, Sparkles, Box } from 'lucide-react';
+import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { DayakShieldEmblem } from './DayakMotifs';
 
 const Dayak3DCanvas = lazy(() => import('./Dayak3DCanvas'));
 
-export default function Hero({ setActiveSection }) {
+export default function Hero({ setActiveSection, onNavigateToProjects, onNavigateToMilestone }) {
   return (
     <section className="relative w-full min-h-screen flex flex-col justify-between pt-24 md:pt-28 pb-8 px-6 md:px-12 lg:px-20 bg-[#EDEEF0] text-[#111111] overflow-hidden">
       
@@ -109,7 +109,13 @@ export default function Hero({ setActiveSection }) {
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <button
-              onClick={() => setActiveSection?.(1)}
+              onClick={() => {
+                if (onNavigateToProjects) {
+                  onNavigateToProjects();
+                } else {
+                  setActiveSection?.(1);
+                }
+              }}
               className="px-6 py-3 rounded-full bg-[#111111] text-[#EDEEF0] font-sans text-xs font-bold uppercase tracking-[0.15em] hover:bg-[#684AFF] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 cursor-pointer flex items-center gap-2 group"
             >
               <span>Lihat Karya Terpilih</span>
@@ -117,7 +123,13 @@ export default function Hero({ setActiveSection }) {
             </button>
 
             <button
-              onClick={() => setActiveSection?.(2)}
+              onClick={() => {
+                if (onNavigateToMilestone) {
+                  onNavigateToMilestone();
+                } else {
+                  setActiveSection?.(1);
+                }
+              }}
               className="px-6 py-3 rounded-full bg-white text-[#111111] border border-black/10 font-sans text-xs font-bold uppercase tracking-[0.15em] hover:border-[#684AFF] hover:text-[#684AFF] transition-all duration-300 shadow-sm hover:scale-105 cursor-pointer flex items-center gap-2"
             >
               <span>Telusuri Milestone Rekayasa</span>

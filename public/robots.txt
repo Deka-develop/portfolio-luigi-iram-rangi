@@ -1,0 +1,6 @@
+# Robots.txt for Luigi Iram Rangi Portfolio
+User-agent: *
+Allow: /
+
+# Sitemap Location
+Sitemap: https://deka-develop.github.io/portfolio-luigi-iram-rangi/sitemap.xml

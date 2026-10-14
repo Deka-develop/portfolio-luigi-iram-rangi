@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, ChevronDown, Sparkles, Layers, Terminal, Globe, Shield, Code2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowUpRight } from 'lucide-react';
 import { DayakShieldEmblem } from './DayakMotifs';
 import { WireframeMatrix3D, TorusKnot3D, CelestialGlobe3D, SacredShield3D } from './Dayak3DCanvas';
 

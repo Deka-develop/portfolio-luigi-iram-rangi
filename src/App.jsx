@@ -1,27 +1,35 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X, ArrowUpRight, ArrowLeft, ChevronRight } from 'lucide-react';
 import { DayakShieldEmblem } from './components/DayakMotifs';
 
 import Hero from './components/Hero';
 
-// Code-split below-the-fold sections
-const Projects = lazy(() => import('./components/Projects'));
-const JourneySection = lazy(() => import('./components/JourneySection'));
-const Skills = lazy(() => import('./components/Skills'));
-const Contact = lazy(() => import('./components/Contact'));
+// Dedicated standalone pages
+const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
+const MilestonePage = lazy(() => import('./pages/MilestonePage'));
+const SkillsPage = lazy(() => import('./pages/SkillsPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
 
-const sectionList = [
-  { id: 'hero', name: 'Beranda', Component: Hero },
-  { id: 'works', name: 'Karya Terpilih', Component: Projects },
-  { id: 'journey', name: 'Milestone 3D', Component: JourneySection },
-  { id: 'expertise', name: 'Kapabilitas', Component: Skills },
-  { id: 'contact', name: 'Kontak', Component: Contact }
-];
+// Home portal teaser components
+const ProjectsTeaser = lazy(() => import('./components/ProjectsTeaser'));
+const MilestoneTeaser = lazy(() => import('./components/MilestoneTeaser'));
+const SkillsTeaser = lazy(() => import('./components/SkillsTeaser'));
+const ContactTeaser = lazy(() => import('./components/ContactTeaser'));
+
+function getRouteFromHash() {
+  if (typeof window === 'undefined') return 'home';
+  const hash = window.location.hash.toLowerCase().replace(/^#\/?/, '');
+  if (hash.startsWith('karya') || hash.startsWith('project') || hash.startsWith('work')) return 'karya';
+  if (hash.startsWith('milestone')) return 'milestone-3d';
+  if (hash.startsWith('kapabilitas') || hash.startsWith('skill') || hash.startsWith('expertise')) return 'kapabilitas';
+  if (hash.startsWith('kontak') || hash.startsWith('contact')) return 'kontak';
+  return 'home';
+}
 
 function App() {
-  const [activeSection, setActiveSection] = useState(0);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [route, setRoute] = useState(getRouteFromHash);
+  const [isRightNavOpen, setIsRightNavOpen] = useState(false);
   const [timeWIB, setTimeWIB] = useState('');
 
   // Live Pontianak WIB Clock
@@ -46,204 +54,409 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Smooth scroll to section
-  const scrollToSection = (index) => {
-    if (index < 0 || index >= sectionList.length) return;
-    setActiveSection(index);
-    setIsMobileMenuOpen(false);
-    const target = document.getElementById(sectionList[index]?.id);
-    if (target) {
-      const top = index === 0 ? 0 : target.getBoundingClientRect().top + window.scrollY - 80;
-      window.scrollTo({ top, behavior: 'smooth' });
+  // Listen to hash changes (browser back/forward & direct URL links)
+  useEffect(() => {
+    const handleHash = () => {
+      const newRoute = getRouteFromHash();
+      setRoute(newRoute);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
+  // Synchronize dynamic SEO title, descriptions & canonical references per route
+  useEffect(() => {
+    const metaDescriptions = {
+      home: 'Portofolio Luigi Iram Rangi — Founder of Ddev (Dayak Developer) & Creative Developer, merancang arsitektur web modern, WebGL 3D, platform interaktif, dan sistem digital berkinerja tinggi dari Kalimantan Barat.',
+      karya: 'Karya Terpilih & Portofolio — Luigi Iram Rangi | Founder of Ddev. Eksplorasi 8 proyek web produksi, arsitektur headless, dan studi kasus sistem skala regional & internasional.',
+      'milestone-3d': 'Milestone 3D WebGL — Luigi Iram Rangi | Founder of Ddev. Arsip eksklusif 4 model 3D Three.js, visualisasi rekayasa grafika, dan benchmark performa.',
+      kapabilitas: 'Kapabilitas & Cyber Arcade — Luigi Iram Rangi | Founder of Ddev. Spesifikasi arsitektur performa tinggi, skor Google PageSpeed 100/100, dan simulator interaktif Cyber Arcade.',
+      kontak: 'Kontak & Konsultasi — Luigi Iram Rangi | Founder of Ddev. Diskusikan arsitektur sistem baru, optimasi web vitals, atau kemitraan digital strategis.'
+    };
+
+    const titles = {
+      home: 'Luigi Iram Rangi — Founder of Ddev | Creative Developer & WebGL Specialist',
+      karya: 'Karya Terpilih & Portofolio — Luigi Iram Rangi | Founder of Ddev',
+      'milestone-3d': 'Milestone 3D WebGL — Luigi Iram Rangi | Founder of Ddev',
+      kapabilitas: 'Kapabilitas & Cyber Arcade — Luigi Iram Rangi | Founder of Ddev',
+      kontak: 'Kontak & Kolaborasi — Luigi Iram Rangi | Founder of Ddev'
+    };
+
+    const targetTitle = titles[route] || titles.home;
+    const targetDesc = metaDescriptions[route] || metaDescriptions.home;
+
+    document.title = targetTitle;
+
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', targetDesc);
+
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', targetTitle);
+
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', targetDesc);
+
+    const twTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twTitle) twTitle.setAttribute('content', targetTitle);
+
+    const twDesc = document.querySelector('meta[name="twitter:description"]');
+    if (twDesc) twDesc.setAttribute('content', targetDesc);
+  }, [route]);
+
+  // Unified Multi-Page Navigation Handler
+  const navigateTo = (destination) => {
+    setIsRightNavOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    if (destination === 'karya' || destination === 'works' || destination === 'projects') {
+      window.location.hash = '/karya';
+      setRoute('karya');
+    } else if (destination === 'milestone-3d' || destination === 'milestone') {
+      window.location.hash = '/milestone-3d';
+      setRoute('milestone-3d');
+    } else if (destination === 'kapabilitas' || destination === 'skills' || destination === 'expertise') {
+      window.location.hash = '/kapabilitas';
+      setRoute('kapabilitas');
+    } else if (destination === 'kontak' || destination === 'contact') {
+      window.location.hash = '/kontak';
+      setRoute('kontak');
+    } else {
+      window.location.hash = '/';
+      setRoute('home');
     }
   };
 
-  // Section Observer for Active Nav Link
-  useEffect(() => {
-    const observers = [];
-    sectionList.forEach((sec, index) => {
-      const el = document.getElementById(sec.id);
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) setActiveSection(index);
-          });
-        },
-        { rootMargin: '-35% 0px -35% 0px', threshold: 0 }
-      );
-      obs.observe(el);
-      observers.push(obs);
-    });
-    return () => observers.forEach((o) => o.disconnect());
-  }, []);
-
-  // ESC to close mobile menu
+  // ESC to close right navigation menu
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape') setIsMobileMenuOpen(false);
+      if (e.key === 'Escape') setIsRightNavOpen(false);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
+  const navItems = useMemo(
+    () => [
+      { id: 'home', num: '01', name: 'Beranda', desc: 'Pengenalan & Visi Spasial Dayak', target: 'home' },
+      { id: 'karya', num: '02', name: 'Karya Terpilih', desc: 'Katalog 8 Proyek Web Produksi', target: 'karya', badge: 'Halaman Karya' },
+      { id: 'milestone-3d', num: '03', name: 'Milestone 3D', desc: 'Arsip Eksklusif Model 3D WebGL', target: 'milestone-3d', badge: 'Halaman 3D' },
+      { id: 'kapabilitas', num: '04', name: 'Kapabilitas', desc: 'Spesifikasi Teknis & Cyber Arcade', target: 'kapabilitas', badge: 'Halaman Khusus' },
+      { id: 'kontak', num: '05', name: 'Kontak', desc: 'Kolaborasi & Diskusi Rekayasa', target: 'kontak', badge: 'Halaman Khusus' }
+    ],
+    []
+  );
+
+  // Active page label for top header
+  const getPageBadge = () => {
+    switch (route) {
+      case 'karya':
+        return 'Halaman Karya';
+      case 'milestone-3d':
+        return 'Halaman 3D';
+      case 'kapabilitas':
+        return 'Halaman Kapabilitas';
+      case 'kontak':
+        return 'Halaman Kontak';
+      default:
+        return null;
+    }
+  };
+
+  const pageBadge = getPageBadge();
+
   return (
-    <main className="relative w-full bg-[#EDEEF0] text-[#111111] overflow-x-clip min-h-screen">
+    <div className="relative w-full bg-[#EDEEF0] text-[#111111] overflow-x-clip min-h-screen">
+      {/* ───────────────── ACCESSIBILITY: SKIP TO MAIN CONTENT LINK ───────────────── */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-[#111111] focus:text-white focus:rounded-xl focus:shadow-2xl focus:ring-2 focus:ring-[#684AFF] focus:outline-none font-mono text-xs uppercase tracking-wider font-bold transition-all"
+      >
+        Lewati ke konten utama
+      </a>
       
-      {/* ───────────────── BESPOKE FLOATING GLASS HEADER ───────────────── */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-[#EDEEF0]/85 backdrop-blur-md border-b border-[#111111]/10 transition-all duration-300">
+      {/* ───────────────── MINIMALIST FLOATING GLASS TOPBAR ───────────────── */}
+      <header className="fixed top-0 left-0 w-full z-40 bg-[#EDEEF0]/85 backdrop-blur-md border-b border-[#111111]/10 transition-all duration-300">
         <div className="max-w-[1440px] mx-auto px-5 sm:px-8 md:px-12 h-16 md:h-20 flex items-center justify-between">
           
-          {/* Left: Brand Identity with Minimalist Logo */}
-          <button
-            onClick={() => scrollToSection(0)}
-            className="flex items-center gap-3 group text-left cursor-pointer"
-            aria-label="Kembali ke beranda"
-          >
-            <div className="w-9 h-9 rounded-[10px] overflow-hidden flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
-              <DayakShieldEmblem className="w-9 h-9" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-sans font-bold text-xs md:text-sm uppercase tracking-wider text-[#111111] leading-tight">
-                Luigi Iram Rangi
-              </span>
-              <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-[#111111]/50 leading-none mt-0.5">
-                Ddev Studio • West Borneo
-              </span>
-            </div>
-          </button>
+          {/* Left: Brand Identity */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigateTo('home')}
+              className="flex items-center gap-3 group text-left cursor-pointer"
+              aria-label="Kembali ke beranda"
+            >
+              <div className="w-9 h-9 rounded-[10px] overflow-hidden flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform bg-[#111111]">
+                <DayakShieldEmblem className="w-7 h-7 text-[#EDEEF0]" />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-sans font-bold text-xs md:text-sm uppercase tracking-wider text-[#111111] leading-tight">
+                  Luigi Iram Rangi
+                </span>
+                <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-[#111111]/50 leading-none mt-0.5">
+                  Ddev Studio • West Borneo
+                </span>
+              </div>
+            </button>
 
-          {/* Center: Desktop Clean Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 bg-white/70 backdrop-blur-md border border-[#111111]/10 px-3 py-1.5 rounded-full shadow-sm">
-            {sectionList.map((item, idx) => {
-              const isActive = activeSection === idx;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(idx)}
-                  className={`relative px-4 py-1.5 rounded-full font-mono text-[11px] uppercase tracking-wider transition-all duration-300 cursor-pointer flex items-center gap-1.5 ${
-                    isActive
-                      ? 'bg-[#111111] text-white font-bold shadow-sm'
-                      : 'text-[#111111]/60 hover:text-[#111111] hover:bg-black/5'
-                  }`}
-                >
-                  {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#684AFF]" />}
-                  <span>{item.name}</span>
-                </button>
-              );
-            })}
-          </nav>
+            {/* Current Dedicated Page Badge */}
+            {pageBadge && (
+              <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#684AFF]/10 border border-[#684AFF]/25 text-[#684AFF] font-mono text-[10px] uppercase tracking-wider font-bold">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#684AFF] animate-pulse" />
+                {pageBadge}
+              </span>
+            )}
+          </div>
 
-          {/* Right: Live Clock & Action CTA */}
-          <div className="flex items-center gap-4">
+          {/* Right: Actions & Menu Toggle Trigger Button */}
+          <div className="flex items-center gap-3 md:gap-4">
+            
             {/* Live Pontianak Clock */}
             <div className="hidden sm:flex items-center gap-2 font-mono text-xs text-[#111111]/60 pr-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
               <span>PTK {timeWIB} WIB</span>
             </div>
 
+            {/* Contextual Back to Home button if on any dedicated page */}
+            {route !== 'home' ? (
+              <button
+                onClick={() => navigateTo('home')}
+                className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border border-[#111111]/15 text-[#111111] font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#111111] hover:text-white transition-all duration-300 shadow-sm cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Beranda</span>
+              </button>
+            ) : null}
+
             {/* Direct Contact Button */}
-            <a
-              href="mailto:iramrangi@gmail.com"
-              className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#111111] text-[#EDEEF0] font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#684AFF] transition-all duration-300 shadow-sm"
+            <button
+              onClick={() => navigateTo('kontak')}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#111111] text-[#EDEEF0] font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#684AFF] transition-all duration-300 shadow-sm cursor-pointer"
             >
               <span>Mulai Proyek</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
-
-            {/* Mobile Menu Toggle Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-              aria-label={isMobileMenuOpen ? 'Tutup navigasi' : 'Buka navigasi'}
-              className="lg:hidden w-10 h-10 rounded-full border border-[#111111]/15 bg-white flex items-center justify-center hover:bg-[#111111] hover:text-white transition-colors cursor-pointer shadow-sm"
-            >
-              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
+
           </div>
 
         </div>
       </header>
 
-      {/* ───────────────── MOBILE SLIDE-DOWN DRAWER ───────────────── */}
+      {/* ───────────────── FLOATING RIGHT-EDGE DOCK TRIGGER (When Menu Hidden) ───────────────── */}
+      {!isRightNavOpen && (
+        <motion.button
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+          onClick={() => setIsRightNavOpen(true)}
+          aria-expanded={false}
+          aria-controls="side-navigation-drawer"
+          aria-label="Buka Menu Navigasi Samping"
+          className="fixed right-2.5 sm:right-4 md:right-5 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center gap-2.5 px-2.5 py-4 rounded-full bg-white/95 backdrop-blur-md border border-[#111111]/15 shadow-xl hover:shadow-2xl hover:border-[#684AFF] hover:scale-105 transition-all duration-300 cursor-pointer group focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none"
+        >
+          <div className="w-7 h-7 rounded-full bg-[#111111] text-white flex items-center justify-center group-hover:bg-[#684AFF] transition-colors shadow-sm">
+            <Menu className="w-3.5 h-3.5" aria-hidden="true" />
+          </div>
+          <span className="[writing-mode:vertical-rl] font-mono text-[9px] uppercase tracking-[0.25em] text-[#111111]/70 group-hover:text-[#111111] font-bold">
+            NAVIGASI
+          </span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#684AFF] animate-pulse" aria-hidden="true" />
+        </motion.button>
+      )}
+
+      {/* ───────────────── COLLAPSIBLE RIGHT-SIDE NAVIGATION DRAWER ───────────────── */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {isRightNavOpen && (
           <>
+            {/* Backdrop Blur Overlay */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
+              transition={{ duration: 0.3 }}
+              onClick={() => setIsRightNavOpen(false)}
+              aria-hidden="true"
+              className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm cursor-pointer"
             />
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.25 }}
-              className="fixed inset-x-4 top-20 z-50 rounded-[24px] bg-white border border-[#111111]/10 p-6 shadow-2xl flex flex-col gap-4 lg:hidden"
+
+            {/* Sliding Panel from Right Side */}
+            <motion.aside
+              id="side-navigation-drawer"
+              aria-label="Menu Navigasi Samping"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 28, stiffness: 260 }}
+              className="fixed top-0 right-0 h-full w-full sm:w-[420px] md:w-[460px] z-50 bg-white border-l border-[#111111]/10 shadow-[-20px_0_60px_rgba(0,0,0,0.25)] flex flex-col justify-between p-6 sm:p-8 md:p-10 overflow-y-auto"
             >
-              <div className="flex flex-col gap-1.5">
-                {sectionList.map((item, idx) => {
-                  const isActive = activeSection === idx;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => scrollToSection(idx)}
-                      className={`flex items-center justify-between px-4 py-3 rounded-[14px] text-left font-mono text-xs uppercase tracking-wider transition-all cursor-pointer ${
-                        isActive
-                          ? 'bg-[#111111] text-white font-bold'
-                          : 'text-[#111111] hover:bg-black/5'
-                      }`}
-                    >
-                      <span>{item.name}</span>
-                      {isActive && <span className="w-2 h-2 rounded-full bg-[#684AFF]" />}
-                    </button>
-                  );
-                })}
+              {/* Drawer Top Header */}
+              <div>
+                <div className="flex items-center justify-between pb-6 border-b border-[#111111]/10">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-[8px] bg-[#111111] flex items-center justify-center">
+                      <DayakShieldEmblem className="w-6 h-6 text-[#EDEEF0]" />
+                    </div>
+                    <div>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#111111]/50 block">
+                        Direktori Studio
+                      </span>
+                      <span className="font-sans font-bold text-xs uppercase tracking-wider text-[#111111]">
+                        Pilih Halaman Mandiri
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Sembunyikan / Hide Button */}
+                  <button
+                    onClick={() => setIsRightNavOpen(false)}
+                    aria-label="Sembunyikan menu navigasi samping"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#111111]/5 hover:bg-[#111111] hover:text-white transition-all text-[11px] font-mono uppercase tracking-wider text-[#111111] cursor-pointer focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none"
+                  >
+                    <span>Sembunyikan</span>
+                    <X className="w-3.5 h-3.5" aria-hidden="true" />
+                  </button>
+                </div>
+
+                {/* Section Directory Tag */}
+                <div className="mt-8 mb-4 flex items-center justify-between text-[10px] font-mono uppercase tracking-[0.25em] text-[#111111]/40">
+                  <span>// DAFTAR HALAMAN TERSENDIRI</span>
+                  <span>[05 HALAMAN]</span>
+                </div>
+
+                {/* Menu Items List */}
+                <nav className="flex flex-col gap-2" aria-label="Halaman Portofolio">
+                  {navItems.map((item) => {
+                    const isActive = route === item.target;
+
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => navigateTo(item.target)}
+                        aria-current={isActive ? 'page' : undefined}
+                        className={`group p-4 rounded-[18px] text-left transition-all duration-300 cursor-pointer flex items-center justify-between border focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none ${
+                          isActive
+                            ? 'bg-[#111111] text-white border-[#111111] shadow-md'
+                            : 'bg-[#EDEEF0]/50 hover:bg-[#EDEEF0] text-[#111111] border-transparent hover:border-[#111111]/10'
+                        }`}
+                      >
+                        <div className="flex items-center gap-4">
+                          <span
+                            className={`font-mono text-xs tracking-widest ${
+                              isActive ? 'text-[#684AFF] font-bold' : 'text-[#111111]/30 group-hover:text-[#684AFF]'
+                            }`}
+                          >
+                            {item.num}
+                          </span>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-sans font-bold text-base md:text-lg tracking-tight">
+                                {item.name}
+                              </span>
+                              {item.badge && (
+                                <span
+                                  className={`px-2 py-0.5 rounded-full text-[9px] font-mono uppercase tracking-wider font-bold ${
+                                    isActive ? 'bg-[#684AFF] text-white' : 'bg-[#684AFF]/15 text-[#684AFF]'
+                                  }`}
+                                >
+                                  {item.badge}
+                                </span>
+                              )}
+                            </div>
+                            <span
+                              className={`block font-mono text-[10px] mt-0.5 ${
+                                isActive ? 'text-white/60' : 'text-[#111111]/50'
+                              }`}
+                            >
+                              {item.desc}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          {isActive && <span className="w-2 h-2 rounded-full bg-[#684AFF] animate-pulse" aria-hidden="true" />}
+                          <ChevronRight
+                            className={`w-4 h-4 transition-transform group-hover:translate-x-1 ${
+                              isActive ? 'text-white' : 'text-[#111111]/30 group-hover:text-[#111111]'
+                            }`}
+                            aria-hidden="true"
+                          />
+                        </div>
+                      </button>
+                    );
+                  })}
+                </nav>
               </div>
 
-              <div className="pt-3 border-t border-[#111111]/10 flex flex-col gap-3">
-                <a
-                  href="mailto:iramrangi@gmail.com"
-                  className="w-full py-3 rounded-full bg-[#684AFF] text-white text-center font-sans text-xs uppercase font-bold tracking-widest flex items-center justify-center gap-2 shadow-md"
+              {/* Drawer Bottom Actions & Footer */}
+              <div className="pt-6 border-t border-[#111111]/10 flex flex-col gap-4 mt-8">
+                <button
+                  onClick={() => navigateTo('kontak')}
+                  className="w-full py-3.5 rounded-full bg-[#111111] text-white hover:bg-[#684AFF] text-center font-sans text-xs uppercase font-bold tracking-widest flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none"
                 >
                   <span>Mulai Proyek Bersama</span>
-                  <ArrowUpRight className="w-4 h-4" />
-                </a>
+                  <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+                </button>
 
-                <div className="flex items-center justify-between font-mono text-[10px] text-[#111111]/50 px-2">
+                <div className="flex items-center justify-between font-mono text-[10px] text-[#111111]/50 px-1">
                   <span>PTK {timeWIB} WIB</span>
                   <span>0°01′S 109°20′E</span>
                 </div>
+
+                <div className="text-center font-mono text-[9px] text-[#111111]/40 uppercase tracking-widest">
+                  Tekan [ESC] atau klik di luar untuk menyembunyikan
+                </div>
               </div>
-            </motion.div>
+            </motion.aside>
           </>
         )}
       </AnimatePresence>
 
-      {/* ───────────────── MAIN CONTENT SECTIONS ───────────────── */}
-      <div className="relative z-10 w-full flex flex-col">
-        {sectionList.map((section) => {
-          const Component = section.Component;
-          return (
-            <div key={section.id} id={section.id} className="w-full relative">
-              <Suspense
-                fallback={
-                  <div className="w-full min-h-[50vh] bg-[#EDEEF0] flex items-center justify-center">
-                    <span className="font-mono text-xs uppercase tracking-widest text-[#111111]/30">
-                      Memuat {section.name}...
-                    </span>
-                  </div>
-                }
-              >
-                <Component setActiveSection={scrollToSection} />
-              </Suspense>
+      {/* ───────────────── MULTI-PAGE ROUTE CONTENT VIEWPORT ───────────────── */}
+      <main id="main-content" tabIndex={-1} className="relative z-10 w-full outline-none">
+        <Suspense
+          fallback={
+            <div className="w-full min-h-screen bg-[#EDEEF0] flex flex-col items-center justify-center gap-3">
+              <DayakShieldEmblem className="w-10 h-10 text-[#684AFF] animate-pulse" color="#684AFF" />
+              <span className="font-mono text-xs uppercase tracking-widest text-[#111111]/40">
+                Memuat Halaman...
+              </span>
             </div>
-          );
-        })}
-      </div>
+          }
+        >
+          {route === 'karya' && <ProjectsPage onNavigate={navigateTo} />}
 
-    </main>
+          {route === 'milestone-3d' && <MilestonePage onNavigate={navigateTo} />}
+
+          {route === 'kapabilitas' && <SkillsPage onNavigate={navigateTo} />}
+
+          {route === 'kontak' && <ContactPage onNavigate={navigateTo} />}
+
+          {route === 'home' && (
+            <div className="relative z-10 w-full flex flex-col">
+              {/* 1. Monumental Hero Section */}
+              <Hero
+                onNavigateToProjects={() => navigateTo('karya')}
+                onNavigateToMilestone={() => navigateTo('milestone-3d')}
+              />
+
+              {/* 2. Selected Projects Gateway Showcase */}
+              <ProjectsTeaser onNavigateToProjects={() => navigateTo('karya')} />
+
+              {/* 3. Milestone 3D Gateway Showcase */}
+              <MilestoneTeaser onNavigateToMilestone={() => navigateTo('milestone-3d')} />
+
+              {/* 4. Capabilities & Specs Gateway Showcase */}
+              <SkillsTeaser onNavigateToSkills={() => navigateTo('kapabilitas')} />
+
+              {/* 5. Contact & Collaboration Gateway Showcase */}
+              <ContactTeaser onNavigateToContact={() => navigateTo('kontak')} />
+            </div>
+          )}
+        </Suspense>
+      </main>
+
+    </div>
   );
 }
 

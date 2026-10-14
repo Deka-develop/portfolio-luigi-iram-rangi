@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, ExternalLink, Sparkles, Layers, ShieldCheck, Zap, Globe, Lock, X, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, ExternalLink, Sparkles, Lock, X, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { DayakShieldEmblem } from './DayakMotifs';
 
 import borneoGlobeImg from '../assets/projects/borneo-globe.webp';
@@ -403,11 +403,13 @@ export default function Projects() {
             {projects.map((project, idx) => {
               const isSelected = activeIdx === idx;
               return (
-                <div
+                <button
+                  type="button"
                   key={project.id}
+                  aria-label={`Pilih proyek ${project.title}`}
                   onMouseEnter={() => setActiveIdx(idx)}
                   onClick={() => setActiveIdx(idx)}
-                  className={`group relative p-3 rounded-2xl border transition-all duration-300 cursor-pointer ${
+                  className={`w-full text-left group relative p-3 rounded-2xl border transition-all duration-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none ${
                     isSelected
                       ? 'bg-white/[0.08] border-white/30 shadow-[0_10px_30px_rgba(0,0,0,0.6)] backdrop-blur-xl'
                       : 'bg-white/[0.02] border-white/5 hover:border-white/15 hover:bg-white/[0.04]'
@@ -468,11 +470,11 @@ export default function Projects() {
                           ? 'bg-white text-black shadow-md scale-105' 
                           : 'bg-white/5 text-white/70 group-hover:bg-white/10 group-hover:text-white'
                       }`}>
-                        <ArrowUpRight className="w-3.5 h-3.5" />
+                        <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
                       </div>
                     </div>
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -531,9 +533,11 @@ export default function Projects() {
                 </div>
 
                 {/* Preview Image Stage (Clickable to open Case Study) */}
-                <div 
+                <button 
+                  type="button"
+                  aria-label={`Buka studi kasus dan spesifikasi lengkap untuk ${activeProject.title}`}
                   onClick={() => setModalProject(activeProject)}
-                  className="relative w-full aspect-[16/9] overflow-hidden bg-neutral-900 group cursor-pointer"
+                  className="block text-left relative w-full aspect-[16/9] overflow-hidden bg-neutral-900 group cursor-pointer focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
                   title="Klik untuk melihat Case Study & Spesifikasi Lengkap"
                 >
                   <img
@@ -553,8 +557,8 @@ export default function Projects() {
                   {/* Hover Prompt Overlay */}
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                     <span className="px-4 py-2 rounded-xl bg-black/80 border border-white/30 text-xs font-mono text-white flex items-center gap-2 shadow-2xl backdrop-blur-md">
-                      <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>Buka Case Study & Specs</span>
+                      <Sparkles className="w-3.5 h-3.5 text-cyan-400" aria-hidden="true" />
+                      <span>Buka Case Study &amp; Specs</span>
                     </span>
                   </div>
 
@@ -564,7 +568,7 @@ export default function Projects() {
                       {activeProject.highlightMetric}
                     </span>
                   </div>
-                </div>
+                </button>
 
                 {/* Card Content & Action Bar */}
                 <div className="p-4 sm:p-6 flex flex-col justify-between gap-3 sm:gap-4">

@@ -116,6 +116,32 @@ async function run() {
     .png({ quality: 92 })
     .toFile(path.join(publicDir, 'apple-touch-icon.png'));
   console.log('✓ Created public/apple-touch-icon.png (180x180)');
+
+  // 4. favicon-32x32.png and favicon-16x16.png
+  const png32 = await sharp(Buffer.from(squareLogoSvg)).resize(32, 32).png().toBuffer();
+  await sharp(Buffer.from(squareLogoSvg)).resize(16, 16).png().toFile(path.join(publicDir, 'favicon-16x16.png'));
+  await sharp(png32).toFile(path.join(publicDir, 'favicon-32x32.png'));
+  console.log('✓ Created public/favicon-32x32.png & favicon-16x16.png');
+
+  // 5. favicon.ico (Standard ICO wrapper containing 32x32 PNG)
+  const icoHeader = Buffer.from([
+    0x00, 0x00, // Reserved, must be 0
+    0x01, 0x00, // Image type: 1 = ICO
+    0x01, 0x00  // Number of images = 1
+  ]);
+  const icoDirectory = Buffer.alloc(16);
+  icoDirectory.writeUInt8(32, 0); // Width: 32
+  icoDirectory.writeUInt8(32, 1); // Height: 32
+  icoDirectory.writeUInt8(0, 2);  // Color count: 0 (no palette)
+  icoDirectory.writeUInt8(0, 3);  // Reserved: 0
+  icoDirectory.writeUInt16LE(1, 4); // Color planes: 1
+  icoDirectory.writeUInt16LE(32, 6); // Bits per pixel: 32
+  icoDirectory.writeUInt32LE(png32.length, 8); // Image size in bytes
+  icoDirectory.writeUInt32LE(22, 12); // Image offset in file: 6 + 16 = 22
+
+  const icoBuffer = Buffer.concat([icoHeader, icoDirectory, png32]);
+  await fs.promises.writeFile(path.join(publicDir, 'favicon.ico'), icoBuffer);
+  console.log('✓ Created public/favicon.ico (Multi-compatible 32x32 ICO)');
 }
 
 run().catch(console.error);

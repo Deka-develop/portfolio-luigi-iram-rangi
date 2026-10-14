@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowUpRight, Copy, Check, Send, Mail, MessageSquare } from 'lucide-react';
+import { ArrowUpRight, Copy, Check, Send } from 'lucide-react';
 import { DayakShieldEmblem } from './DayakMotifs';
 
 export default function Contact() {
@@ -156,44 +155,50 @@ export default function Contact() {
           ) : (
             <form onSubmit={handleFormSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
-                <label className="font-mono text-xs uppercase tracking-wider text-[#111111]/60">
+                <label htmlFor="contact-name" className="font-mono text-xs uppercase tracking-wider text-[#111111]/60">
                   Nama Anda *
                 </label>
                 <input
+                  id="contact-name"
                   type="text"
                   required
+                  aria-required="true"
                   placeholder="Contoh: Alex Pradipta"
                   value={formState.name}
                   onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                  className="w-full px-4 py-3 rounded-[14px] bg-[#EDEEF0]/60 border border-[#111111]/10 text-sm font-sans text-[#111111] focus:outline-none focus:border-[#684AFF] focus:bg-white transition-all"
+                  className="w-full px-4 py-3 rounded-[14px] bg-[#EDEEF0]/60 border border-[#111111]/10 text-sm font-sans text-[#111111] focus:outline-none focus:border-[#684AFF] focus:bg-white focus:ring-2 focus:ring-[#684AFF]/20 transition-all"
                 />
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="font-mono text-xs uppercase tracking-wider text-[#111111]/60">
+                <label htmlFor="contact-email" className="font-mono text-xs uppercase tracking-wider text-[#111111]/60">
                   Email atau WhatsApp *
                 </label>
                 <input
+                  id="contact-email"
                   type="text"
                   required
+                  aria-required="true"
                   placeholder="Contoh: alex@company.com / 0812..."
                   value={formState.contact}
                   onChange={(e) => setFormState({ ...formState, contact: e.target.value })}
-                  className="w-full px-4 py-3 rounded-[14px] bg-[#EDEEF0]/60 border border-[#111111]/10 text-sm font-sans text-[#111111] focus:outline-none focus:border-[#684AFF] focus:bg-white transition-all"
+                  className="w-full px-4 py-3 rounded-[14px] bg-[#EDEEF0]/60 border border-[#111111]/10 text-sm font-sans text-[#111111] focus:outline-none focus:border-[#684AFF] focus:bg-white focus:ring-2 focus:ring-[#684AFF]/20 transition-all"
                 />
               </div>
 
               <div className="md:col-span-2 flex flex-col gap-2">
-                <label className="font-mono text-xs uppercase tracking-wider text-[#111111]/60">
+                <label htmlFor="contact-message" className="font-mono text-xs uppercase tracking-wider text-[#111111]/60">
                   Detail Proyek atau Pertanyaan *
                 </label>
                 <textarea
+                  id="contact-message"
                   rows={4}
                   required
+                  aria-required="true"
                   placeholder="Ceritakan gambaran proyek web, target peluncuran, atau ide kolaborasi..."
                   value={formState.message}
                   onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                  className="w-full px-4 py-3 rounded-[14px] bg-[#EDEEF0]/60 border border-[#111111]/10 text-sm font-sans text-[#111111] focus:outline-none focus:border-[#684AFF] focus:bg-white transition-all resize-none"
+                  className="w-full px-4 py-3 rounded-[14px] bg-[#EDEEF0]/60 border border-[#111111]/10 text-sm font-sans text-[#111111] focus:outline-none focus:border-[#684AFF] focus:bg-white focus:ring-2 focus:ring-[#684AFF]/20 transition-all resize-none"
                 />
               </div>
 
@@ -201,9 +206,9 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-8 py-3.5 rounded-full bg-[#111111] text-white font-sans text-xs font-bold uppercase tracking-[0.2em] hover:bg-[#684AFF] transition-colors flex items-center gap-2 cursor-pointer shadow-md disabled:opacity-50"
+                  className="px-8 py-3.5 rounded-full bg-[#111111] text-white font-sans text-xs font-bold uppercase tracking-[0.2em] hover:bg-[#684AFF] transition-colors flex items-center gap-2 cursor-pointer shadow-md disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none"
                 >
-                  <Send className="w-3.5 h-3.5" />
+                  <Send className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>{isSubmitting ? 'Mengirim...' : 'Kirim Pesan Sekarang'}</span>
                 </button>
               </div>
