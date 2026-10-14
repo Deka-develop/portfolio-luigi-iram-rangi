@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, ArrowUpRight, Copy, Check, MapPin, Globe, ExternalLink, Send, Sparkles, MessageSquare, Terminal, CheckCircle2 } from 'lucide-react';
+import CyberDayakLogo from './CyberDayakLogo';
 
 const InstagramIcon = ({ className = "w-4 h-4" }) => (
   <svg 
@@ -542,8 +543,9 @@ export default function Contact() {
           <span className="text-cyan-400 hidden sm:inline-block">Ddev Studio</span>
         </div>
 
-        <div>
-          © {new Date().getFullYear()} LUIGI IRAM RANGI • DAYAK DEVELOPER
+        <div className="flex items-center gap-2">
+          <CyberDayakLogo className="w-4 h-4 shrink-0" showGlow={false} />
+          <span>© {new Date().getFullYear()} LUIGI IRAM RANGI • DAYAK DEVELOPER</span>
         </div>
 
         <div className="flex items-center gap-2">

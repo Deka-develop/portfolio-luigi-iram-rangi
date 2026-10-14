@@ -4,6 +4,7 @@ import { Menu, X, ArrowUpRight, Mail, Globe, Sparkles } from 'lucide-react';
 
 import Hero from './components/Hero';
 import GlobalBackgroundCanvas from './components/GlobalBackgroundCanvas';
+import CyberDayakLogo from './components/CyberDayakLogo';
 
 // Code-split below-the-fold sections for instant FCP/TBT
 const About = lazy(() => import('./components/About'));
@@ -196,14 +197,20 @@ function App() {
       {/* Global Header */}
       <header className="fixed top-0 left-0 w-full z-40 flex justify-between items-center px-5 sm:px-10 py-3 md:py-5 pointer-events-none bg-black/70 backdrop-blur-md border-b border-white/5 md:bg-transparent md:backdrop-blur-none md:border-b-0">
         <div 
-          className="flex flex-col pointer-events-auto cursor-pointer group" 
+          className="flex items-center gap-2.5 sm:gap-3 pointer-events-auto cursor-pointer group" 
           onClick={() => scrollToSection(0)}
         >
-          <div className="text-sm sm:text-base font-display font-black tracking-tight text-white leading-none whitespace-nowrap group-hover:text-cyan-300 transition-colors">
-            LUIGI IRAM RANGI
+          <div className="relative shrink-0">
+            <div className="absolute inset-0 bg-cyan-400/20 blur-md rounded-full group-hover:bg-cyan-400/40 transition-all" />
+            <CyberDayakLogo className="w-8 h-8 sm:w-9 sm:h-9 relative z-10 transition-transform duration-300 group-hover:scale-105" />
           </div>
-          <div className="text-[9px] sm:text-[10px] font-mono tracking-[0.2em] text-cyan-400 uppercase leading-none mt-1 whitespace-nowrap">
-            Ddev • Dayak Developer
+          <div className="flex flex-col">
+            <div className="text-sm sm:text-base font-display font-black tracking-tight text-white leading-none whitespace-nowrap group-hover:text-cyan-300 transition-colors">
+              LUIGI IRAM RANGI
+            </div>
+            <div className="text-[9px] sm:text-[10px] font-mono tracking-[0.2em] text-cyan-400 uppercase leading-none mt-1 whitespace-nowrap">
+              Ddev • Dayak Developer
+            </div>
           </div>
         </div>
 
@@ -261,12 +268,15 @@ function App() {
 
               {/* Header Sidebar dengan Tombol Sembunyikan */}
               <div className="p-6 border-b border-white/10 flex items-center justify-between relative z-10">
-                <div>
-                  <div className="text-xs font-display font-bold text-white leading-none">
-                    LUIGI IRAM RANGI
-                  </div>
-                  <div className="text-[10px] font-mono tracking-wider text-cyan-400 uppercase mt-1">
-                    Ddev Studio • Navigation
+                <div className="flex items-center gap-3">
+                  <CyberDayakLogo className="w-8 h-8 shrink-0" />
+                  <div>
+                    <div className="text-xs font-display font-bold text-white leading-none">
+                      LUIGI IRAM RANGI
+                    </div>
+                    <div className="text-[10px] font-mono tracking-wider text-cyan-400 uppercase mt-1">
+                      Ddev Studio • Navigation
+                    </div>
                   </div>
                 </div>
 
