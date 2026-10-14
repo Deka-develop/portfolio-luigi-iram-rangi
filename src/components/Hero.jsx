@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { DayakShieldEmblem } from './DayakMotifs';
 
 const Dayak3DCanvas = lazy(() => import('./Dayak3DCanvas'));
@@ -116,10 +116,10 @@ export default function Hero({ setActiveSection, onNavigateToProjects, onNavigat
                   setActiveSection?.(1);
                 }
               }}
-              className="px-6 py-3 rounded-full bg-[#111111] text-[#EDEEF0] font-sans text-xs font-bold uppercase tracking-[0.15em] hover:bg-[#684AFF] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 cursor-pointer flex items-center gap-2 group"
+              className="px-6 py-3 rounded-full bg-[#111111] text-[#EDEEF0] font-sans text-xs font-bold uppercase tracking-[0.15em] hover:bg-[#684AFF] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 cursor-pointer flex items-center gap-2 group focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none"
             >
-              <span>Lihat Karya Terpilih</span>
-              <ArrowDown className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
+              <span>Eksplorasi Karya Terpilih</span>
+              <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" aria-hidden="true" />
             </button>
 
             <button
@@ -130,10 +130,10 @@ export default function Hero({ setActiveSection, onNavigateToProjects, onNavigat
                   setActiveSection?.(1);
                 }
               }}
-              className="px-6 py-3 rounded-full bg-white text-[#111111] border border-black/10 font-sans text-xs font-bold uppercase tracking-[0.15em] hover:border-[#684AFF] hover:text-[#684AFF] transition-all duration-300 shadow-sm hover:scale-105 cursor-pointer flex items-center gap-2"
+              className="px-6 py-3 rounded-full bg-white text-[#111111] border border-black/10 font-sans text-xs font-bold uppercase tracking-[0.15em] hover:border-[#684AFF] hover:text-[#684AFF] transition-all duration-300 shadow-sm hover:scale-105 cursor-pointer flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none"
             >
-              <span>Telusuri Milestone Rekayasa</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
+              <span>Telusuri Milestone 3D</span>
+              <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
             </button>
           </div>
         </motion.div>

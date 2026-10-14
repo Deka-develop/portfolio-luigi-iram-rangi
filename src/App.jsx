@@ -11,11 +11,7 @@ const MilestonePage = lazy(() => import('./pages/MilestonePage'));
 const SkillsPage = lazy(() => import('./pages/SkillsPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 
-// Home portal teaser components
-const ProjectsTeaser = lazy(() => import('./components/ProjectsTeaser'));
-const MilestoneTeaser = lazy(() => import('./components/MilestoneTeaser'));
-const SkillsTeaser = lazy(() => import('./components/SkillsTeaser'));
-const ContactTeaser = lazy(() => import('./components/ContactTeaser'));
+
 
 function getRouteFromHash() {
   if (typeof window === 'undefined') return 'home';
@@ -434,23 +430,11 @@ function App() {
 
           {route === 'home' && (
             <div className="relative z-10 w-full flex flex-col">
-              {/* 1. Monumental Hero Section */}
+              {/* Monumental Introduction Section (Perkenalan) */}
               <Hero
                 onNavigateToProjects={() => navigateTo('karya')}
                 onNavigateToMilestone={() => navigateTo('milestone-3d')}
               />
-
-              {/* 2. Selected Projects Gateway Showcase */}
-              <ProjectsTeaser onNavigateToProjects={() => navigateTo('karya')} />
-
-              {/* 3. Milestone 3D Gateway Showcase */}
-              <MilestoneTeaser onNavigateToMilestone={() => navigateTo('milestone-3d')} />
-
-              {/* 4. Capabilities & Specs Gateway Showcase */}
-              <SkillsTeaser onNavigateToSkills={() => navigateTo('kapabilitas')} />
-
-              {/* 5. Contact & Collaboration Gateway Showcase */}
-              <ContactTeaser onNavigateToContact={() => navigateTo('kontak')} />
             </div>
           )}
         </Suspense>
