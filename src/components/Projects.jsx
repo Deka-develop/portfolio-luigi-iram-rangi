@@ -335,7 +335,7 @@ export default function Projects() {
                         {project.num}
                       </span>
                       <div className="min-w-0">
-                        <h3 className={`text-xs sm:text-base font-display font-bold leading-tight transition-colors truncate ${
+                        <h3 className={`text-[11px] sm:text-base font-display font-bold leading-tight transition-colors line-clamp-2 ${
                           isSelected ? 'text-white' : 'text-white/70 group-hover:text-white'
                         }`}>
                           {project.title}
@@ -390,7 +390,7 @@ export default function Projects() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96, y: -10 }}
                 transition={{ duration: 0.35, ease: "easeOut" }}
-                className="relative rounded-3xl bg-neutral-950/90 border border-white/15 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.9)] overflow-hidden flex flex-col justify-between"
+                className="relative rounded-2xl sm:rounded-3xl bg-neutral-950/90 border border-white/15 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.9)] overflow-hidden flex flex-col justify-between"
               >
                 {/* Top Subtle Shimmer Border */}
                 <div 
@@ -469,11 +469,11 @@ export default function Projects() {
                 {/* Card Content & Action Bar */}
                 <div className="p-3 sm:p-6 flex flex-col justify-between gap-2.5 sm:gap-4">
                   <div>
-                    <div className="flex items-center justify-between gap-2 mb-1">
-                      <h3 className="text-sm sm:text-2xl font-display font-bold text-white truncate">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2 mb-1">
+                      <h3 className="text-sm sm:text-2xl font-display font-bold text-white leading-tight">
                         {activeProject.title}
                       </h3>
-                      <span className="text-[9px] sm:text-xs font-mono text-white/75 uppercase shrink-0">
+                      <span className="text-[8.5px] sm:text-xs font-mono text-cyan-300 sm:text-white/75 uppercase shrink-0">
                         {activeProject.category}
                       </span>
                     </div>
@@ -486,9 +486,9 @@ export default function Projects() {
                     {activeProject.caseStudy?.metrics && (
                       <div className="grid grid-cols-3 gap-1 sm:gap-2 mt-2 sm:mt-3 pt-1.5 sm:pt-2.5 border-t border-white/10">
                         {activeProject.caseStudy.metrics.map((m, mIdx) => (
-                          <div key={mIdx} className="flex flex-col text-left">
-                            <span className="text-[8px] sm:text-[9px] font-mono text-white/50 uppercase tracking-wider truncate">{m.label}</span>
-                            <span className="text-[10px] sm:text-xs font-mono font-bold truncate" style={{ color: activeProject.accentColor }}>
+                          <div key={mIdx} className="flex flex-col text-left min-w-0">
+                            <span className="text-[7.5px] sm:text-[9px] font-mono text-white/50 uppercase tracking-wider truncate">{m.label}</span>
+                            <span className="text-[9.5px] sm:text-xs font-mono font-bold truncate" style={{ color: activeProject.accentColor }}>
                               {m.val}
                             </span>
                           </div>
