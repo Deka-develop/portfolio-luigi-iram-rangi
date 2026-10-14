@@ -80,47 +80,51 @@ const Hero = ({ setActiveSection }) => {
         {/* ───────── Stage A: giant name ───────── */}
         <motion.div
           style={{ opacity: aOpacity, display: aDisplay, perspective: 1500 }}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          className="absolute inset-0 flex items-center justify-center pointer-events-none px-6 md:px-12"
         >
           <motion.div
             style={{ rotateX: aRotate, y: aY, scale: aScale, transformOrigin: '50% 100%' }}
-            className="relative flex items-center justify-center"
+            className="relative flex flex-col items-center md:items-start"
           >
-            <h1 className="font-sans text-ink text-[27vw] md:text-[21vw] lg:text-[19vw] font-bold uppercase leading-[0.78] tracking-tighter select-none">
+            <h1 className="flex flex-col items-center md:items-start font-sans text-ink font-bold uppercase leading-[0.8] tracking-tighter select-none">
               <motion.span
-                initial={{ y: '40%', opacity: 0 }}
+                initial={{ y: '30%', opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 1.7, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-block"
+                transition={{ delay: 1.6, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-block text-[18vw] sm:text-[16vw] md:text-[12vw] lg:text-[10.5vw]"
+              >
+                LUIGI
+              </motion.span>
+              <motion.span
+                initial={{ y: '30%', opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 1.75, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-block text-[18vw] sm:text-[16vw] md:text-[12vw] lg:text-[10.5vw]"
+              >
+                IRAM
+              </motion.span>
+              <motion.span
+                initial={{ y: '30%', opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 1.9, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-block text-[18vw] sm:text-[16vw] md:text-[12vw] lg:text-[10.5vw]"
               >
                 RANGI
               </motion.span>
             </h1>
 
-            {/* LUIGI IRAM label (left of the word on desktop, above on mobile) */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 2.0, duration: 0.7 }}
-              className="absolute left-0 bottom-[104%] md:bottom-[6%] md:right-[101%] md:left-auto md:mr-6 flex flex-col items-start md:items-end"
-            >
-              <div className="w-8 md:w-14 h-[1.5px] bg-ink mb-1.5 md:mb-2" />
-              <span className="font-sans font-bold text-[11px] md:text-[17px] lg:text-[20px] uppercase tracking-[0.1em] text-ink whitespace-nowrap">
-                LUIGI IRAM
-              </span>
-            </motion.div>
-
-            {/* Role (right under the word) */}
+            {/* Role (under the word) */}
             <motion.div
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 2.1, duration: 0.7 }}
-              className="absolute left-0 md:left-auto md:right-0 top-[108%] mt-2 md:mt-5 flex flex-col items-start"
+              className="mt-3 md:mt-5 flex flex-col items-center md:items-start"
             >
-              <h2 className="font-sans text-[12px] md:text-[16px] lg:text-[20px] font-bold uppercase tracking-widest text-ink">
+              <div className="w-10 md:w-14 h-[2px] bg-ink mb-1.5 md:mb-2" />
+              <h2 className="font-sans text-[11px] md:text-[15px] lg:text-[18px] font-bold uppercase tracking-widest text-ink">
                 Creative Developer
               </h2>
-              <p className="font-sans font-normal text-[10px] md:text-[14px] lg:text-[18px] text-[#555] tracking-wide mt-1 whitespace-nowrap">
+              <p className="font-sans font-normal text-[9px] md:text-[13px] lg:text-[16px] text-[#555] tracking-wide mt-0.5 whitespace-nowrap">
                 Web 3D · Brand Systems · Interactive Web
               </p>
             </motion.div>
