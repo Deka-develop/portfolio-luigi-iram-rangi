@@ -35,9 +35,9 @@ const projects = [
       challenge: 'Membangun jembatan digital antara inisiatif pulau Borneo dengan mitra dan peneliti internasional melalui platform yang cepat, kredibel, dan ramah koneksi pelosok.',
       solution: 'Arsitektur web berbasis data regional dengan visualisasi infografis dinamis, UI ramah lingkungan, optimasi aset ringan, dan pemuatan tanpa lag di seluruh perangkat.',
       metrics: [
-        { label: 'Beneficiaries', val: '1,840+' },
-        { label: 'Accessibility', val: '100% Mobile Ready' },
-        { label: 'Regional Reach', val: 'Borneo Active' }
+        { label: 'Manfaat', val: '1,840+' },
+        { label: 'Mobile', val: '100% Ready' },
+        { label: 'Wilayah', val: 'Borneo Active' }
       ],
       deliverables: ['Official Web Platform', 'Regional Impact Ecosystem', 'Cross-Device Architecture']
     }
@@ -65,9 +65,9 @@ const projects = [
       challenge: 'Membangun etalase e-commerce independen untuk produk literatur, ebook, dan kerajinan khas nusantara dengan navigasi katalog responsif, dark mode elegan, serta alur checkout cepat di seluruh perangkat.',
       solution: 'Arsitektur storefront modern berorientasi konversi dengan fitur multi-kategori (Buku, T-Shirt, Ebook, Lukisan), integrasi gateway checkout instan, showcase 3D book mockup, dan optimasi aset berkecepatan tinggi.',
       metrics: [
-        { label: 'Katalog Produk', val: 'Buku & Etnik' },
-        { label: 'Sistem Belanja', val: 'Instant Checkout' },
-        { label: 'Pemuatan Laman', val: '< 0.8s' }
+        { label: 'Katalog', val: 'Buku & Etnik' },
+        { label: 'Checkout', val: 'Instant Pay' },
+        { label: 'Pemuatan', val: '< 0.8s' }
       ],
       deliverables: ['E-Commerce Digital Storefront', 'Integrated Payment Engine', 'Mobile-First Catalog UX']
     }
@@ -95,9 +95,9 @@ const projects = [
       challenge: 'Mendigitalkan dan melestarikan warisan literatur budaya Dayak dalam satu gerbang terpadu yang ramah pembaca lintas generasi, mudah diakses peneliti global, dan memiliki katalog multi-format.',
       solution: 'Arsitektur portal literasi budaya berkinerja tinggi dengan tipografi kurasi Outfit & Plus Jakarta Sans, sistem klasifikasi multi-format (Cetak, Ebook, Hybrid), fitur pencarian instan, dan alur belanja terstruktur.',
       metrics: [
-        { label: 'Koleksi Literasi', val: 'Sejarah & Adat' },
-        { label: 'Format Buku', val: 'Cetak & Ebook' },
-        { label: 'Pemuatan Laman', val: '< 0.8s' }
+        { label: 'Koleksi', val: 'Sejarah Adat' },
+        { label: 'Format', val: 'Cetak & Ebook' },
+        { label: 'Pemuatan', val: '< 0.8s' }
       ],
       deliverables: ['Cultural Heritage Web Platform', 'Multi-Format Book Engine', 'Bilingual ID/EN Catalog Architecture']
     }
@@ -125,9 +125,9 @@ const projects = [
       challenge: 'Mempublikasikan riset multidisiplin dan inisiatif ekologis tropis kepada donor, peneliti internasional, dan masyarakat lokal dengan antarmuka elegan, kredibel, dan ramah multibahasa.',
       solution: 'Desain platform modern bertema lanskap tropis dengan tipografi editorial Libre Caslon Text, arsitektur dwibahasa (ID/EN), dark mode dinamis, dan showcase infografis dampak terukur.',
       metrics: [
-        { label: 'Penerima Manfaat', val: '2,800+' },
-        { label: 'Titik Intervensi', val: '48+ Lokasi' },
-        { label: 'Publikasi & Riset', val: '108+ Dokumen' }
+        { label: 'Dampak', val: '2,800+' },
+        { label: 'Lokasi', val: '48+ Titik' },
+        { label: 'Riset', val: '108+ Dokumen' }
       ],
       deliverables: ['Official NGO Web Platform', 'Bilingual Multilingual Engine', 'Interactive Impact Showcase']
     }
@@ -155,9 +155,9 @@ const projects = [
       challenge: 'Membangun portal berita digital dengan arus pembaruan tinggi (breaking news) seputar megaproyek IKN, tetap responsif diakses ribuan pembaca serentak, serta terindeks optimal di Google News.',
       solution: 'Arsitektur web publikasi dinamis berkecepatan tinggi dengan optimasi Core Web Vitals, penataan slot periklanan non-intrusif & non-blocking, serta struktur kategori berita interaktif.',
       metrics: [
-        { label: 'Jangkauan Berita', val: 'IKN & Borneo' },
-        { label: 'Indeks Berita', val: 'Google News' },
-        { label: 'Pemuatan Laman', val: '< 0.8s' }
+        { label: 'Liputan', val: 'IKN & Borneo' },
+        { label: 'Indeks', val: 'Google News' },
+        { label: 'Pemuatan', val: '< 0.8s' }
       ],
       deliverables: ['Digital News Portal Engine', 'AdSense Optimized Structure', 'High-Speed Breaking News Feed']
     }
@@ -185,9 +185,9 @@ const projects = [
       challenge: 'Mengakomodasi lonjakan pembaca masif pada breaking news nasional dan pergerakan bursa, mempertahankan skor Core Web Vitals tinggi di tengah integrasi periklanan Google AdSense, serta indexing cepat.',
       solution: 'Engine portal berita ultra-ringan dengan pipeline cache CDN, optimasi skrip iklan non-blocking asinkron, format artikel clean-reader, serta integrasi RSS/Atom feed Google News.',
       metrics: [
-        { label: 'Jangkauan Berita', val: 'Nasional RI' },
-        { label: 'Indeks Berita', val: 'Google News' },
-        { label: 'Pemuatan Laman', val: '< 0.7s' }
+        { label: 'Liputan', val: 'Nasional RI' },
+        { label: 'Indeks', val: 'Google News' },
+        { label: 'Pemuatan', val: '< 0.7s' }
       ],
       deliverables: ['High-Performance Media Engine', 'Non-Blocking AdSense Architecture', 'Multi-Category News Taxonomy']
     }
@@ -215,9 +215,9 @@ const projects = [
       challenge: 'Menyajikan informasi dermatologi dan panduan kesehatan kulit yang kredibel dengan gaya visual editorial elegan, navigasi artikel yang mudah dipahami publik awam, dan pemuatan super cepat.',
       solution: 'Arsitektur portal kesehatan berbasis konten editorial dengan palet earth-tone menenangkan, integrasi dark/light mode otomatis, direktori rilis buku kesehatan, serta optimasi SEO Schema medis/edukasi.',
       metrics: [
-        { label: 'Fokus Edukasi', val: 'Dermatologi' },
-        { label: 'Format Konten', val: 'Buku & Jurnal' },
-        { label: 'Pemuatan Laman', val: '< 0.7s' }
+        { label: 'Fokus', val: 'Dermatologi' },
+        { label: 'Format', val: 'Buku & Jurnal' },
+        { label: 'Pemuatan', val: '< 0.7s' }
       ],
       deliverables: ['Health & Wellness Web Portal', 'Editorial Publishing Engine', 'Responsive Clinical Directory']
     }
@@ -245,9 +245,9 @@ const projects = [
       challenge: 'Mentransformasi data dan rekam jejak bisnis korporasi raksasa menjadi narasi berjiwa tinggi dengan desain digital kelas dunia bertema luxury dark-aesthetic, tipografi Volkhov & Inter, serta interaktivitas responsif.',
       solution: 'Arsitektur platform executive positioning dengan particle constellation canvas interaktif, layout bento grid dinamis, showcase metodologi discovery terstruktur, dan performa pemuatan instan tanpa kompromi.',
       metrics: [
-        { label: 'Target Klien', val: 'Industry Titans' },
-        { label: 'Metodologi', val: 'Legacy Architecture' },
-        { label: 'Pemuatan Laman', val: '< 0.6s' }
+        { label: 'Klien', val: 'Industry Titans' },
+        { label: 'Metode', val: 'Legacy Arch' },
+        { label: 'Pemuatan', val: '< 0.6s' }
       ],
       deliverables: ['Executive Personal Brand Engine', 'Bento Architecture Showcase', 'Constellation Visual System']
     }
@@ -276,7 +276,7 @@ export default function Projects() {
         className={`absolute -right-20 top-1/3 w-[500px] h-[500px] bg-gradient-to-br ${activeProject.glow} rounded-full blur-[140px] pointer-events-none transition-all duration-700`}
       />
 
-      <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 w-full relative z-10 flex flex-col justify-between">
+      <div className="max-w-7xl mx-auto px-3 sm:px-10 lg:px-16 w-full relative z-10 flex flex-col justify-between">
         
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 md:mb-8 pb-4 border-b border-white/10">
@@ -311,7 +311,7 @@ export default function Projects() {
                   key={project.id}
                   onMouseEnter={() => setActiveIdx(idx)}
                   onClick={() => setActiveIdx(idx)}
-                  className={`group relative p-2 sm:p-3 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer ${
+                  className={`group relative p-1.5 sm:p-3 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer ${
                     isSelected
                       ? 'bg-white/[0.08] border-white/30 shadow-[0_10px_30px_rgba(0,0,0,0.6)] backdrop-blur-xl'
                       : 'bg-white/[0.02] border-white/5 hover:border-white/15 hover:bg-white/[0.04]'
@@ -327,15 +327,15 @@ export default function Projects() {
                     />
                   )}
 
-                  <div className="flex items-center justify-between gap-1.5 sm:gap-3">
-                    <div className="flex items-center gap-1.5 sm:gap-3 min-w-0">
-                      <span className={`text-[10px] sm:text-xs font-mono font-bold transition-colors shrink-0 ${
+                  <div className="flex items-center justify-between gap-1 sm:gap-3">
+                    <div className="flex items-center gap-1 sm:gap-3 min-w-0">
+                      <span className={`text-[9.5px] sm:text-xs font-mono font-bold transition-colors shrink-0 ${
                         isSelected ? 'text-cyan-300' : 'text-white/70'
                       }`}>
                         {project.num}
                       </span>
                       <div className="min-w-0">
-                        <h3 className={`text-[11px] sm:text-base font-display font-bold leading-tight transition-colors line-clamp-2 ${
+                        <h3 className={`text-[10px] sm:text-base font-display font-bold leading-tight transition-colors line-clamp-2 break-words ${
                           isSelected ? 'text-white' : 'text-white/70 group-hover:text-white'
                         }`}>
                           {project.title}
@@ -398,14 +398,14 @@ export default function Projects() {
                 />
 
                 {/* Sleek Browser Window Chrome */}
-                <div className="px-2.5 sm:px-4 py-1.5 sm:py-2.5 bg-neutral-900/95 border-b border-white/10 flex items-center justify-between text-[10px] sm:text-xs font-mono">
-                  <div className="flex items-center gap-2">
+                <div className="px-2 sm:px-4 py-1.5 sm:py-2.5 bg-neutral-900/95 border-b border-white/10 flex items-center justify-between text-[10px] sm:text-xs font-mono">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
                     <div className="flex items-center gap-1 sm:gap-1.5">
                       <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-red-500/80" />
                       <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-amber-500/80" />
                       <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500/80" />
                     </div>
-                    <div className="ml-2 hidden sm:flex items-center gap-1.5 px-3 py-0.5 rounded-lg bg-black/50 border border-white/10 text-[11px] text-white/70">
+                    <div className="ml-1 sm:ml-2 hidden sm:flex items-center gap-1.5 px-3 py-0.5 rounded-lg bg-black/50 border border-white/10 text-[11px] text-white/70">
                       <Lock className="w-3 h-3 text-emerald-400 shrink-0" />
                       <span className="truncate max-w-[200px]">
                         {activeProject.url !== '#' ? activeProject.url.replace(/^https?:\/\//, '') : `${activeProject.id}.ddev.studio`}
@@ -413,9 +413,9 @@ export default function Projects() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
                     <span 
-                      className="px-2 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-semibold border"
+                      className="px-1.5 sm:px-2.5 py-0.5 rounded-full text-[8px] sm:text-[10px] font-semibold border truncate max-w-[120px] sm:max-w-none"
                       style={{ 
                         color: activeProject.accentColor, 
                         borderColor: `${activeProject.accentColor}40`,
@@ -459,35 +459,40 @@ export default function Projects() {
                   </div>
 
                   {/* Corner Metric Pill */}
-                  <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 pointer-events-none">
-                    <span className="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-[9px] sm:text-[11px] font-mono text-cyan-300 shadow-lg">
+                  <div className="absolute bottom-1.5 right-1.5 sm:bottom-3 sm:right-3 pointer-events-none">
+                    <span className="px-1.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-[8px] sm:text-[11px] font-mono text-cyan-300 shadow-lg">
                       {activeProject.highlightMetric}
                     </span>
                   </div>
                 </div>
 
                 {/* Card Content & Action Bar */}
-                <div className="p-3 sm:p-6 flex flex-col justify-between gap-2.5 sm:gap-4">
+                <div className="p-2.5 sm:p-6 flex flex-col justify-between gap-2 sm:gap-4">
                   <div>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2 mb-1">
-                      <h3 className="text-sm sm:text-2xl font-display font-bold text-white leading-tight">
+                    <div className="flex flex-col gap-0.5 mb-1">
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="text-[8px] sm:text-xs font-mono text-cyan-300 sm:text-white/75 uppercase tracking-wider font-semibold">
+                          {activeProject.category}
+                        </span>
+                        <span className="text-[8.5px] text-white/50 font-mono sm:hidden">
+                          {activeProject.year}
+                        </span>
+                      </div>
+                      <h3 className="text-xs sm:text-2xl font-display font-bold text-white leading-tight break-words">
                         {activeProject.title}
                       </h3>
-                      <span className="text-[8.5px] sm:text-xs font-mono text-cyan-300 sm:text-white/75 uppercase shrink-0">
-                        {activeProject.category}
-                      </span>
                     </div>
 
-                    <p className="text-[10px] sm:text-sm text-white/70 font-light leading-snug sm:leading-relaxed line-clamp-2">
+                    <p className="text-[9.5px] sm:text-sm text-white/70 font-light leading-snug sm:leading-relaxed line-clamp-2">
                       {activeProject.description}
                     </p>
 
                     {/* Quick Metric Points */}
                     {activeProject.caseStudy?.metrics && (
-                      <div className="grid grid-cols-3 gap-1 sm:gap-2 mt-2 sm:mt-3 pt-1.5 sm:pt-2.5 border-t border-white/10">
+                      <div className="grid grid-cols-3 gap-1 sm:gap-2 mt-1.5 sm:mt-3 pt-1.5 sm:pt-2.5 border-t border-white/10">
                         {activeProject.caseStudy.metrics.map((m, mIdx) => (
                           <div key={mIdx} className="flex flex-col text-left min-w-0">
-                            <span className="text-[7.5px] sm:text-[9px] font-mono text-white/50 uppercase tracking-wider truncate">{m.label}</span>
+                            <span className="text-[7.5px] sm:text-[9px] font-mono text-white/50 uppercase tracking-tight truncate">{m.label}</span>
                             <span className="text-[9.5px] sm:text-xs font-mono font-bold truncate" style={{ color: activeProject.accentColor }}>
                               {m.val}
                             </span>
@@ -498,7 +503,7 @@ export default function Projects() {
                   </div>
 
                   {/* Tech Stack Pills & CTA */}
-                  <div className="pt-2 sm:pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+                  <div className="pt-2 sm:pt-3 border-t border-white/10 flex items-center justify-between gap-1.5 sm:gap-2">
                     <div className="hidden md:flex flex-wrap items-center gap-1.5">
                       {activeProject.tech.map((t, i) => (
                         <span
@@ -513,9 +518,9 @@ export default function Projects() {
                     <div className="flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto justify-end">
                       <button
                         onClick={() => setModalProject(activeProject)}
-                        className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-[10px] sm:text-xs font-mono font-bold bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all duration-300 shadow-md cursor-pointer hover:scale-105"
+                        className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-[9.5px] sm:text-xs font-mono font-bold bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all duration-300 shadow-md cursor-pointer hover:scale-105"
                       >
-                        <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-cyan-400" />
+                        <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-cyan-400 shrink-0" />
                         <span className="hidden sm:inline">Case Study & Specs</span>
                         <span className="sm:hidden">Specs</span>
                       </button>
@@ -525,10 +530,10 @@ export default function Projects() {
                           href={activeProject.url}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-[10px] sm:text-xs font-mono font-bold text-black transition-all duration-300 shadow-md cursor-pointer hover:scale-105"
+                          className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1 sm:gap-1.5 px-2 py-1.5 sm:px-4 sm:py-2 rounded-xl text-[9.5px] sm:text-xs font-mono font-bold text-black transition-all duration-300 shadow-md cursor-pointer hover:scale-105 shrink-0"
                           style={{ backgroundColor: activeProject.accentColor }}
                         >
-                          <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                          <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
                           <span>Visit</span>
                         </a>
                       )}
