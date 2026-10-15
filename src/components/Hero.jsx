@@ -56,44 +56,48 @@ export default function Hero({ setActiveSection, onNavigateToProjects, onNavigat
           </span>
         </motion.div>
 
-        {/* Monumental Hero Headline with Depth & 3D Spatial Sculpture in the Background */}
-        <div className="relative w-full text-center flex flex-col items-center justify-center my-1 sm:my-2">
+        {/* Clean Architectural Hero Presentation: Title 1 -> Dedicated 3D Stage -> Title 2 */}
+        <div className="w-full text-center flex flex-col items-center justify-center my-1 sm:my-2">
           
-          {/* 3D WebGL Kinetic Sculpture Viewport (Positioned BEHIND the text, z-0) */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-            <div className="w-full max-w-[480px] sm:max-w-[520px] h-[240px] sm:h-[280px] md:h-[320px] relative pointer-events-auto">
-              <Suspense
-                fallback={
-                  <div className="w-full h-full flex flex-col items-center justify-center text-center">
-                    <DayakShieldEmblem className="w-8 h-8 text-[#684AFF] animate-pulse mb-2" color="#684AFF" />
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-[#111111]/40">
-                      Initializing WebGL 3D Engine...
-                    </span>
-                  </div>
-                }
-              >
-                <Dayak3DCanvas />
-              </Suspense>
-            </div>
-          </div>
-
-          {/* Foreground Headline Typography (relative z-10, crisp and un-obscured) */}
+          {/* Top Line: LUIGI IRAM RANGI. */}
           <motion.h1
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.25, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-10 font-sans font-black text-[#111111] uppercase tracking-[-0.04em] leading-[0.92] select-none text-[10vw] sm:text-[8vw] md:text-[6.5vw] lg:text-[76px] xl:text-[88px] pointer-events-none"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="font-sans font-black text-[#111111] uppercase tracking-[-0.04em] leading-[0.95] select-none text-[8.5vw] sm:text-[7vw] md:text-[5.5vw] lg:text-[68px] xl:text-[80px]"
           >
             <span>LUIGI IRAM </span>
             <span className="text-[#684AFF]">RANGI</span>
             <span className="text-[#111111]/20">.</span>
           </motion.h1>
 
-          <motion.h2
-            initial={{ opacity: 0, scale: 0.95 }}
+          {/* Dedicated 3D Spatial Gyroscope Stage (Zero Collision / Breathing Room) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.35, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-10 font-sans font-black text-[#111111] uppercase tracking-[-0.04em] leading-[0.92] select-none text-[7.5vw] sm:text-[6vw] md:text-[4.8vw] lg:text-[56px] xl:text-[66px] mt-1 sm:mt-1.5 pointer-events-none"
+            className="w-full max-w-[420px] sm:max-w-[460px] h-[180px] sm:h-[205px] md:h-[225px] relative my-1 sm:my-2 flex items-center justify-center"
+          >
+            <Suspense
+              fallback={
+                <div className="w-full h-full flex flex-col items-center justify-center text-center">
+                  <DayakShieldEmblem className="w-7 h-7 text-[#684AFF] animate-pulse mb-1.5" color="#684AFF" />
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-[#111111]/40">
+                    Initializing 3D Engine...
+                  </span>
+                </div>
+              }
+            >
+              <Dayak3DCanvas showControls={false} showHud={false} />
+            </Suspense>
+          </motion.div>
+
+          {/* Bottom Line: CULTURAL COMPUTING */}
+          <motion.h2
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="font-sans font-black text-[#111111] uppercase tracking-[-0.04em] leading-[0.95] select-none text-[6.5vw] sm:text-[5.2vw] md:text-[4.2vw] lg:text-[50px] xl:text-[60px]"
           >
             <span className="text-[#111111]/30">CULTURAL </span>
             <span className="text-[#111111]">COMPUTING</span>

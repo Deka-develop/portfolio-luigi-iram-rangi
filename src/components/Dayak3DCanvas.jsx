@@ -81,9 +81,9 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
     const mainGroup = new THREE.Group();
     scene.add(mainGroup);
 
-    // Central Elongated Dayak Diamond Shield Core (Scaled down for subtle elegance)
-    const shieldGeo = new THREE.OctahedronGeometry(0.7, 0);
-    shieldGeo.scale(0.78, 1.25, 0.78);
+    // Central Elongated Dayak Diamond Shield Core (Compact elegance, non-overlapping)
+    const shieldGeo = new THREE.OctahedronGeometry(0.55, 0);
+    shieldGeo.scale(0.72, 1.25, 0.72);
 
     const solidMat = new THREE.MeshStandardMaterial({
       color: 0x111111,
@@ -106,8 +106,8 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
     mainGroup.add(wireLines);
 
     // Counter-rotating Inner Core
-    const innerGeo = new THREE.OctahedronGeometry(0.32, 0);
-    innerGeo.scale(0.75, 1.15, 0.75);
+    const innerGeo = new THREE.OctahedronGeometry(0.24, 0);
+    innerGeo.scale(0.72, 1.15, 0.72);
     const innerMat = new THREE.MeshBasicMaterial({
       color: 0xd97706,
       wireframe: true,
@@ -118,7 +118,7 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
     mainGroup.add(innerCore);
 
     // Orbital Ring 1 (Electric Violet Equatorial Ring - Compact)
-    const ring1Geo = new THREE.TorusGeometry(1.28, 0.02, 16, 80);
+    const ring1Geo = new THREE.TorusGeometry(0.98, 0.016, 16, 80);
     const ring1Mat = new THREE.MeshStandardMaterial({
       color: 0x684aff,
       metalness: 0.95,
@@ -131,7 +131,7 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
     mainGroup.add(ring1);
 
     // Orbital Ring 2 (Golden Meridian Ring with jewel nodes - Compact)
-    const ring2Geo = new THREE.TorusGeometry(1.48, 0.016, 16, 80);
+    const ring2Geo = new THREE.TorusGeometry(1.16, 0.014, 16, 80);
     const ring2Mat = new THREE.MeshStandardMaterial({
       color: 0xd97706,
       metalness: 0.9,
@@ -145,21 +145,21 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
     mainGroup.add(ring2);
 
     // 4 Jewel Nodes on Ring 2
-    const nodeGeo = new THREE.OctahedronGeometry(0.06, 0);
+    const nodeGeo = new THREE.OctahedronGeometry(0.05, 0);
     const nodeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
     const nodeCount = 4;
     for (let i = 0; i < nodeCount; i++) {
       const angle = (i * Math.PI * 2) / nodeCount;
       const node = new THREE.Mesh(nodeGeo, nodeMat);
-      node.position.set(Math.cos(angle) * 1.48, Math.sin(angle) * 1.48, 0);
+      node.position.set(Math.cos(angle) * 1.16, Math.sin(angle) * 1.16, 0);
       ring2.add(node);
     }
 
     // Outer Ambient Floating Stardust Particles
-    const particleCount = 80;
+    const particleCount = 70;
     const particlePositions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
-      const radius = 1.5 + Math.random() * 1.0;
+      const radius = 1.2 + Math.random() * 0.7;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random() * 2 - 1);
       particlePositions[i] = radius * Math.sin(phi) * Math.cos(theta);
@@ -170,7 +170,7 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
     const particleMat = new THREE.PointsMaterial({
       color: 0x684aff,
-      size: 0.035,
+      size: 0.03,
       transparent: true,
       opacity: 0.8
     });
@@ -383,8 +383,7 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
       <section
         ref={mountRef}
         aria-label="Kanvas Interaktif 3D Perisai Dayak Talawang"
-        className="w-full h-full min-h-[220px] sm:min-h-[260px] md:min-h-[300px] cursor-grab active:cursor-grabbing relative z-10"
-        title="Geser mouse untuk memutar 360°"
+        className="w-full h-full min-h-[190px] sm:min-h-[210px] md:min-h-[230px] cursor-grab active:cursor-grabbing relative z-10"
       >
         <span className="sr-only">
           Model 3D interaktif Perisai Dayak kontemporer bertenaga WebGL Three.js. Anda dapat menggunakan tombol kontrol di bawah untuk mengatur mode tampilan, palet warna, dan kecepatan rotasi.
