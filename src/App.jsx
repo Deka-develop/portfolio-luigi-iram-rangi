@@ -219,22 +219,12 @@ function App() {
             {route !== 'home' ? (
               <button
                 onClick={() => navigateTo('home')}
-                className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white border border-[#111111]/15 text-[#111111] font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#111111] hover:text-white transition-all duration-300 shadow-sm cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white border border-[#111111]/15 text-[#111111] font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#111111] hover:text-white transition-all duration-300 shadow-sm cursor-pointer"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Beranda</span>
               </button>
             ) : null}
-
-            {/* Direct Contact Button */}
-            <button
-              onClick={() => navigateTo('kontak')}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#111111] text-[#EDEEF0] font-sans text-xs font-bold uppercase tracking-wider hover:bg-[#684AFF] transition-all duration-300 shadow-sm cursor-pointer"
-            >
-              <span>Mulai Proyek</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </button>
-
           </div>
 
         </div>
