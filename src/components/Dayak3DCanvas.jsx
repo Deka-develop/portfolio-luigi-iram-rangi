@@ -1486,19 +1486,6 @@ export function SapeDayak3D({ className = '' }) {
       group.add(line);
     }
 
-    // Acoustic Harmonic Spatial Orbit Rings
-    const ring1Geo = new THREE.TorusGeometry(1.68, 0.014, 16, 64);
-    const ring1Mat = new THREE.MeshBasicMaterial({ color: 0x684aff, transparent: true, opacity: 0.65 });
-    const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
-    ring1.rotation.x = Math.PI / 3;
-    group.add(ring1);
-
-    const ring2Geo = new THREE.TorusGeometry(1.42, 0.012, 16, 64);
-    const ring2Mat = new THREE.MeshBasicMaterial({ color: 0xd97706, transparent: true, opacity: 0.6 });
-    const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
-    ring2.rotation.y = Math.PI / 4;
-    group.add(ring2);
-
     // Floating Sacred Musical Notes / Stardust Particles
     const dustCount = 45;
     const dustPts = [];
@@ -1539,9 +1526,6 @@ export function SapeDayak3D({ className = '' }) {
       group.rotation.x = Math.sin(time * 0.001) * 0.12;
       group.rotation.z = Math.cos(time * 0.0008) * 0.06;
 
-      // Orbit rings rotation
-      ring1.rotation.z += 0.012;
-      ring2.rotation.x += 0.014;
       dust.rotation.y += 0.003;
 
       // Harmonic String Vibration Physics (Senar Sape' bergetar harmonis)
@@ -1599,10 +1583,6 @@ export function SapeDayak3D({ className = '' }) {
       sRGeo.dispose();
       spiralMat.dispose();
       stringGeos.forEach(g => g.dispose());
-      ring1Geo.dispose();
-      ring1Mat.dispose();
-      ring2Geo.dispose();
-      ring2Mat.dispose();
       dustGeo.dispose();
       dustMat.dispose();
     };
