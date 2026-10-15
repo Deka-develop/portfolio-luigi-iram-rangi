@@ -381,13 +381,13 @@ export default function MilestonePage({ onNavigate }) {
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {[
+                    'Frontend Engineering',
+                    'Backend Architecture',
+                    'Fullstack Web Systems',
+                    'RESTful APIs & Database',
                     'Three.js & WebGL 3D',
-                    'GLSL Shaders',
-                    'Fullstack Architecture',
                     'Core Web Vitals CRO',
-                    'Cultural Computing',
-                    'E-Commerce Engines',
-                    'Interactive UX Design',
+                    'Interactive UI/UX Design',
                     'Performance Auditing'
                   ].map((cap) => (
                     <span

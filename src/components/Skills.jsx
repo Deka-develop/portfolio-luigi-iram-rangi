@@ -64,14 +64,14 @@ const pillars = [
 ];
 
 const techArsenal = [
-  { name: 'Three.js / WebGL', level: '96%', role: '3D Graphics Specialist', tag: '3D Core' },
-  { name: 'High-Perf Web Systems', level: '98%', role: 'Zero-Bloat & Publishing Engines', tag: 'Architecture' },
-  { name: 'React 19 & Vite', level: '95%', role: 'Interactive Web Apps', tag: 'Frontend' },
-  { name: 'Tailwind CSS', level: '96%', role: 'Design Tokens & UI/UX', tag: 'Styling' },
-  { name: 'TypeScript & JavaScript', level: '92%', role: 'Type-Safe Logic & GLSL', tag: 'Language' },
-  { name: 'Framer Motion', level: '94%', role: 'Kinetic Physics Animation', tag: 'Motion' },
-  { name: 'Schema SEO & Vitals', level: '98%', role: '100/100 Core Vitals Benchmark', tag: 'SEO 100' },
-  { name: 'Borneo Regional Hub', level: '92%', role: 'Impact Platform Engineering', tag: 'Ecosystem' }
+  { name: 'React 19 & Frontend', level: '96%', role: 'Interactive Web & State Architecture', tag: 'Frontend' },
+  { name: 'Node.js & Backend APIs', level: '94%', role: 'RESTful Endpoints & Server Systems', tag: 'Backend' },
+  { name: 'Fullstack Architecture', level: '98%', role: 'Zero-Bloat Publishing Engines', tag: 'Fullstack' },
+  { name: 'Three.js / WebGL 3D', level: '96%', role: 'Spatial Canvases & GPU Shaders', tag: '3D Graphics' },
+  { name: 'Tailwind CSS & UI/UX', level: '96%', role: 'Design Tokens & Micro-interactions', tag: 'Styling' },
+  { name: 'TypeScript & JavaScript', level: '93%', role: 'Type-Safe Logic & GLSL Pipeline', tag: 'Language' },
+  { name: 'Schema SEO & Vitals', level: '98%', role: '100/100 Core Vitals Benchmark', tag: 'SEO & Speed' },
+  { name: 'Databases & Cloud Hubs', level: '92%', role: 'Scalable Data & Borneo Globe Ecosystem', tag: 'Database' }
 ];
 
 export default function Skills() {
