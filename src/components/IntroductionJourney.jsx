@@ -258,7 +258,7 @@ export default function IntroductionJourney({ onNavigate }) {
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.05 }}
+          viewport={{ once: false, amount: 'some' }}
           transition={{ duration: 0.5 }}
           className="flex flex-col gap-2 mb-8 md:mb-12 max-w-6xl mx-auto w-full"
         >
@@ -358,7 +358,7 @@ export default function IntroductionJourney({ onNavigate }) {
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.05 }}
+          viewport={{ once: false, amount: 'some' }}
           transition={{ duration: 0.5 }}
           className="flex flex-col gap-2 mb-10 max-w-6xl mx-auto w-full"
         >
@@ -392,6 +392,8 @@ export default function IntroductionJourney({ onNavigate }) {
                 key={p.id}
                 delay={idx * 0.12}
                 rotate={cardRotate}
+                index={idx}
+                total={pillars.length}
                 onMouseEnter={() => setActivePilar(idx)}
                 className={`relative flex flex-col justify-between p-7 sm:p-8 rounded-3xl transition-all duration-300 border cursor-pointer ${
                   isHovered
@@ -499,7 +501,7 @@ export default function IntroductionJourney({ onNavigate }) {
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
+            viewport={{ once: false, amount: 'some' }}
             transition={{ duration: 0.5 }}
             className="flex flex-col gap-2 mb-10"
           >
@@ -530,6 +532,8 @@ export default function IntroductionJourney({ onNavigate }) {
                   key={pr.num}
                   delay={idx * 0.08}
                   rotate={idx % 2 === 0 ? -1.5 : 1.5}
+                  index={idx}
+                  total={principles.length}
                   className="group p-5 rounded-2xl bg-white border border-[#111111]/10 hover:border-[#684AFF]/40 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
                 >
                   <div>
@@ -574,6 +578,8 @@ export default function IntroductionJourney({ onNavigate }) {
                       key={item.label}
                       delay={0.1 + idx * 0.08}
                       rotate={idx % 2 === 0 ? 1.5 : -1.5}
+                      index={idx}
+                      total={personaDetails.length}
                       className="p-5 rounded-2xl bg-white border border-[#111111]/10 hover:border-[#684AFF]/40 hover:shadow-md transition-all flex flex-col justify-between"
                     >
                       <div>
@@ -615,7 +621,7 @@ export default function IntroductionJourney({ onNavigate }) {
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.05 }}
+          viewport={{ once: false, amount: 'some' }}
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center text-center max-w-4xl mx-auto mb-12"
         >
@@ -647,6 +653,8 @@ export default function IntroductionJourney({ onNavigate }) {
                 key={p.id}
                 delay={idx * 0.09}
                 rotate={cardRotate}
+                index={idx}
+                total={portalLinks.length}
                 className="group p-6 rounded-3xl bg-[#1A1A1A] border border-white/10 hover:border-[#684AFF] hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
               >
                 <div>

@@ -140,7 +140,7 @@ export default function JourneySection() {
                 key={era.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
+                viewport={{ once: false, amount: 'some' }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 style={{ '--card-top': `${90 + index * 18}px` }}
                 className="relative lg:sticky lg:[top:var(--card-top)] rounded-[28px] md:rounded-[36px] bg-white border border-[#111111]/10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-500 hover:shadow-[0_25px_70px_-10px_rgba(104,74,255,0.12)]"
