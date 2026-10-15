@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { ArrowLeft, ArrowUpRight, ChevronRight, Home } from 'lucide-react';
+import { ArrowLeft, ChevronRight, Home } from 'lucide-react';
 import { DayakShieldEmblem } from '../components/DayakMotifs';
 import Contact from '../components/Contact';
 
@@ -69,103 +69,6 @@ export default function ContactPage({ onNavigate }) {
       <div className="w-full">
         <Contact />
       </div>
-
-      {/* ───────────────── 3. NEXT STEPS & EXPLORE FURTHER FOOTER ───────────────── */}
-      <section className="relative w-full py-20 md:py-28 px-6 md:px-12 lg:px-20 bg-white border-t border-[#111111]/10">
-        <div className="max-w-[1400px] mx-auto">
-          
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <div>
-              <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-[#684AFF] font-bold block mb-2">
-                Eksplorasi Lanjutan
-              </span>
-              <h2 className="text-[#111111] text-3xl md:text-5xl font-black tracking-tight">
-                Langkah Berikutnya<span className="text-[#684AFF]">.</span>
-              </h2>
-            </div>
-            <p className="text-[#111111]/60 text-sm md:text-base max-w-md leading-relaxed">
-              Jelajahi portofolio proyek atau lihat standar kapabilitas rekayasa kami.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <button
-              onClick={() => onNavigate('karya')}
-              className="p-8 rounded-[24px] bg-[#EDEEF0] border border-[#111111]/10 text-left hover:border-[#684AFF]/40 hover:bg-white hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between min-h-[200px]"
-            >
-              <div>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-[#111111]/40 block mb-2">
-                  01 / Portofolio
-                </span>
-                <h3 className="text-xl md:text-2xl font-bold text-[#111111] group-hover:text-[#684AFF] transition-colors mb-2">
-                  Karya Terpilih
-                </h3>
-                <p className="text-xs md:text-sm text-[#111111]/60 leading-relaxed font-normal">
-                  Katalog sistem web produksi skala nasional &amp; regional dengan live demo.
-                </p>
-              </div>
-              <div className="flex items-center gap-2 font-mono text-xs text-[#111111] font-bold uppercase tracking-wider group-hover:text-[#684AFF] mt-6">
-                <span>Buka Karya</span>
-                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </div>
-            </button>
-
-            <button
-              onClick={() => onNavigate('milestone-3d')}
-              className="p-8 rounded-[24px] bg-[#EDEEF0] border border-[#111111]/10 text-left hover:border-[#684AFF]/40 hover:bg-white hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between min-h-[200px]"
-            >
-              <div>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-[#111111]/40 block mb-2">
-                  02 / Laboratorium 3D
-                </span>
-                <h3 className="text-xl md:text-2xl font-bold text-[#111111] group-hover:text-[#684AFF] transition-colors mb-2">
-                  Milestone 3D
-                </h3>
-                <p className="text-xs md:text-sm text-[#111111]/60 leading-relaxed font-normal">
-                  Arsip interaktif 4 model WebGL Three.js, benchmark performa, dan rekam jejak.
-                </p>
-              </div>
-              <div className="flex items-center gap-2 font-mono text-xs text-[#111111] font-bold uppercase tracking-wider group-hover:text-[#684AFF] mt-6">
-                <span>Buka Milestone 3D</span>
-                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </div>
-            </button>
-
-            <button
-              onClick={() => onNavigate('kapabilitas')}
-              className="p-8 rounded-[24px] bg-[#EDEEF0] border border-[#111111]/10 text-left hover:border-[#684AFF]/40 hover:bg-white hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between min-h-[200px]"
-            >
-              <div>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-[#111111]/40 block mb-2">
-                  03 / Spesifikasi
-                </span>
-                <h3 className="text-xl md:text-2xl font-bold text-[#111111] group-hover:text-[#684AFF] transition-colors mb-2">
-                  Kapabilitas
-                </h3>
-                <p className="text-xs md:text-sm text-[#111111]/60 leading-relaxed font-normal">
-                  Tolok ukur Core Web Vitals 100/100, arsitektur sistem, dan game Cyber Arcade.
-                </p>
-              </div>
-              <div className="flex items-center gap-2 font-mono text-xs text-[#111111] font-bold uppercase tracking-wider group-hover:text-[#684AFF] mt-6">
-                <span>Buka Kapabilitas</span>
-                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </div>
-            </button>
-          </div>
-
-          {/* Centered Return to Home Button */}
-          <div className="w-full flex items-center justify-center pt-8 border-t border-[#111111]/10">
-            <button
-              onClick={() => onNavigate('home')}
-              className="px-8 py-4 rounded-full bg-[#111111] text-[#EDEEF0] font-sans text-xs md:text-sm font-bold uppercase tracking-[0.15em] hover:bg-[#684AFF] transition-all duration-300 shadow-md hover:scale-105 cursor-pointer flex items-center gap-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Kembali ke Halaman Utama</span>
-            </button>
-          </div>
-
-        </div>
-      </section>
 
     </article>
   );
