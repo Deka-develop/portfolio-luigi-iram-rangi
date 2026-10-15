@@ -5,7 +5,7 @@ import { RotateCcw, Box } from 'lucide-react';
 /* ─────────────────────────────────────────────────────────────
    1. HERO MASTERPIECE: 3D Dayak Cyber Crystal & Kinetic Gyroscope
    ───────────────────────────────────────────────────────────── */
-export default function Dayak3DCanvas({ className = '' }) {
+export default function Dayak3DCanvas({ className = '', showControls = false, showHud = false }) {
   const mountRef = useRef(null);
   const [wireframeOnly, setWireframeOnly] = useState(false);
   const [themeColor, setThemeColor] = useState('violet'); // 'violet' | 'gold' | 'emerald'
@@ -81,9 +81,9 @@ export default function Dayak3DCanvas({ className = '' }) {
     const mainGroup = new THREE.Group();
     scene.add(mainGroup);
 
-    // Central Elongated Dayak Diamond Shield Core
-    const shieldGeo = new THREE.OctahedronGeometry(1.0, 0);
-    shieldGeo.scale(0.85, 1.4, 0.85);
+    // Central Elongated Dayak Diamond Shield Core (Scaled down for subtle elegance)
+    const shieldGeo = new THREE.OctahedronGeometry(0.7, 0);
+    shieldGeo.scale(0.78, 1.25, 0.78);
 
     const solidMat = new THREE.MeshStandardMaterial({
       color: 0x111111,
@@ -106,8 +106,8 @@ export default function Dayak3DCanvas({ className = '' }) {
     mainGroup.add(wireLines);
 
     // Counter-rotating Inner Core
-    const innerGeo = new THREE.OctahedronGeometry(0.44, 0);
-    innerGeo.scale(0.8, 1.25, 0.8);
+    const innerGeo = new THREE.OctahedronGeometry(0.32, 0);
+    innerGeo.scale(0.75, 1.15, 0.75);
     const innerMat = new THREE.MeshBasicMaterial({
       color: 0xd97706,
       wireframe: true,
@@ -117,8 +117,8 @@ export default function Dayak3DCanvas({ className = '' }) {
     const innerCore = new THREE.Mesh(innerGeo, innerMat);
     mainGroup.add(innerCore);
 
-    // Orbital Ring 1 (Electric Violet Equatorial Ring)
-    const ring1Geo = new THREE.TorusGeometry(1.68, 0.024, 16, 80);
+    // Orbital Ring 1 (Electric Violet Equatorial Ring - Compact)
+    const ring1Geo = new THREE.TorusGeometry(1.28, 0.02, 16, 80);
     const ring1Mat = new THREE.MeshStandardMaterial({
       color: 0x684aff,
       metalness: 0.95,
@@ -130,8 +130,8 @@ export default function Dayak3DCanvas({ className = '' }) {
     ring1.rotation.x = Math.PI / 3;
     mainGroup.add(ring1);
 
-    // Orbital Ring 2 (Golden Meridian Ring with jewel nodes)
-    const ring2Geo = new THREE.TorusGeometry(1.95, 0.02, 16, 80);
+    // Orbital Ring 2 (Golden Meridian Ring with jewel nodes - Compact)
+    const ring2Geo = new THREE.TorusGeometry(1.48, 0.016, 16, 80);
     const ring2Mat = new THREE.MeshStandardMaterial({
       color: 0xd97706,
       metalness: 0.9,
@@ -145,21 +145,21 @@ export default function Dayak3DCanvas({ className = '' }) {
     mainGroup.add(ring2);
 
     // 4 Jewel Nodes on Ring 2
-    const nodeGeo = new THREE.OctahedronGeometry(0.08, 0);
+    const nodeGeo = new THREE.OctahedronGeometry(0.06, 0);
     const nodeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
     const nodeCount = 4;
     for (let i = 0; i < nodeCount; i++) {
       const angle = (i * Math.PI * 2) / nodeCount;
       const node = new THREE.Mesh(nodeGeo, nodeMat);
-      node.position.set(Math.cos(angle) * 1.95, Math.sin(angle) * 1.95, 0);
+      node.position.set(Math.cos(angle) * 1.48, Math.sin(angle) * 1.48, 0);
       ring2.add(node);
     }
 
     // Outer Ambient Floating Stardust Particles
-    const particleCount = 100;
+    const particleCount = 80;
     const particlePositions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
-      const radius = 2.1 + Math.random() * 1.6;
+      const radius = 1.5 + Math.random() * 1.0;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random() * 2 - 1);
       particlePositions[i] = radius * Math.sin(phi) * Math.cos(theta);
@@ -170,7 +170,7 @@ export default function Dayak3DCanvas({ className = '' }) {
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
     const particleMat = new THREE.PointsMaterial({
       color: 0x684aff,
-      size: 0.045,
+      size: 0.035,
       transparent: true,
       opacity: 0.8
     });
@@ -194,12 +194,24 @@ export default function Dayak3DCanvas({ className = '' }) {
       pointLight
     };
 
-    // 5. Interactive Drag & Mouse Parallax
+    // 5. Interactive Drag & Mouse Parallax with Scrolling Stability
     let isDragging = false;
     let prevPointerX = 0;
     let prevPointerY = 0;
     let dragVelocityX = 0;
     let dragVelocityY = 0;
+    let isVisible = true;
+
+    // Viewport Intersection Observer: Pause WebGL updates when scrolled off-screen
+    const visibilityObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+        });
+      },
+      { threshold: 0.05 }
+    );
+    visibilityObserver.observe(container);
 
     const onPointerDown = (e) => {
       isDragging = true;
@@ -210,12 +222,15 @@ export default function Dayak3DCanvas({ className = '' }) {
     };
 
     const onPointerMove = (e) => {
-      // Calculate normalized mouse position (-1 to 1) for smooth parallax
+      if (!isVisible) return;
       const rect = container.getBoundingClientRect();
-      const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      const ny = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-      mouseRef.current.targetX = nx * 0.45;
-      mouseRef.current.targetY = ny * 0.35;
+      // If container is scrolled out of viewport, ignore mouse move
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+      const nx = Math.max(-1, Math.min(1, ((e.clientX - rect.left) / rect.width) * 2 - 1));
+      const ny = Math.max(-1, Math.min(1, -(((e.clientY - rect.top) / rect.height) * 2 - 1)));
+      mouseRef.current.targetX = nx * 0.3;
+      mouseRef.current.targetY = ny * 0.25;
 
       if (!isDragging) return;
       const dx = e.clientX - prevPointerX;
@@ -235,10 +250,13 @@ export default function Dayak3DCanvas({ className = '' }) {
     };
 
     const domElement = renderer.domElement;
-    domElement.style.touchAction = 'none';
+    // CRITICAL: touchAction 'pan-y' allows natural page scrolling on touch and trackpads
+    domElement.style.touchAction = 'pan-y';
     domElement.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
     window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', onPointerUp);
+    window.addEventListener('blur', onPointerUp);
 
     // 6. Resize Observer
     const resizeObserver = new ResizeObserver((entries) => {
@@ -253,13 +271,16 @@ export default function Dayak3DCanvas({ className = '' }) {
     });
     resizeObserver.observe(container);
 
-    // 7. Render Loop with Smooth Lerping & Inertia
+    // 7. Render Loop with Smooth Lerping & Inertia (Safely Paused When Off-screen)
     let lastTime = performance.now();
     let frameCount = 0;
     let lastFpsUpdate = lastTime;
 
     const animate = (currentTime) => {
       animFrameIdRef.current = requestAnimationFrame(animate);
+
+      // Skip render when hero section is offscreen to prevent scroll bugs and save GPU
+      if (!isVisible) return;
 
       // FPS Calculation
       frameCount++;
@@ -312,10 +333,13 @@ export default function Dayak3DCanvas({ className = '' }) {
 
     return () => {
       if (animFrameIdRef.current) cancelAnimationFrame(animFrameIdRef.current);
+      visibilityObserver.disconnect();
       resizeObserver.disconnect();
       domElement.removeEventListener('pointerdown', onPointerDown);
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener('pointercancel', onPointerUp);
+      window.removeEventListener('blur', onPointerUp);
       if (renderer.domElement && container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
@@ -359,7 +383,7 @@ export default function Dayak3DCanvas({ className = '' }) {
       <section
         ref={mountRef}
         aria-label="Kanvas Interaktif 3D Perisai Dayak Talawang"
-        className="w-full h-full min-h-[380px] sm:min-h-[440px] md:min-h-[520px] lg:min-h-[580px] cursor-grab active:cursor-grabbing relative z-10"
+        className="w-full h-full min-h-[220px] sm:min-h-[260px] md:min-h-[300px] cursor-grab active:cursor-grabbing relative z-10"
         title="Geser mouse untuk memutar 360°"
       >
         <span className="sr-only">
@@ -368,81 +392,87 @@ export default function Dayak3DCanvas({ className = '' }) {
       </section>
 
       {/* Floating Spatial Micro-Controls Bar */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 backdrop-blur-md border border-black/10 shadow-lg text-[10px] md:text-[11px] font-mono tracking-wider">
-        <button
-          onClick={() => setWireframeOnly((prev) => !prev)}
-          aria-label={wireframeOnly ? 'Aktifkan mode solid' : 'Aktifkan mode wireframe'}
-          className={`px-2.5 py-1 rounded-full transition-colors cursor-pointer flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none ${
-            wireframeOnly ? 'bg-[#111111] text-white font-bold' : 'hover:bg-black/5 text-[#111111]'
-          }`}
-          title="Toggle Wireframe mode"
-        >
-          <Box className="w-3 h-3" aria-hidden="true" />
-          <span>{wireframeOnly ? 'Wireframe' : 'Solid'}</span>
-        </button>
+      {showControls && (
+        <div className="absolute bottom-1 sm:bottom-2 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/75 backdrop-blur-md border border-black/10 shadow-md text-[10px] md:text-[11px] font-mono tracking-wider">
+          <button
+            onClick={() => setWireframeOnly((prev) => !prev)}
+            aria-label={wireframeOnly ? 'Aktifkan mode solid' : 'Aktifkan mode wireframe'}
+            className={`px-2.5 py-1 rounded-full transition-colors cursor-pointer flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none ${
+              wireframeOnly ? 'bg-[#111111] text-white font-bold' : 'hover:bg-black/5 text-[#111111]'
+            }`}
+            title="Toggle Wireframe mode"
+          >
+            <Box className="w-3 h-3" aria-hidden="true" />
+            <span>{wireframeOnly ? 'Wireframe' : 'Solid'}</span>
+          </button>
 
-        <div className="w-px h-3.5 bg-black/15" />
+          <div className="w-px h-3.5 bg-black/15" />
 
-        {/* Color Palette Switcher */}
-        <div className="flex items-center gap-1">
+          {/* Color Palette Switcher */}
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setThemeColor('violet')}
+              aria-label="Warna Violet"
+              className={`w-3.5 h-3.5 rounded-full bg-[#684AFF] transition-transform ${
+                themeColor === 'violet' ? 'ring-2 ring-black scale-110' : 'opacity-70 hover:opacity-100'
+              }`}
+            />
+            <button
+              onClick={() => setThemeColor('gold')}
+              aria-label="Warna Emas"
+              className={`w-3.5 h-3.5 rounded-full bg-[#D97706] transition-transform ${
+                themeColor === 'gold' ? 'ring-2 ring-black scale-110' : 'opacity-70 hover:opacity-100'
+              }`}
+            />
+            <button
+              onClick={() => setThemeColor('emerald')}
+              aria-label="Warna Emerald"
+              className={`w-3.5 h-3.5 rounded-full bg-[#10B981] transition-transform ${
+                themeColor === 'emerald' ? 'ring-2 ring-black scale-110' : 'opacity-70 hover:opacity-100'
+              }`}
+            />
+          </div>
+
+          <div className="w-px h-3.5 bg-black/15" />
+
           <button
-            onClick={() => setThemeColor('violet')}
-            aria-label="Warna Violet"
-            className={`w-3.5 h-3.5 rounded-full bg-[#684AFF] transition-transform ${
-              themeColor === 'violet' ? 'ring-2 ring-black scale-110' : 'opacity-70 hover:opacity-100'
-            }`}
-          />
+            onClick={() =>
+              setSpinSpeed((prev) => (prev === 'normal' ? 'fast' : prev === 'fast' ? 'pause' : 'normal'))
+            }
+            className="px-2 py-1 rounded-full hover:bg-black/5 text-[#111111] transition-colors cursor-pointer capitalize"
+            title="Ubah kecepatan putaran"
+          >
+            {spinSpeed}
+          </button>
+
           <button
-            onClick={() => setThemeColor('gold')}
-            aria-label="Warna Emas"
-            className={`w-3.5 h-3.5 rounded-full bg-[#D97706] transition-transform ${
-              themeColor === 'gold' ? 'ring-2 ring-black scale-110' : 'opacity-70 hover:opacity-100'
-            }`}
-          />
-          <button
-            onClick={() => setThemeColor('emerald')}
-            aria-label="Warna Emerald"
-            className={`w-3.5 h-3.5 rounded-full bg-[#10B981] transition-transform ${
-              themeColor === 'emerald' ? 'ring-2 ring-black scale-110' : 'opacity-70 hover:opacity-100'
-            }`}
-          />
+            onClick={resetView}
+            aria-label="Reset orientasi"
+            className="p-1 rounded-full hover:bg-black/5 text-[#111111] transition-colors cursor-pointer"
+            title="Reset posisi"
+          >
+            <RotateCcw className="w-3 h-3" />
+          </button>
         </div>
-
-        <div className="w-px h-3.5 bg-black/15" />
-
-        <button
-          onClick={() =>
-            setSpinSpeed((prev) => (prev === 'normal' ? 'fast' : prev === 'fast' ? 'pause' : 'normal'))
-          }
-          className="px-2 py-1 rounded-full hover:bg-black/5 text-[#111111] transition-colors cursor-pointer capitalize"
-          title="Ubah kecepatan putaran"
-        >
-          {spinSpeed}
-        </button>
-
-        <button
-          onClick={resetView}
-          aria-label="Reset orientasi"
-          className="p-1 rounded-full hover:bg-black/5 text-[#111111] transition-colors cursor-pointer"
-          title="Reset posisi"
-        >
-          <RotateCcw className="w-3 h-3" />
-        </button>
-      </div>
+      )}
 
       {/* Floating Telemetry & Drag Cue */}
-      <div className="absolute top-4 right-4 z-20 flex items-center gap-2 pointer-events-none">
-        <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-[#111111]/40 px-2 py-1 rounded-full bg-white/50 backdrop-blur-sm border border-black/5">
-          {fps} FPS // THREE.JS
-        </span>
-      </div>
+      {showHud && (
+        <>
+          <div className="absolute top-4 right-4 z-20 flex items-center gap-2 pointer-events-none">
+            <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-[#111111]/40 px-2 py-1 rounded-full bg-white/50 backdrop-blur-sm border border-black/5">
+              {fps} FPS // THREE.JS
+            </span>
+          </div>
 
-      <div className="absolute top-4 left-4 z-20 pointer-events-none">
-        <span className="inline-flex items-center gap-1.5 font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-[#111111]/50 px-2.5 py-1 rounded-full bg-white/50 backdrop-blur-sm border border-black/5">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#684AFF] animate-pulse" />
-          Interactive 3D Stage
-        </span>
-      </div>
+          <div className="absolute top-4 left-4 z-20 pointer-events-none">
+            <span className="inline-flex items-center gap-1.5 font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-[#111111]/50 px-2.5 py-1 rounded-full bg-white/50 backdrop-blur-sm border border-black/5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#684AFF] animate-pulse" />
+              Interactive 3D Stage
+            </span>
+          </div>
+        </>
+      )}
     </div>
   );
 }

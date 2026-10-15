@@ -56,40 +56,44 @@ export default function Hero({ setActiveSection, onNavigateToProjects, onNavigat
           </span>
         </motion.div>
 
-        {/* Monumental Hero Headline with Depth */}
-        <div className="relative w-full text-center flex flex-col items-center justify-center">
+        {/* Monumental Hero Headline with Depth & 3D Spatial Sculpture in the Background */}
+        <div className="relative w-full text-center flex flex-col items-center justify-center my-1 sm:my-2">
+          
+          {/* 3D WebGL Kinetic Sculpture Viewport (Positioned BEHIND the text, z-0) */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+            <div className="w-full max-w-[480px] sm:max-w-[520px] h-[240px] sm:h-[280px] md:h-[320px] relative pointer-events-auto">
+              <Suspense
+                fallback={
+                  <div className="w-full h-full flex flex-col items-center justify-center text-center">
+                    <DayakShieldEmblem className="w-8 h-8 text-[#684AFF] animate-pulse mb-2" color="#684AFF" />
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-[#111111]/40">
+                      Initializing WebGL 3D Engine...
+                    </span>
+                  </div>
+                }
+              >
+                <Dayak3DCanvas />
+              </Suspense>
+            </div>
+          </div>
+
+          {/* Foreground Headline Typography (relative z-10, crisp and un-obscured) */}
           <motion.h1
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.25, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="font-sans font-black text-[#111111] uppercase tracking-[-0.04em] leading-[0.88] select-none text-[13vw] sm:text-[11vw] md:text-[9vw] lg:text-[100px] xl:text-[116px]"
+            className="relative z-10 font-sans font-black text-[#111111] uppercase tracking-[-0.04em] leading-[0.92] select-none text-[10vw] sm:text-[8vw] md:text-[6.5vw] lg:text-[76px] xl:text-[88px] pointer-events-none"
           >
-            <span>LUIGI </span>
-            <span className="text-[#684AFF]">IRAM</span>
+            <span>LUIGI IRAM </span>
+            <span className="text-[#684AFF]">RANGI</span>
             <span className="text-[#111111]/20">.</span>
           </motion.h1>
-
-          {/* 3D WebGL Kinetic Sculpture Viewport */}
-          <div className="w-full max-w-[800px] h-[280px] sm:h-[320px] md:h-[380px] lg:h-[400px] relative -my-5 sm:-my-7 md:-my-9 z-20">
-            <Suspense
-              fallback={
-                <div className="w-full h-full flex flex-col items-center justify-center text-center">
-                  <DayakShieldEmblem className="w-10 h-10 text-[#684AFF] animate-pulse mb-3" color="#684AFF" />
-                  <span className="font-mono text-xs uppercase tracking-widest text-[#111111]/40">
-                    Initializing WebGL 3D Engine...
-                  </span>
-                </div>
-              }
-            >
-              <Dayak3DCanvas />
-            </Suspense>
-          </div>
 
           <motion.h2
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.35, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="font-sans font-black text-[#111111] uppercase tracking-[-0.04em] leading-[0.88] select-none text-[10vw] sm:text-[8.5vw] md:text-[7vw] lg:text-[76px] xl:text-[88px] mt-1 sm:mt-2"
+            className="relative z-10 font-sans font-black text-[#111111] uppercase tracking-[-0.04em] leading-[0.92] select-none text-[7.5vw] sm:text-[6vw] md:text-[4.8vw] lg:text-[56px] xl:text-[66px] mt-1 sm:mt-1.5 pointer-events-none"
           >
             <span className="text-[#111111]/30">CULTURAL </span>
             <span className="text-[#111111]">COMPUTING</span>
