@@ -87,27 +87,27 @@ const pillars = [
 const principles = [
   {
     num: '01',
-    title: 'Presisi Tanpa Kompromi',
+    title: 'Presisi Nir-Kompromi',
     tag: 'Code Quality',
-    desc: 'Kode yang bersih, teruji, dan terdokumentasi adalah bentuk penghormatan tertinggi kepada pengguna dan sesama pengembang.'
+    desc: 'Menulis arsitektur yang bersih, modular, dan terdokumentasi presisi adalah bentuk integritas rekayasa tertinggi. Setiap baris kode harus memiliki tujuan tanpa beban bloatware.'
   },
   {
     num: '02',
-    title: 'Harmoni Tradisi & Teknologi Masa Depan',
-    tag: 'Cultural Synthesis',
-    desc: 'Budaya leluhur bukan artefak masa lalu yang beku, melainkan jiwa yang dapat diekspresikan kembali melalui sintaks komputasi kontemporer.'
+    title: 'Sintesis Pusaka & Masa Depan',
+    tag: 'Cultural Computing',
+    desc: 'Filosofi leluhur Dayak bukan peninggalan masa lalu yang statis, melainkan jiwa yang dihidupkan kembali ke dalam kanvas spasial interaktif dan rekayasa web modern tingkat lanjut.'
   },
   {
     num: '03',
-    title: 'Kecepatan Nyata Sebelum Estetika Hampa',
-    tag: 'Speed First',
-    desc: 'Desain visual termegah tidak ada artinya jika lambat dimuat. Kecepatan dan responsivitas instan adalah fondasi keindahan digital sejati.'
+    title: 'Kecepatan Nyata di Atas Fatamorgana',
+    tag: 'Performance Benchmark',
+    desc: 'Estetika termegah kehilangan makna jika lambat dimuat. Skor 100/100 Core Vitals dan interaktivitas instan di bawah 0.6 detik adalah standar mutlak keindahan fungsional sejati.'
   },
   {
     num: '04',
-    title: 'Daya Tahan di Lapangan Nyata',
-    tag: 'Resilience',
-    desc: 'Sistem harus tetap tangguh diakses di pelosok Kalimantan dengan jaringan terbatas, sama mulusnya seperti diakses di pusat kota metropolitan.'
+    title: 'Ketangguhan Lapangan Khatulistiwa',
+    tag: 'Field Resilience',
+    desc: 'Sistem harus tetap tangguh diakses di pelosok pedalaman Borneo dengan jaringan terbatas, seandal dan semulus saat diakses di pusat kota metropolitan internasional.'
   }
 ];
 
@@ -116,25 +116,25 @@ const personaDetails = [
   {
     label: 'Koordinat Markas',
     val: '0°01′S 109°20′E',
-    sub: 'Pontianak, Kalimantan Barat',
+    sub: 'Pontianak, Garis Khatulistiwa Borneo',
     icon: MapPin
   },
   {
     label: 'Afinitas Estetika',
-    val: 'Cyberpunk & Retro Arcade',
-    sub: 'Inspirasi Easter Egg game di web ini',
+    val: 'Cyberpunk & Pusaka Digital',
+    sub: 'Fusi ornamen Dayak & WebGL 3D',
     icon: Gamepad2
   },
   {
     label: 'Ritme Rekayasa',
     val: 'Kopi Robusta Lokal & Terminal',
-    sub: 'Fokus arsitektur tanpa distorsi',
+    sub: 'Fokus arsitektur mendalam tanpa distraksi',
     icon: Terminal
   },
   {
-    label: 'Spesialisasi Inti',
-    val: 'Cultural Computing & 3D Web',
-    sub: 'Pusaka Dayak bertemu Three.js',
+    label: 'Peran & Visi',
+    val: 'Founder of Ddev • Creative Lead',
+    sub: 'Membangun ekosistem Cultural Computing',
     icon: Sparkles
   }
 ];
@@ -601,9 +601,9 @@ export default function IntroductionJourney({ onNavigate }) {
                 })}
               </div>
 
-              <ScrollRevealParagraph delay={0.4} className="p-5 rounded-2xl bg-white/70 border border-[#111111]/10 font-sans text-xs text-[#111111]/70 leading-relaxed">
+              <ScrollRevealParagraph delay={0.4} className="p-5 rounded-2xl bg-white/70 border border-[#111111]/10 font-sans text-xs text-[#111111]/80 leading-relaxed">
                 <p>
-                  Bagi saya, layar komputer adalah kanvas digital khatulistiwa tempat nilai luhur Borneo dapat diekspresikan kembali dalam estetika modern berstandar dunia.
+                  Bagi saya, layar kaca komputer adalah kanvas digital khatulistiwa tempat nilai luhur, ketangguhan, dan martabat pusaka Borneo diekspresikan kembali dalam standar teknologi web kelas dunia.
                 </p>
               </ScrollRevealParagraph>
             </div>
