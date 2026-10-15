@@ -113,7 +113,7 @@ export function ScrollRevealParagraph({
 }
 
 /**
- * Elevated Card Scroll Reveal Container
+ * Elevated Card Scroll Reveal Container with Spring Physics
  */
 export function ScrollRevealCard({
   children,
@@ -125,13 +125,61 @@ export function ScrollRevealCard({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 32, scale: 0.98, filter: 'blur(4px)' }}
+      initial={{ opacity: 0, y: 36, scale: 0.96, filter: 'blur(4px)' }}
       whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
       viewport={{ once, amount }}
       transition={{
-        duration: 0.65,
+        type: 'spring',
+        damping: 22,
+        stiffness: 110,
         delay,
-        ease: [0.16, 1, 0.3, 1]
+        mass: 0.9
+      }}
+      className={className}
+      {...props}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/**
+ * Kinetic Shuffle Card Scroll Reveal
+ * Recreates the physical feeling of dealing or shuffling cards onto the screen:
+ * Card enters with tilt rotation, upward slide, deblurring, and settles with tactile spring physics.
+ */
+export function ScrollShuffleCard({
+  children,
+  className = '',
+  delay = 0,
+  rotate = 0,
+  once = false,
+  amount = 0.15,
+  ...props
+}) {
+  return (
+    <motion.div
+      initial={{
+        opacity: 0,
+        y: 44,
+        rotateZ: rotate || -1.8,
+        scale: 0.94,
+        filter: 'blur(5px)'
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+        rotateZ: 0,
+        scale: 1,
+        filter: 'blur(0px)'
+      }}
+      viewport={{ once, amount }}
+      transition={{
+        type: 'spring',
+        damping: 20,
+        stiffness: 115,
+        delay,
+        mass: 0.85
       }}
       className={className}
       {...props}

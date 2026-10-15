@@ -22,7 +22,7 @@ import {
 import {
   ScrollRevealWords,
   ScrollRevealParagraph,
-  ScrollRevealCard
+  ScrollShuffleCard
 } from './ScrollRevealText';
 
 // 3 Key Dimensions of Luigi Iram Rangi
@@ -252,7 +252,7 @@ export default function IntroductionJourney({ onNavigate }) {
       {/* ───────────────── SECTION 1: MANIFESTO & FILOSOFI ───────────────── */}
       <section
         id="intro-manifesto"
-        className="relative min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-24 md:py-32 bg-[#E5E6E8] text-[#111111] border-t border-[#111111]/10"
+        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-16 md:py-24 bg-[#E5E6E8] text-[#111111] border-t border-[#111111]/15 z-10 rounded-t-[28px] sm:rounded-t-[36px] shadow-[0_-18px_45px_rgba(0,0,0,0.12)]"
       >
         {/* Section Index Bar */}
         <motion.div
@@ -315,9 +315,10 @@ export default function IntroductionJourney({ onNavigate }) {
               </ScrollRevealParagraph>
             </div>
 
-            {/* Cultural Seal Visual Card with Scroll Elevation */}
-            <ScrollRevealCard
-              delay={0.3}
+            {/* Cultural Seal Visual Card with Tactile Scroll Shuffle Entrance */}
+            <ScrollShuffleCard
+              delay={0.25}
+              rotate={2.0}
               amount={0.15}
               className="lg:col-span-4 bg-white/95 backdrop-blur-md border border-[#111111]/10 rounded-2xl p-6 sm:p-8 flex flex-col items-center text-center shadow-lg relative group"
             >
@@ -343,7 +344,7 @@ export default function IntroductionJourney({ onNavigate }) {
                 <span>•</span>
                 <span>KALBAR, INDONESIA</span>
               </div>
-            </ScrollRevealCard>
+            </ScrollShuffleCard>
 
           </div>
         </div>
@@ -352,7 +353,7 @@ export default function IntroductionJourney({ onNavigate }) {
       {/* ───────────────── SECTION 2: TIGA PILAR DIRI ───────────────── */}
       <section
         id="intro-pillars"
-        className="relative min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-24 md:py-32 bg-[#EDEEF0] text-[#111111] border-t border-[#111111]/10"
+        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-16 md:py-24 bg-[#EDEEF0] text-[#111111] border-t border-[#111111]/15 z-20 rounded-t-[28px] sm:rounded-t-[36px] shadow-[0_-25px_60px_rgba(0,0,0,0.18)]"
       >
         {/* Section Header */}
         <motion.div
@@ -381,16 +382,18 @@ export default function IntroductionJourney({ onNavigate }) {
           </ScrollRevealParagraph>
         </motion.div>
 
-        {/* Interactive 3-Pillar Deck with Scroll Entrance */}
+        {/* Interactive 3-Pillar Deck with Card Shuffle Deal Entrance */}
         <div className="max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           {pillars.map((p, idx) => {
             const Icon = p.icon;
             const isHovered = activePilar === idx;
+            const cardRotate = idx === 0 ? -2.2 : idx === 1 ? 0 : 2.2;
 
             return (
-              <ScrollRevealCard
+              <ScrollShuffleCard
                 key={p.id}
-                delay={idx * 0.15}
+                delay={idx * 0.12}
+                rotate={cardRotate}
                 amount={0.15}
                 onMouseEnter={() => setActivePilar(idx)}
                 className={`relative flex flex-col justify-between p-7 sm:p-8 rounded-3xl transition-all duration-300 border cursor-pointer ${
@@ -484,7 +487,7 @@ export default function IntroductionJourney({ onNavigate }) {
                     </div>
                   ))}
                 </div>
-              </ScrollRevealCard>
+              </ScrollShuffleCard>
             );
           })}
         </div>
@@ -493,7 +496,7 @@ export default function IntroductionJourney({ onNavigate }) {
       {/* ───────────────── SECTION 3: PRINSIP & PERSONA ───────────────── */}
       <section
         id="intro-ethos"
-        className="relative min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-24 md:py-32 bg-[#E8E9EC] text-[#111111] border-t border-[#111111]/10"
+        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-16 md:py-24 bg-[#E8E9EC] text-[#111111] border-t border-[#111111]/15 z-30 rounded-t-[28px] sm:rounded-t-[36px] shadow-[0_-30px_70px_rgba(0,0,0,0.22)]"
       >
         <div className="max-w-6xl mx-auto w-full">
           {/* Header */}
@@ -525,12 +528,13 @@ export default function IntroductionJourney({ onNavigate }) {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {/* Left Column: 4 Work Principles with Scroll Entrance */}
+            {/* Left Column: 4 Work Principles with Scroll Shuffle Entrance */}
             <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {principles.map((pr, idx) => (
-                <ScrollRevealCard
+                <ScrollShuffleCard
                   key={pr.num}
-                  delay={idx * 0.1}
+                  delay={idx * 0.08}
+                  rotate={idx % 2 === 0 ? -1.5 : 1.5}
                   amount={0.15}
                   className="group p-5 rounded-2xl bg-white border border-[#111111]/10 hover:border-[#684AFF]/40 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
                 >
@@ -563,19 +567,20 @@ export default function IntroductionJourney({ onNavigate }) {
                       Standardized <Zap className="w-2.5 h-2.5 text-[#D97706]" />
                     </span>
                   </div>
-                </ScrollRevealCard>
+                </ScrollShuffleCard>
               ))}
             </div>
 
-            {/* Right Column: Persona Tidbits with Scroll Cascade */}
+            {/* Right Column: Persona Tidbits with Scroll Shuffle Cascade */}
             <div className="lg:col-span-5 flex flex-col gap-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {personaDetails.map((item, idx) => {
                   const ItemIcon = item.icon;
                   return (
-                    <ScrollRevealCard
+                    <ScrollShuffleCard
                       key={item.label}
                       delay={0.1 + idx * 0.08}
+                      rotate={idx % 2 === 0 ? 1.5 : -1.5}
                       amount={0.15}
                       className="p-5 rounded-2xl bg-white border border-[#111111]/10 hover:border-[#684AFF]/40 hover:shadow-md transition-all flex flex-col justify-between"
                     >
@@ -593,7 +598,7 @@ export default function IntroductionJourney({ onNavigate }) {
                       <span className="font-mono text-[10px] text-[#111111]/60 mt-2.5 pt-2 border-t border-[#111111]/5 block">
                         {item.sub}
                       </span>
-                    </ScrollRevealCard>
+                    </ScrollShuffleCard>
                   );
                 })}
               </div>
@@ -612,7 +617,7 @@ export default function IntroductionJourney({ onNavigate }) {
       {/* ───────────────── SECTION 4: PINTU GERBANG PENJELAJAHAN ───────────────── */}
       <section
         id="intro-gateway"
-        className="relative min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-24 md:py-32 bg-[#111111] text-[#EDEEF0] border-t border-white/10"
+        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-16 md:py-24 bg-[#111111] text-[#EDEEF0] border-t border-white/20 z-40 rounded-t-[28px] sm:rounded-t-[36px] shadow-[0_-38px_85px_rgba(0,0,0,0.45)]"
       >
         {/* Section Header */}
         <motion.div
@@ -641,49 +646,54 @@ export default function IntroductionJourney({ onNavigate }) {
           </ScrollRevealParagraph>
         </motion.div>
 
-        {/* Portal Gateway Cards with Scroll Entrance */}
+        {/* Portal Gateway Cards with Fanning Card Shuffle Entrance */}
         <div className="max-w-6xl mx-auto w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {portalLinks.map((p, idx) => (
-            <ScrollRevealCard
-              key={p.id}
-              delay={idx * 0.1}
-              amount={0.15}
-              className="group p-6 rounded-3xl bg-[#1A1A1A] border border-white/10 hover:border-[#684AFF] hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
-            >
-              <div>
-                <span
-                  className="inline-block font-mono text-[9px] uppercase tracking-wider font-bold px-2.5 py-1 rounded-full mb-4"
-                  style={{ backgroundColor: `${p.accent}20`, color: p.accent }}
-                >
-                  {p.badge}
-                </span>
+          {portalLinks.map((p, idx) => {
+            const cardRotate = idx === 0 ? -2.0 : idx === 1 ? -0.7 : idx === 2 ? 0.7 : 2.0;
 
-                <ScrollRevealWords
-                  as="h4"
-                  delay={0.05 + idx * 0.08}
-                  amount={0.15}
-                  className="font-sans font-black text-xl uppercase tracking-tight text-white mb-2 group-hover:text-[#684AFF] transition-colors"
-                >
-                  {p.name}
-                </ScrollRevealWords>
+            return (
+              <ScrollShuffleCard
+                key={p.id}
+                delay={idx * 0.09}
+                rotate={cardRotate}
+                amount={0.15}
+                className="group p-6 rounded-3xl bg-[#1A1A1A] border border-white/10 hover:border-[#684AFF] hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
+              >
+                <div>
+                  <span
+                    className="inline-block font-mono text-[9px] uppercase tracking-wider font-bold px-2.5 py-1 rounded-full mb-4"
+                    style={{ backgroundColor: `${p.accent}20`, color: p.accent }}
+                  >
+                    {p.badge}
+                  </span>
 
-                <p className="font-sans text-xs text-white/60 leading-relaxed font-medium">
-                  {p.desc}
-                </p>
-              </div>
+                  <ScrollRevealWords
+                    as="h4"
+                    delay={0.05 + idx * 0.08}
+                    amount={0.15}
+                    className="font-sans font-black text-xl uppercase tracking-tight text-white mb-2 group-hover:text-[#684AFF] transition-colors"
+                  >
+                    {p.name}
+                  </ScrollRevealWords>
 
-              <div className="mt-8 pt-4 border-t border-white/10">
-                <button
-                  onClick={() => onNavigate?.(p.id)}
-                  className="w-full py-2.5 px-3 rounded-full bg-white text-[#111111] hover:bg-[#684AFF] hover:text-white transition-colors font-sans text-xs font-bold uppercase tracking-wider flex items-center justify-between cursor-pointer focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none"
-                  aria-label={`Navigasi ke ${p.name}`}
-                >
-                  <span>{p.btnText}</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-                </button>
-              </div>
-            </ScrollRevealCard>
-          ))}
+                  <p className="font-sans text-xs text-white/60 leading-relaxed font-medium">
+                    {p.desc}
+                  </p>
+                </div>
+
+                <div className="mt-8 pt-4 border-t border-white/10">
+                  <button
+                    onClick={() => onNavigate?.(p.id)}
+                    className="w-full py-2.5 px-3 rounded-full bg-white text-[#111111] hover:bg-[#684AFF] hover:text-white transition-colors font-sans text-xs font-bold uppercase tracking-wider flex items-center justify-between cursor-pointer focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none"
+                    aria-label={`Navigasi ke ${p.name}`}
+                  >
+                    <span>{p.btnText}</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                  </button>
+                </div>
+              </ScrollShuffleCard>
+            );
+          })}
         </div>
 
         {/* Bottom Closing Seal */}
