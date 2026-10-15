@@ -198,7 +198,7 @@ export default function IntroductionJourney({ onNavigate }) {
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.2, rootMargin: '-10% 0px -10% 0px' }
     );
 
     sectionsNav.forEach((sec) => {
@@ -249,10 +249,10 @@ export default function IntroductionJourney({ onNavigate }) {
         })}
       </nav>
 
-      {/* ───────────────── SECTION 1: MANIFESTO & FILOSOFI (STICKY CARD 2) ───────────────── */}
+      {/* ───────────────── SECTION 1: MANIFESTO & FILOSOFI ───────────────── */}
       <section
         id="intro-manifesto"
-        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-20 md:py-28 bg-[#E5E6E8] text-[#111111] shadow-[0_-25px_60px_rgba(0,0,0,0.12)] border-t border-[#111111]/15 z-20"
+        className="relative min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-24 md:py-32 bg-[#E5E6E8] text-[#111111] border-t border-[#111111]/10"
       >
         {/* Section Index Bar */}
         <motion.div
@@ -349,10 +349,10 @@ export default function IntroductionJourney({ onNavigate }) {
         </div>
       </section>
 
-      {/* ───────────────── SECTION 2: TIGA PILAR DIRI (STICKY CARD 3) ───────────────── */}
+      {/* ───────────────── SECTION 2: TIGA PILAR DIRI ───────────────── */}
       <section
         id="intro-pillars"
-        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-20 md:py-28 bg-[#EDEEF0] text-[#111111] shadow-[0_-25px_60px_rgba(0,0,0,0.16)] border-t border-[#111111]/15 z-30"
+        className="relative min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-24 md:py-32 bg-[#EDEEF0] text-[#111111] border-t border-[#111111]/10"
       >
         {/* Section Header */}
         <motion.div
@@ -490,10 +490,10 @@ export default function IntroductionJourney({ onNavigate }) {
         </div>
       </section>
 
-      {/* ───────────────── SECTION 3: PRINSIP & PERSONA (STICKY CARD 4) ───────────────── */}
+      {/* ───────────────── SECTION 3: PRINSIP & PERSONA ───────────────── */}
       <section
         id="intro-ethos"
-        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-20 md:py-28 bg-[#E8E9EC] text-[#111111] shadow-[0_-25px_60px_rgba(0,0,0,0.22)] border-t border-[#111111]/15 z-40"
+        className="relative min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-24 md:py-32 bg-[#E8E9EC] text-[#111111] border-t border-[#111111]/10"
       >
         <div className="max-w-6xl mx-auto w-full">
           {/* Header */}
@@ -609,10 +609,10 @@ export default function IntroductionJourney({ onNavigate }) {
         </div>
       </section>
 
-      {/* ───────────────── SECTION 4: PINTU GERBANG PENJELAJAHAN (STICKY CARD 5 - CLIMAX) ───────────────── */}
+      {/* ───────────────── SECTION 4: PINTU GERBANG PENJELAJAHAN ───────────────── */}
       <section
         id="intro-gateway"
-        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-20 md:py-28 bg-[#111111] text-[#EDEEF0] shadow-[0_-30px_70px_rgba(0,0,0,0.45)] border-t border-white/10 z-50"
+        className="relative min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-24 md:py-32 bg-[#111111] text-[#EDEEF0] border-t border-white/10"
       >
         {/* Section Header */}
         <motion.div
