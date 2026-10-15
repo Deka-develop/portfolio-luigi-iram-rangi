@@ -64,12 +64,12 @@ export default function MilestoneTeaser({ onNavigateToMilestone }) {
             </div>
 
             <h2 className="font-sans font-black text-3xl sm:text-4xl md:text-5xl lg:text-[58px] text-[#111111] tracking-[-0.03em] leading-[1.05]">
-              Milestone &amp; Laboratorium Spasial 3D<span className="text-[#684AFF]">.</span>
+              Pusaka Spasial &amp; Rekam Jejak<span className="text-[#684AFF]">.</span>
             </h2>
           </div>
 
           <p className="text-[#111111]/60 text-sm md:text-base max-w-lg leading-relaxed font-normal">
-            Bagian ini dirancang khusus dalam halaman tersendiri dengan rendering WebGL 3D interaktif, matriks benchmark performa, filosofi komputasi budaya, dan rekam jejak kronologis lengkap.
+            Bagian ini dirancang khusus dalam halaman tersendiri dengan rendering WebGL 3D interaktif pusaka Dayak, matriks benchmark performa, filosofi komputasi budaya, dan rekam jejak kronologis lengkap.
           </p>
         </div>
 
@@ -124,7 +124,7 @@ export default function MilestoneTeaser({ onNavigateToMilestone }) {
                 </div>
 
                 <div className="mt-4 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-[#684AFF] font-bold group-hover:translate-x-1 transition-transform">
-                  <span>Lihat di Halaman 3D</span>
+                  <span>Lihat di Pusaka Spasial</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </div>
               </motion.div>
@@ -151,16 +151,16 @@ export default function MilestoneTeaser({ onNavigateToMilestone }) {
                 Interactive Spatial Experience
               </span>
               <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-white/70 text-[10px] font-mono uppercase">
-                4 Model 3D WebGL
+                4 Pusaka 3D WebGL
               </span>
             </div>
             
             <h3 className="font-sans font-bold text-2xl sm:text-3xl md:text-4xl text-white tracking-tight leading-tight">
-              Kunjungi Halaman Khusus Milestone 3D
+              Kunjungi Halaman Khusus Pusaka Spasial
             </h3>
 
             <p className="text-white/60 text-xs sm:text-sm md:text-base max-w-2xl leading-relaxed font-normal">
-              Rasakan pengalaman navigasi spasial mandiri dengan model 3D Three.js interaktif (Matrix Wireframe, Torus Knot, Celestial Globe, dan Sacred Shield), rekam jejak benchmark, serta arsitektur komputasi budaya Dayak.
+              Rasakan pengalaman navigasi spasial mandiri dengan 4 model 3D pusaka digital Dayak interaktif (Bunga Terong Spasial, Cyber Mandau Blade, Batang Garing Tree of Life, dan Talawang Sacred Shield), rekam jejak benchmark, serta arsitektur komputasi budaya Dayak.
             </p>
           </div>
 
@@ -170,7 +170,7 @@ export default function MilestoneTeaser({ onNavigateToMilestone }) {
               className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#684AFF] text-white font-sans text-xs md:text-sm font-bold uppercase tracking-[0.15em] hover:bg-white hover:text-[#111111] transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 cursor-pointer flex items-center justify-center gap-2 group"
             >
               <Box className="w-4 h-4 group-hover:rotate-12 transition-transform" />
-              <span>Buka Halaman Milestone 3D</span>
+              <span>Buka Halaman Pusaka Spasial</span>
               <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </button>
           </div>

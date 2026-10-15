@@ -580,28 +580,27 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
 }
 
 /* ─────────────────────────────────────────────────────────────
-   2. MINI 3D MILESTONE CANVASES (For 3D Milestone Stacking Deck)
+   2. MINI 3D MILESTONE CANVASES — TEMA PUSAKA DIGITAL DAYAK
    ───────────────────────────────────────────────────────────── */
 
-// Era 1: 3D Wireframe Cyber Matrix (Zero-Bloat Systems)
-export function WireframeMatrix3D({ className = '' }) {
+// 1. Era 2023: 3D Bunga Terong Spasial (Zero-Bloat Web Systems)
+export function BungaTerong3D({ className = '' }) {
   const mountRef = useRef(null);
 
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
 
-    const width = container.clientWidth || 300;
-    const height = container.clientHeight || 300;
+    let width = container.clientWidth || 300;
+    let height = container.clientHeight || 300;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(2.5, 2.0, 3.2);
-    camera.lookAt(0, 0, 0);
+    camera.position.set(0, 0, 3.6);
 
     let renderer;
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       container.appendChild(renderer.domElement);
@@ -612,61 +611,154 @@ export function WireframeMatrix3D({ className = '' }) {
     const group = new THREE.Group();
     scene.add(group);
 
-    // Box wireframe matrix
-    const boxGeo = new THREE.BoxGeometry(1.6, 1.6, 1.6);
-    const boxWire = new THREE.WireframeGeometry(boxGeo);
-    const boxMat = new THREE.LineBasicMaterial({ color: 0x684aff, linewidth: 2 });
-    const wireMesh = new THREE.LineSegments(boxWire, boxMat);
-    group.add(wireMesh);
+    // 8 Petals in Radial Symmetry (Motif Bunga Terong Dayak)
+    const petalsGroup = new THREE.Group();
+    group.add(petalsGroup);
 
-    // Inner rotating octahedron
-    const innerGeo = new THREE.OctahedronGeometry(0.7, 0);
-    const innerMat = new THREE.MeshStandardMaterial({
-      color: 0x111111,
-      metalness: 0.8,
+    const petalMat = new THREE.MeshStandardMaterial({
+      color: 0x121218,
+      metalness: 0.9,
       roughness: 0.2,
       flatShading: true
     });
-    const innerMesh = new THREE.Mesh(innerGeo, innerMat);
-    group.add(innerMesh);
+    const petalWireMat = new THREE.LineBasicMaterial({ color: 0xd97706, transparent: true, opacity: 0.85 });
 
-    const light1 = new THREE.DirectionalLight(0x684aff, 3);
+    const petalGeo = new THREE.CylinderGeometry(0.04, 0.26, 1.05, 12);
+    petalGeo.scale(1.2, 1.0, 0.22);
+    const petalWireGeo = new THREE.WireframeGeometry(petalGeo);
+
+    const numPetals = 8;
+    for (let i = 0; i < numPetals; i++) {
+      const angle = (i / numPetals) * Math.PI * 2;
+      const petalMesh = new THREE.Mesh(petalGeo, petalMat);
+      const wireMesh = new THREE.LineSegments(petalWireGeo, petalWireMat);
+      petalMesh.add(wireMesh);
+
+      const r = 0.52;
+      petalMesh.position.set(Math.cos(angle) * r, Math.sin(angle) * r, 0);
+      petalMesh.rotation.z = angle - Math.PI / 2;
+      petalMesh.rotation.x = 0.18; // outward subtle flare
+      petalsGroup.add(petalMesh);
+    }
+
+    // Central Archimedean Spiral (Pusaran Kehidupan Dayak)
+    const spiralPts = [];
+    for (let a = 0; a <= Math.PI * 6.5; a += 0.1) {
+      const r = 0.05 + a * 0.042;
+      spiralPts.push(new THREE.Vector3(Math.cos(a) * r, Math.sin(a) * r, a * 0.025));
+    }
+    const spiralGeo = new THREE.BufferGeometry().setFromPoints(spiralPts);
+    const spiralMat = new THREE.LineBasicMaterial({ color: 0x684aff, linewidth: 2 });
+    const spiralLine = new THREE.Line(spiralGeo, spiralMat);
+    group.add(spiralLine);
+
+    // Central Glowing Sacred Jewel (Inti Pusaka)
+    const jewelGeo = new THREE.OctahedronGeometry(0.24, 0);
+    const jewelMat = new THREE.MeshStandardMaterial({
+      color: 0xd97706,
+      metalness: 0.95,
+      roughness: 0.1
+    });
+    const jewelMesh = new THREE.Mesh(jewelGeo, jewelMat);
+    jewelMesh.position.z = 0.15;
+    group.add(jewelMesh);
+
+    // Outer Halo Orbit
+    const ringGeo = new THREE.TorusGeometry(1.35, 0.015, 16, 64);
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0x684aff, transparent: true, opacity: 0.65 });
+    const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+    group.add(ringMesh);
+
+    // Golden Micro-particles
+    const pCount = 50;
+    const pGeo = new THREE.BufferGeometry();
+    const pPos = new Float32Array(pCount * 3);
+    for (let i = 0; i < pCount; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const rad = 1.0 + Math.random() * 0.8;
+      pPos[i * 3] = Math.cos(a) * rad;
+      pPos[i * 3 + 1] = Math.sin(a) * rad;
+      pPos[i * 3 + 2] = (Math.random() - 0.5) * 0.8;
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    const pMat = new THREE.PointsMaterial({ color: 0xd97706, size: 0.04, transparent: true, opacity: 0.75 });
+    const particles = new THREE.Points(pGeo, pMat);
+    group.add(particles);
+
+    // Lighting
+    const light1 = new THREE.DirectionalLight(0x684aff, 3.2);
     light1.position.set(3, 3, 3);
     scene.add(light1);
-    const light2 = new THREE.AmbientLight(0xffffff, 1.2);
+    const light2 = new THREE.DirectionalLight(0xd97706, 2.5);
+    light2.position.set(-3, -2, 2);
     scene.add(light2);
+    scene.add(new THREE.AmbientLight(0xffffff, 1.2));
 
     let animId;
     const animate = () => {
       animId = requestAnimationFrame(animate);
-      group.rotation.x += 0.008;
-      group.rotation.y += 0.012;
+      const time = performance.now();
+
+      // Rhythmic rotation and breathing
+      petalsGroup.rotation.z += 0.007;
+      group.rotation.x = Math.sin(time * 0.001) * 0.2;
+      group.rotation.y = Math.cos(time * 0.001) * 0.18;
+
+      spiralLine.rotation.z -= 0.014; // counter-rotation creates kinetic depth
+      jewelMesh.rotation.y += 0.02;
+      jewelMesh.scale.setScalar(1 + Math.sin(time * 0.003) * 0.12);
+      ringMesh.rotation.z += 0.005;
+      particles.rotation.z += 0.003;
+
       renderer.render(scene, camera);
     };
     animId = requestAnimationFrame(animate);
 
+    const handleResize = () => {
+      if (!container) return;
+      width = container.clientWidth || 300;
+      height = container.clientHeight || 300;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    };
+    window.addEventListener('resize', handleResize);
+
     return () => {
       cancelAnimationFrame(animId);
+      window.removeEventListener('resize', handleResize);
       if (renderer.domElement && container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
       renderer.dispose();
+      petalGeo.dispose();
+      petalWireGeo.dispose();
+      petalMat.dispose();
+      petalWireMat.dispose();
+      spiralGeo.dispose();
+      spiralMat.dispose();
+      jewelGeo.dispose();
+      jewelMat.dispose();
+      ringGeo.dispose();
+      ringMat.dispose();
+      pGeo.dispose();
+      pMat.dispose();
     };
   }, []);
 
   return <div ref={mountRef} className={`w-full h-full min-h-[260px] ${className}`} />;
 }
 
-// Era 2: 3D Kinetic Torus Knot (Creative WebGL & Shaders)
-export function TorusKnot3D({ className = '' }) {
+// 2. Era 2024: 3D Cyber Mandau Blade (Creative WebGL & Shaders)
+export function CyberMandau3D({ className = '' }) {
   const mountRef = useRef(null);
 
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
 
-    const width = container.clientWidth || 300;
-    const height = container.clientHeight || 300;
+    let width = container.clientWidth || 300;
+    let height = container.clientHeight || 300;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
@@ -674,7 +766,7 @@ export function TorusKnot3D({ className = '' }) {
 
     let renderer;
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       container.appendChild(renderer.domElement);
@@ -682,195 +774,93 @@ export function TorusKnot3D({ className = '' }) {
       return;
     }
 
-    const geo = new THREE.TorusKnotGeometry(1.1, 0.28, 100, 16);
-    const mat = new THREE.MeshStandardMaterial({
-      color: 0x111111,
-      metalness: 0.9,
-      roughness: 0.15,
-      wireframe: false
+    const group = new THREE.Group();
+    scene.add(group);
+
+    // Mandau Blade Silhouette Shape (Otentik Geometri Bilah Dayak)
+    const shape = new THREE.Shape();
+    shape.moveTo(0, -1.1);
+    shape.lineTo(0.24, -1.1);
+    shape.lineTo(0.27, 0.2);
+    shape.lineTo(0.38, 1.0); // convex sweeping belly
+    shape.lineTo(0.04, 1.55); // sharp upturned point
+    shape.lineTo(-0.06, 1.4); // concave back clip
+    shape.lineTo(-0.04, 0.3);
+    shape.lineTo(-0.03, -1.1);
+    shape.closePath();
+
+    const bladeGeo = new THREE.ExtrudeGeometry(shape, {
+      depth: 0.04,
+      bevelEnabled: true,
+      bevelSegments: 2,
+      steps: 1,
+      bevelSize: 0.015,
+      bevelThickness: 0.015
     });
-    const knot = new THREE.Mesh(geo, mat);
-    scene.add(knot);
 
-    // Glowing wire overlay
-    const wireGeo = new THREE.WireframeGeometry(geo);
-    const wireMat = new THREE.LineBasicMaterial({ color: 0x684aff, transparent: true, opacity: 0.7 });
-    const wireMesh = new THREE.LineSegments(wireGeo, wireMat);
-    knot.add(wireMesh);
+    const bladeMat = new THREE.MeshStandardMaterial({
+      color: 0x111625,
+      metalness: 0.96,
+      roughness: 0.12
+    });
+    const bladeMesh = new THREE.Mesh(bladeGeo, bladeMat);
+    group.add(bladeMesh);
 
-    const light1 = new THREE.DirectionalLight(0x684aff, 3.5);
+    // Neon Cyan Laser Cutting Edge
+    const edgesGeo = new THREE.EdgesGeometry(bladeGeo);
+    const edgesMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, linewidth: 2, transparent: true, opacity: 0.85 });
+    const wireBlade = new THREE.LineSegments(edgesGeo, edgesMat);
+    bladeMesh.add(wireBlade);
+
+    // Decorative Traditional Brass Motifs on Spine (Ukiran Kuningan Mandau)
+    const spineInlayGroup = new THREE.Group();
+    const ringInlayGeo = new THREE.TorusGeometry(0.05, 0.012, 8, 20);
+    const ringInlayMat = new THREE.MeshBasicMaterial({ color: 0xd97706 });
+    for (let i = 0; i < 4; i++) {
+      const ring = new THREE.Mesh(ringInlayGeo, ringInlayMat);
+      ring.position.set(0.12 + i * 0.05, -0.4 + i * 0.35, 0.045);
+      spineInlayGroup.add(ring);
+    }
+    group.add(spineInlayGroup);
+
+    // Carved Hilt / Handle (Hulu Mandau Bertanduk)
+    const hiltGroup = new THREE.Group();
+    const handleGeo = new THREE.CylinderGeometry(0.08, 0.1, 0.55, 12);
+    const handleMat = new THREE.MeshStandardMaterial({ color: 0x181412, metalness: 0.8, roughness: 0.3 });
+    const handle = new THREE.Mesh(handleGeo, handleMat);
+    handle.position.y = -1.4;
+    hiltGroup.add(handle);
+
+    // Pommel (Hulu Kepala Burung Enggang / Ornamen)
+    const pommelGeo = new THREE.ConeGeometry(0.16, 0.35, 8);
+    const pommelMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.9, roughness: 0.2 });
+    const pommel = new THREE.Mesh(pommelGeo, pommelMat);
+    pommel.position.set(-0.06, -1.75, 0);
+    pommel.rotation.z = Math.PI * 0.85;
+    hiltGroup.add(pommel);
+
+    // Golden Ferrule Collar
+    const collarGeo = new THREE.TorusGeometry(0.11, 0.02, 12, 24);
+    const collarMat = new THREE.MeshBasicMaterial({ color: 0xd97706 });
+    const collar = new THREE.Mesh(collarGeo, collarMat);
+    collar.position.y = -1.12;
+    collar.rotation.x = Math.PI / 2;
+    hiltGroup.add(collar);
+
+    group.add(hiltGroup);
+
+    // Kinetic Orbit Ring
+    const orbitGeo = new THREE.TorusGeometry(1.65, 0.012, 16, 64);
+    const orbitMat = new THREE.MeshBasicMaterial({ color: 0x684aff, transparent: true, opacity: 0.6 });
+    const orbitRing = new THREE.Mesh(orbitGeo, orbitMat);
+    orbitRing.rotation.x = Math.PI / 3;
+    group.add(orbitRing);
+
+    // Lighting
+    const light1 = new THREE.DirectionalLight(0x38bdf8, 3.8);
     light1.position.set(3, 4, 3);
     scene.add(light1);
-
     const light2 = new THREE.DirectionalLight(0xd97706, 2.5);
-    light2.position.set(-3, -3, -2);
-    scene.add(light2);
-
-    const amb = new THREE.AmbientLight(0xffffff, 1.2);
-    scene.add(amb);
-
-    let animId;
-    const animate = () => {
-      animId = requestAnimationFrame(animate);
-      knot.rotation.x += 0.009;
-      knot.rotation.y += 0.014;
-      renderer.render(scene, camera);
-    };
-    animId = requestAnimationFrame(animate);
-
-    return () => {
-      cancelAnimationFrame(animId);
-      if (renderer.domElement && container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
-      }
-      renderer.dispose();
-    };
-  }, []);
-
-  return <div ref={mountRef} className={`w-full h-full min-h-[260px] ${className}`} />;
-}
-
-// Era 3: 3D Celestial Wireframe Globe (Borneo Globe Platform)
-export function CelestialGlobe3D({ className = '' }) {
-  const mountRef = useRef(null);
-
-  useEffect(() => {
-    const container = mountRef.current;
-    if (!container) return;
-
-    const width = container.clientWidth || 300;
-    const height = container.clientHeight || 300;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 3.8);
-
-    let renderer;
-    try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      container.appendChild(renderer.domElement);
-    } catch {
-      return;
-    }
-
-    const group = new THREE.Group();
-    scene.add(group);
-
-    // Globe Sphere Wireframe
-    const sphereGeo = new THREE.SphereGeometry(1.2, 24, 24);
-    const sphereWire = new THREE.WireframeGeometry(sphereGeo);
-    const wireMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.6 });
-    const globe = new THREE.LineSegments(sphereWire, wireMat);
-    group.add(globe);
-
-    // Dark core
-    const coreGeo = new THREE.SphereGeometry(1.08, 32, 32);
-    const coreMat = new THREE.MeshStandardMaterial({
-      color: 0x0f172a,
-      metalness: 0.8,
-      roughness: 0.3
-    });
-    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-    group.add(coreMesh);
-
-    // Equator Ring & Borneo Coordinate Marker
-    const equatorGeo = new THREE.TorusGeometry(1.4, 0.02, 16, 64);
-    const equatorMat = new THREE.MeshBasicMaterial({ color: 0x10b981 });
-    const equator = new THREE.Mesh(equatorGeo, equatorMat);
-    equator.rotation.x = Math.PI / 2;
-    group.add(equator);
-
-    // Borneo Beacon (0° lat, 109° long)
-    const beaconGeo = new THREE.OctahedronGeometry(0.12, 0);
-    const beaconMat = new THREE.MeshBasicMaterial({ color: 0xd97706 });
-    const beacon = new THREE.Mesh(beaconGeo, beaconMat);
-    beacon.position.set(1.22, 0.05, 0.1);
-    group.add(beacon);
-
-    const light = new THREE.DirectionalLight(0x38bdf8, 3);
-    light.position.set(3, 4, 3);
-    scene.add(light);
-    scene.add(new THREE.AmbientLight(0xffffff, 1.2));
-
-    let animId;
-    const animate = () => {
-      animId = requestAnimationFrame(animate);
-      group.rotation.y += 0.008;
-      group.rotation.x = 0.2;
-      renderer.render(scene, camera);
-    };
-    animId = requestAnimationFrame(animate);
-
-    return () => {
-      cancelAnimationFrame(animId);
-      if (renderer.domElement && container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
-      }
-      renderer.dispose();
-    };
-  }, []);
-
-  return <div ref={mountRef} className={`w-full h-full min-h-[260px] ${className}`} />;
-}
-
-// Era 4: 3D Sacred Dayak Geometry (Cultural Computing)
-export function SacredShield3D({ className = '' }) {
-  const mountRef = useRef(null);
-
-  useEffect(() => {
-    const container = mountRef.current;
-    if (!container) return;
-
-    const width = container.clientWidth || 300;
-    const height = container.clientHeight || 300;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 4.0);
-
-    let renderer;
-    try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      container.appendChild(renderer.domElement);
-    } catch {
-      return;
-    }
-
-    const group = new THREE.Group();
-    scene.add(group);
-
-    // Elongated Dayak Diamond
-    const geo = new THREE.OctahedronGeometry(1.2, 0);
-    geo.scale(0.85, 1.4, 0.85);
-
-    const mat = new THREE.MeshStandardMaterial({
-      color: 0x111111,
-      metalness: 0.9,
-      roughness: 0.2,
-      flatShading: true
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    group.add(mesh);
-
-    const wireGeo = new THREE.WireframeGeometry(geo);
-    const wireMat = new THREE.LineBasicMaterial({ color: 0xd97706, linewidth: 2 });
-    group.add(new THREE.LineSegments(wireGeo, wireMat));
-
-    // Outer Golden Ring
-    const ringGeo = new THREE.TorusGeometry(1.6, 0.02, 16, 64);
-    const ringMat = new THREE.MeshBasicMaterial({ color: 0x684aff });
-    const ring = new THREE.Mesh(ringGeo, ringMat);
-    ring.rotation.x = Math.PI / 3;
-    group.add(ring);
-
-    const light1 = new THREE.DirectionalLight(0xd97706, 3);
-    light1.position.set(4, 3, 3);
-    scene.add(light1);
-    const light2 = new THREE.DirectionalLight(0x684aff, 2.5);
     light2.position.set(-3, -3, 2);
     scene.add(light2);
     scene.add(new THREE.AmbientLight(0xffffff, 1.2));
@@ -878,21 +868,410 @@ export function SacredShield3D({ className = '' }) {
     let animId;
     const animate = () => {
       animId = requestAnimationFrame(animate);
-      group.rotation.y += 0.012;
-      group.rotation.x = Math.sin(performance.now() * 0.001) * 0.15;
-      ring.rotation.z += 0.01;
+      const time = performance.now();
+
+      // Fluid levitation and dynamic 3D rotation
+      group.rotation.y += 0.013;
+      group.rotation.z = Math.sin(time * 0.001) * 0.12 + 0.15;
+      group.position.y = Math.sin(time * 0.0016) * 0.1;
+      orbitRing.rotation.z += 0.015;
+
       renderer.render(scene, camera);
     };
     animId = requestAnimationFrame(animate);
 
+    const handleResize = () => {
+      if (!container) return;
+      width = container.clientWidth || 300;
+      height = container.clientHeight || 300;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    };
+    window.addEventListener('resize', handleResize);
+
     return () => {
       cancelAnimationFrame(animId);
+      window.removeEventListener('resize', handleResize);
       if (renderer.domElement && container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
       renderer.dispose();
+      bladeGeo.dispose();
+      bladeMat.dispose();
+      edgesGeo.dispose();
+      edgesMat.dispose();
+      ringInlayGeo.dispose();
+      ringInlayMat.dispose();
+      handleGeo.dispose();
+      handleMat.dispose();
+      pommelGeo.dispose();
+      pommelMat.dispose();
+      collarGeo.dispose();
+      collarMat.dispose();
+      orbitGeo.dispose();
+      orbitMat.dispose();
     };
   }, []);
 
   return <div ref={mountRef} className={`w-full h-full min-h-[260px] ${className}`} />;
 }
+
+// 3. Era 2025: 3D Batang Garing Tree of Life (Borneo Globe Platform)
+export function BatangGaring3D({ className = '' }) {
+  const mountRef = useRef(null);
+
+  useEffect(() => {
+    const container = mountRef.current;
+    if (!container) return;
+
+    let width = container.clientWidth || 300;
+    let height = container.clientHeight || 300;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+    camera.position.set(0, 0, 4.0);
+
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      container.appendChild(renderer.domElement);
+    } catch {
+      return;
+    }
+
+    const group = new THREE.Group();
+    scene.add(group);
+
+    // Sacred Pillar Trunk (Batang Pohon Hayat Kristal)
+    const trunkGeo = new THREE.CylinderGeometry(0.12, 0.22, 2.3, 8);
+    const trunkMat = new THREE.MeshStandardMaterial({
+      color: 0x052e16,
+      metalness: 0.9,
+      roughness: 0.2,
+      flatShading: true
+    });
+    const trunkMesh = new THREE.Mesh(trunkGeo, trunkMat);
+    group.add(trunkMesh);
+
+    const trunkWireGeo = new THREE.WireframeGeometry(trunkGeo);
+    const trunkWireMat = new THREE.LineBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.7 });
+    const trunkWire = new THREE.LineSegments(trunkWireGeo, trunkWireMat);
+    trunkMesh.add(trunkWire);
+
+    // 3 Tiers of Symmetrical Upward Horn Branches (Dahan Kosmis Batang Garing)
+    const branchesGroup = new THREE.Group();
+    const branchConfigs = [
+      { y: -0.3, r: 0.75, color: 0x10b981 },
+      { y: 0.25, r: 0.6, color: 0xd97706 },
+      { y: 0.75, r: 0.45, color: 0x38bdf8 }
+    ];
+
+    const branchGeos = [];
+    const branchMats = [];
+
+    branchConfigs.forEach((cfg) => {
+      const bGeo = new THREE.TorusGeometry(cfg.r, 0.022, 8, 24, Math.PI * 0.75);
+      const bMat = new THREE.MeshBasicMaterial({ color: cfg.color });
+      branchGeos.push(bGeo);
+      branchMats.push(bMat);
+
+      // Left branch
+      const bLeft = new THREE.Mesh(bGeo, bMat);
+      bLeft.position.set(-cfg.r * 0.65, cfg.y, 0);
+      bLeft.rotation.z = Math.PI * 0.15;
+      branchesGroup.add(bLeft);
+
+      // Right branch (mirrored)
+      const bRight = new THREE.Mesh(bGeo, bMat);
+      bRight.position.set(cfg.r * 0.65, cfg.y, 0);
+      bRight.rotation.z = Math.PI * 0.6;
+      branchesGroup.add(bRight);
+    });
+    group.add(branchesGroup);
+
+    // Canopy Biosphere Particles (Awan Kanopi Hujan Tropis Borneo)
+    const pCount = 120;
+    const pGeo = new THREE.BufferGeometry();
+    const pPos = new Float32Array(pCount * 3);
+    for (let i = 0; i < pCount; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const rad = 0.3 + Math.random() * 0.9;
+      pPos[i * 3] = Math.cos(theta) * rad;
+      pPos[i * 3 + 1] = 0.8 + Math.random() * 0.8;
+      pPos[i * 3 + 2] = Math.sin(theta) * rad;
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    const pMat = new THREE.PointsMaterial({ color: 0x10b981, size: 0.045, transparent: true, opacity: 0.85 });
+    const canopyCloud = new THREE.Points(pGeo, pMat);
+    group.add(canopyCloud);
+
+    // Living Globe Beacon at the Top Apex (Borneo Globe Symbol)
+    const apexGlobeGeo = new THREE.SphereGeometry(0.32, 16, 16);
+    const apexGlobeWire = new THREE.WireframeGeometry(apexGlobeGeo);
+    const apexGlobeMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.8 });
+    const apexGlobe = new THREE.LineSegments(apexGlobeWire, apexGlobeMat);
+    apexGlobe.position.y = 1.35;
+    group.add(apexGlobe);
+
+    // Golden Borneo Latitude Marker Ring
+    const eqGeo = new THREE.TorusGeometry(0.42, 0.015, 12, 32);
+    const eqMat = new THREE.MeshBasicMaterial({ color: 0xd97706 });
+    const equator = new THREE.Mesh(eqGeo, eqMat);
+    equator.position.y = 1.35;
+    equator.rotation.x = Math.PI / 2;
+    group.add(equator);
+
+    // Lighting
+    const light1 = new THREE.DirectionalLight(0x10b981, 3.5);
+    light1.position.set(3, 4, 3);
+    scene.add(light1);
+    const light2 = new THREE.DirectionalLight(0xd97706, 2.5);
+    light2.position.set(-3, -2, 2);
+    scene.add(light2);
+    scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+
+    let animId;
+    const animate = () => {
+      animId = requestAnimationFrame(animate);
+      const time = performance.now();
+
+      group.rotation.y += 0.009;
+      canopyCloud.rotation.y -= 0.005;
+      apexGlobe.rotation.y += 0.02;
+      apexGlobe.rotation.x = Math.sin(time * 0.002) * 0.2;
+      canopyCloud.scale.setScalar(1 + Math.sin(time * 0.002) * 0.06);
+
+      renderer.render(scene, camera);
+    };
+    animId = requestAnimationFrame(animate);
+
+    const handleResize = () => {
+      if (!container) return;
+      width = container.clientWidth || 300;
+      height = container.clientHeight || 300;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', handleResize);
+      if (renderer.domElement && container.contains(renderer.domElement)) {
+        container.removeChild(renderer.domElement);
+      }
+      renderer.dispose();
+      trunkGeo.dispose();
+      trunkMat.dispose();
+      trunkWireGeo.dispose();
+      trunkWireMat.dispose();
+      branchGeos.forEach((g) => g.dispose());
+      branchMats.forEach((m) => m.dispose());
+      pGeo.dispose();
+      pMat.dispose();
+      apexGlobeGeo.dispose();
+      apexGlobeWire.dispose();
+      apexGlobeMat.dispose();
+      eqGeo.dispose();
+      eqMat.dispose();
+    };
+  }, []);
+
+  return <div ref={mountRef} className={`w-full h-full min-h-[260px] ${className}`} />;
+}
+
+// 4. Era 2026: 3D Talawang Sacred Shield (Cultural Computing Frontier)
+export function TalawangShield3D({ className = '' }) {
+  const mountRef = useRef(null);
+
+  useEffect(() => {
+    const container = mountRef.current;
+    if (!container) return;
+
+    let width = container.clientWidth || 300;
+    let height = container.clientHeight || 300;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+    camera.position.set(0, 0, 4.0);
+
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      container.appendChild(renderer.domElement);
+    } catch {
+      return;
+    }
+
+    const group = new THREE.Group();
+    scene.add(group);
+
+    // Traditional Hexagonal Pointed Silhouette of Talawang Dayak Shield
+    const shape = new THREE.Shape();
+    shape.moveTo(0, 1.6); // Top sharp point
+    shape.lineTo(0.65, 0.95); // Upper right shoulder
+    shape.lineTo(0.52, 0.0); // Waist taper
+    shape.lineTo(0.62, -0.95); // Lower flank
+    shape.lineTo(0, -1.6); // Bottom sharp point
+    shape.lineTo(-0.62, -0.95); // Lower left flank
+    shape.lineTo(-0.52, 0.0); // Left waist
+    shape.lineTo(-0.65, 0.95); // Upper left shoulder
+    shape.closePath();
+
+    const shieldGeo = new THREE.ExtrudeGeometry(shape, {
+      depth: 0.06,
+      bevelEnabled: true,
+      bevelSegments: 3,
+      steps: 1,
+      bevelSize: 0.02,
+      bevelThickness: 0.02
+    });
+
+    const shieldMat = new THREE.MeshStandardMaterial({
+      color: 0x101116,
+      metalness: 0.92,
+      roughness: 0.18,
+      flatShading: true
+    });
+    const shieldMesh = new THREE.Mesh(shieldGeo, shieldMat);
+    group.add(shieldMesh);
+
+    // Golden Edge Contour Lines
+    const edgesGeo = new THREE.EdgesGeometry(shieldGeo);
+    const edgesMat = new THREE.LineBasicMaterial({ color: 0xd97706, linewidth: 2 });
+    const wireShield = new THREE.LineSegments(edgesGeo, edgesMat);
+    shieldMesh.add(wireShield);
+
+    // Central Creased Spine Ridge (Tulang Punggung Perisai 3D)
+    const spineGeo = new THREE.CylinderGeometry(0.025, 0.035, 3.15, 6);
+    const spineMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.15 });
+    const spineMesh = new THREE.Mesh(spineGeo, spineMat);
+    spineMesh.position.z = 0.07;
+    group.add(spineMesh);
+
+    // Traditional Protective Dayak Eye / Motif Inlays (Ukiran Kamang)
+    const motifGroup = new THREE.Group();
+    const createDiamondPts = (scale) => [
+      new THREE.Vector3(0, 0.45 * scale, 0.08),
+      new THREE.Vector3(0.28 * scale, 0, 0.08),
+      new THREE.Vector3(0, -0.45 * scale, 0.08),
+      new THREE.Vector3(-0.28 * scale, 0, 0.08),
+      new THREE.Vector3(0, 0.45 * scale, 0.08)
+    ];
+
+    const dUpperGeo = new THREE.BufferGeometry().setFromPoints(createDiamondPts(1.0));
+    const dUpperMat = new THREE.LineBasicMaterial({ color: 0x684aff, linewidth: 2 });
+    const dUpper = new THREE.Line(dUpperGeo, dUpperMat);
+    dUpper.position.y = 0.55;
+    motifGroup.add(dUpper);
+
+    const dLowerGeo = new THREE.BufferGeometry().setFromPoints(createDiamondPts(1.0));
+    const dLowerMat = new THREE.LineBasicMaterial({ color: 0x684aff, linewidth: 2 });
+    const dLower = new THREE.Line(dLowerGeo, dLowerMat);
+    dLower.position.y = -0.55;
+    motifGroup.add(dLower);
+
+    group.add(motifGroup);
+
+    // Floating Quantum Gem Core (Inti Pusaka Spasial)
+    const coreGeo = new THREE.OctahedronGeometry(0.22, 0);
+    const coreMat = new THREE.MeshStandardMaterial({
+      color: 0x684aff,
+      emissive: 0x221155,
+      metalness: 0.95,
+      roughness: 0.1
+    });
+    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+    coreMesh.position.z = 0.22;
+    group.add(coreMesh);
+
+    // Dual Spatial Kinetic Forcefield Rings
+    const ring1Geo = new THREE.TorusGeometry(1.65, 0.015, 16, 64);
+    const ring1Mat = new THREE.MeshBasicMaterial({ color: 0x684aff, transparent: true, opacity: 0.7 });
+    const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
+    ring1.rotation.x = Math.PI / 3;
+    group.add(ring1);
+
+    const ring2Geo = new THREE.TorusGeometry(1.4, 0.012, 16, 64);
+    const ring2Mat = new THREE.MeshBasicMaterial({ color: 0xd97706, transparent: true, opacity: 0.6 });
+    const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
+    ring2.rotation.y = Math.PI / 4;
+    group.add(ring2);
+
+    // Lighting
+    const light1 = new THREE.DirectionalLight(0xd97706, 3.5);
+    light1.position.set(4, 3, 3);
+    scene.add(light1);
+    const light2 = new THREE.DirectionalLight(0x684aff, 3.0);
+    light2.position.set(-3, -3, 2);
+    scene.add(light2);
+    scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+
+    let animId;
+    const animate = () => {
+      animId = requestAnimationFrame(animate);
+      const time = performance.now();
+
+      group.rotation.y += 0.011;
+      group.rotation.x = Math.sin(time * 0.001) * 0.14;
+      coreMesh.rotation.x += 0.02;
+      coreMesh.rotation.y += 0.03;
+      ring1.rotation.z += 0.012;
+      ring2.rotation.x += 0.014;
+
+      renderer.render(scene, camera);
+    };
+    animId = requestAnimationFrame(animate);
+
+    const handleResize = () => {
+      if (!container) return;
+      width = container.clientWidth || 300;
+      height = container.clientHeight || 300;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', handleResize);
+      if (renderer.domElement && container.contains(renderer.domElement)) {
+        container.removeChild(renderer.domElement);
+      }
+      renderer.dispose();
+      shieldGeo.dispose();
+      shieldMat.dispose();
+      edgesGeo.dispose();
+      edgesMat.dispose();
+      spineGeo.dispose();
+      spineMat.dispose();
+      dUpperGeo.dispose();
+      dUpperMat.dispose();
+      dLowerGeo.dispose();
+      dLowerMat.dispose();
+      coreGeo.dispose();
+      coreMat.dispose();
+      ring1Geo.dispose();
+      ring1Mat.dispose();
+      ring2Geo.dispose();
+      ring2Mat.dispose();
+    };
+  }, []);
+
+  return <div ref={mountRef} className={`w-full h-full min-h-[260px] ${className}`} />;
+}
+
+// Aliases for seamless backward compatibility
+export {
+  BungaTerong3D as WireframeMatrix3D,
+  CyberMandau3D as TorusKnot3D,
+  BatangGaring3D as CelestialGlobe3D,
+  TalawangShield3D as SacredShield3D
+};

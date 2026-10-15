@@ -151,11 +151,11 @@ const portalLinks = [
   },
   {
     id: 'milestone-3d',
-    name: 'Milestone 3D & Arcade',
+    name: 'Pusaka Spasial 3D',
     badge: 'WebGL Interactive',
-    desc: 'Jelajahi linimasa evolusi teknologi 3D dan mainkan game Cyber Arcade rahasia.',
+    desc: 'Jelajahi linimasa evolusi pusaka digital Dayak 3D dan rekam jejak teknologi.',
     accent: '#0284C7',
-    btnText: 'Masuk Halaman Milestone'
+    btnText: 'Buka Pusaka Spasial'
   },
   {
     id: 'kapabilitas',

@@ -18,7 +18,7 @@ function getRouteFromHash() {
   if (typeof window === 'undefined') return 'home';
   const hash = window.location.hash.toLowerCase().replace(/^#\/?/, '');
   if (hash.startsWith('karya') || hash.startsWith('project') || hash.startsWith('work')) return 'karya';
-  if (hash.startsWith('milestone')) return 'milestone-3d';
+  if (hash.startsWith('pusaka') || hash.startsWith('rekam-jejak') || hash.startsWith('milestone')) return 'milestone-3d';
   if (hash.startsWith('kapabilitas') || hash.startsWith('skill') || hash.startsWith('expertise')) return 'kapabilitas';
   if (hash.startsWith('kontak') || hash.startsWith('contact')) return 'kontak';
   return 'home';
@@ -68,7 +68,7 @@ function App() {
     const metaDescriptions = {
       home: 'Portofolio Luigi Iram Rangi — Founder of Ddev (Dayak Developer) & Creative Developer, merancang arsitektur web modern, WebGL 3D, platform interaktif, dan sistem digital berkinerja tinggi dari Kalimantan Barat.',
       karya: 'Portfolio — Luigi Iram Rangi | Founder of Ddev. Eksplorasi 8 proyek web produksi, arsitektur headless, dan studi kasus sistem skala regional & internasional.',
-      'milestone-3d': 'Milestone 3D WebGL — Luigi Iram Rangi | Founder of Ddev. Arsip eksklusif 4 model 3D Three.js, visualisasi rekayasa grafika, dan benchmark performa.',
+      'milestone-3d': 'Pusaka Spasial & Rekam Jejak — Luigi Iram Rangi | Founder of Ddev. Arsip eksklusif 4 model 3D pusaka digital Dayak (Talawang, Cyber Mandau, Bunga Terong, Batang Garing), visualisasi WebGL spasial, dan tolok ukur rekayasa berkinerja tinggi.',
       kapabilitas: 'Kapabilitas & Cyber Arcade — Luigi Iram Rangi | Founder of Ddev. Spesifikasi arsitektur performa tinggi, skor Google PageSpeed 100/100, dan simulator interaktif Cyber Arcade.',
       kontak: 'Kontak & Konsultasi — Luigi Iram Rangi | Founder of Ddev. Diskusikan arsitektur sistem baru, optimasi web vitals, atau kemitraan digital strategis.'
     };
@@ -76,7 +76,7 @@ function App() {
     const titles = {
       home: 'Luigi Iram Rangi — Founder of Ddev | Creative Developer & WebGL Specialist',
       karya: 'Portfolio — Luigi Iram Rangi | Founder of Ddev',
-      'milestone-3d': 'Milestone 3D WebGL — Luigi Iram Rangi | Founder of Ddev',
+      'milestone-3d': 'Pusaka Spasial & Rekam Jejak — Luigi Iram Rangi | Founder of Ddev',
       kapabilitas: 'Kapabilitas & Cyber Arcade — Luigi Iram Rangi | Founder of Ddev',
       kontak: 'Kontak & Kolaborasi — Luigi Iram Rangi | Founder of Ddev'
     };
@@ -110,8 +110,14 @@ function App() {
     if (destination === 'karya' || destination === 'works' || destination === 'projects') {
       window.location.hash = '/karya';
       setRoute('karya');
-    } else if (destination === 'milestone-3d' || destination === 'milestone') {
-      window.location.hash = '/milestone-3d';
+    } else if (
+      destination === 'milestone-3d' ||
+      destination === 'milestone' ||
+      destination === 'pusaka-spasial' ||
+      destination === 'pusaka' ||
+      destination === 'rekam-jejak'
+    ) {
+      window.location.hash = '/pusaka-spasial';
       setRoute('milestone-3d');
     } else if (destination === 'kapabilitas' || destination === 'skills' || destination === 'expertise') {
       window.location.hash = '/kapabilitas';
@@ -138,7 +144,7 @@ function App() {
     () => [
       { id: 'home', num: '01', name: 'Beranda', desc: 'Pengenalan & Visi Spasial Dayak', target: 'home' },
       { id: 'karya', num: '02', name: 'Portfolio', desc: 'Katalog 8 Proyek Web Produksi', target: 'karya', badge: 'Halaman Portfolio' },
-      { id: 'milestone-3d', num: '03', name: 'Milestone 3D', desc: 'Arsip Eksklusif Model 3D WebGL', target: 'milestone-3d', badge: 'Halaman 3D' },
+      { id: 'milestone-3d', num: '03', name: 'Pusaka Spasial', desc: 'Arsip Pusaka Digital & Rekam Jejak 3D', target: 'milestone-3d', badge: 'Halaman 3D' },
       { id: 'kapabilitas', num: '04', name: 'Kapabilitas', desc: 'Spesifikasi Teknis & Cyber Arcade', target: 'kapabilitas', badge: 'Halaman Khusus' },
       { id: 'kontak', num: '05', name: 'Kontak', desc: 'Kolaborasi & Diskusi Rekayasa', target: 'kontak', badge: 'Halaman Khusus' }
     ],
@@ -151,7 +157,7 @@ function App() {
       case 'karya':
         return 'Halaman Portfolio';
       case 'milestone-3d':
-        return 'Halaman 3D';
+        return 'Halaman Pusaka Spasial';
       case 'kapabilitas':
         return 'Halaman Kapabilitas';
       case 'kontak':

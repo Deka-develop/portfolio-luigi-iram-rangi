@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowUpRight, ChevronRight, Home } from 'lucide-react';
 import { DayakShieldEmblem } from '../components/DayakMotifs';
-import { WireframeMatrix3D, TorusKnot3D, CelestialGlobe3D, SacredShield3D } from '../components/Dayak3DCanvas';
+import { BungaTerong3D, CyberMandau3D, BatangGaring3D, TalawangShield3D } from '../components/Dayak3DCanvas';
 
 const milestones = [
   {
@@ -10,10 +10,11 @@ const milestones = [
     year: '2023',
     title: 'Zero-Bloat Web Systems',
     subtitle: 'High-Velocity Code & Performance Benchmarks',
+    modelName: '3D Bunga Terong Spasial',
     description:
       'Fondasi rekayasa sistem web tanpa beban bloatware. Merancang lebih dari 120 sistem web produksi dengan target absolut 100/100 Google PageSpeed, valid schema SEO, dan LCP di bawah 0.6 detik.',
-    badges: ['120+ Web Systems', '100/100 Core Vitals', 'Sub-0.6s LCP Speed', 'Valid Schema SEO'],
-    ThreeComponent: WireframeMatrix3D,
+    badges: ['3D Bunga Terong Spiral', '120+ Web Systems', '100/100 Core Vitals', 'Sub-0.6s LCP Speed'],
+    ThreeComponent: BungaTerong3D,
     accent: '#684AFF'
   },
   {
@@ -21,10 +22,11 @@ const milestones = [
     year: '2024',
     title: 'Creative WebGL & Shaders',
     subtitle: 'Ddev Studio Lab & GPU Computing',
+    modelName: '3D Cyber Mandau Blade',
     description:
       'Eksplorasi mendalam grafika komputasi interaktif Three.js dan custom GLSL shaders. Mengintegrasikan fisika inersia lerp yang halus, material optik dinamis, dan perpaduan ornamen Dayak dengan estetika digital cyber.',
-    badges: ['Three.js 3D Geometries', 'Custom GLSL Shaders', '120 FPS WebGL', 'Kinetic Lerp Physics'],
-    ThreeComponent: TorusKnot3D,
+    badges: ['3D Cyber Mandau Blade', 'Custom GLSL Shaders', '120 FPS WebGL', 'Kinetic Lerp Physics'],
+    ThreeComponent: CyberMandau3D,
     accent: '#38bdf8'
   },
   {
@@ -32,10 +34,11 @@ const milestones = [
     year: '2025',
     title: 'Regional Impact Ecosystem',
     subtitle: 'Borneo Globe Active Hub (borneoglobe.org)',
+    modelName: '3D Batang Garing Tree of Life',
     description:
       'Memimpin rekayasa platform resmi Borneo Globe. Menghubungkan inisiatif konservasi hutan hujan tropis Borneo, riset ilmiah, dan pemberdayaan komunitas lokal dengan jaringan mitra global berkelanjutan.',
-    badges: ['borneoglobe.org Platform', '2,800+ Penerima Manfaat', 'Global Research Partners', '100% Mobile Ready'],
-    ThreeComponent: CelestialGlobe3D,
+    badges: ['3D Batang Garing Tree', 'borneoglobe.org Platform', '2,800+ Penerima Manfaat', 'Global Research Partners'],
+    ThreeComponent: BatangGaring3D,
     accent: '#10B981'
   },
   {
@@ -43,10 +46,11 @@ const milestones = [
     year: '2026 - Present',
     title: 'Cultural Computing Frontier',
     subtitle: 'Founder of Ddev • High-End Spatial Craft',
+    modelName: '3D Talawang Sacred Shield',
     description:
       'Mendefinisikan paradigma Cultural Computing: menyatukan filosofi pusaka Dayak Kalimantan dengan arsitektur web modern tingkat lanjut, interaksi spasial 3D, dan standar rekayasa digital tanpa kompromi.',
-    badges: ['Ddev Founder', 'Spatial Web Experience', 'Next-Gen Cultural Tech', 'High-End Craft'],
-    ThreeComponent: SacredShield3D,
+    badges: ['3D Talawang Shield', 'Ddev Founder', 'Spatial Web Experience', 'Next-Gen Cultural Tech'],
+    ThreeComponent: TalawangShield3D,
     accent: '#D97706'
   }
 ];
@@ -88,7 +92,7 @@ export default function MilestonePage({ onNavigate }) {
   // Update Page Title and scroll to top on mount
   useEffect(() => {
     const originalTitle = document.title;
-    document.title = 'Milestone 3D & Rekam Jejak Rekayasa — Luigi Iram Rangi | Founder of Ddev';
+    document.title = 'Pusaka Spasial & Rekam Jejak — Luigi Iram Rangi | Founder of Ddev';
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return () => {
       document.title = originalTitle;
@@ -120,7 +124,7 @@ export default function MilestonePage({ onNavigate }) {
               <span>Beranda</span>
             </button>
             <ChevronRight className="w-3.5 h-3.5 text-[#111111]/30" />
-            <span className="text-[#684AFF] font-bold">Milestone 3D</span>
+            <span className="text-[#684AFF] font-bold">Pusaka Spasial</span>
           </div>
 
           <button
@@ -136,7 +140,7 @@ export default function MilestonePage({ onNavigate }) {
         <div className="flex items-center justify-between mb-8 text-[10px] md:text-[11px] font-mono uppercase tracking-[0.25em] text-[#111111]/50">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111111] text-[#EDEEF0] text-[10px] md:text-[11px] font-mono uppercase tracking-[0.2em]">
             <DayakShieldEmblem className="w-3.5 h-3.5 text-[#D97706]" color="#D97706" />
-            Arsip Kronologis WebGL 3D • 2023 - 2026
+            Arsip Pusaka Spasial &amp; Rekam Jejak • 2023 - 2026
           </div>
           <span className="hidden sm:inline">Ddev Studio • Pontianak, West Borneo</span>
         </div>
@@ -145,11 +149,11 @@ export default function MilestonePage({ onNavigate }) {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-10">
           <div className="max-w-3xl">
             <h1 className="font-sans font-black text-4xl sm:text-5xl md:text-6xl lg:text-[72px] text-[#111111] tracking-[-0.03em] leading-[1.05]">
-              Evolusi Rekayasa &amp; Milestone 3D<span className="text-[#684AFF]">.</span>
+              Evolusi Rekayasa &amp; Pusaka Spasial<span className="text-[#684AFF]">.</span>
             </h1>
           </div>
           <p className="text-[#111111]/60 text-sm md:text-base lg:text-lg max-w-xl leading-relaxed font-normal">
-            Halaman arsip terdedikasi yang merangkum perjalanan teknologi: dari fondasi performa web ultra-cepat tanpa bloatware, riset laboratorium grafika WebGL 3D Three.js, hingga platform skala regional dan Cultural Computing.
+            Halaman arsip terdedikasi yang merangkum perjalanan teknologi dan filosofi Pusaka Digital Dayak: dari fondasi performa web ultra-cepat tanpa bloatware, riset laboratorium grafika WebGL Three.js, hingga platform skala regional dan Cultural Computing.
           </p>
         </div>
 
@@ -159,7 +163,7 @@ export default function MilestonePage({ onNavigate }) {
             Lompat Cepat:
           </span>
           {[
-            { id: 'fase-3d', label: '01. 4 Fase 3D WebGL' },
+            { id: 'fase-3d', label: '01. 4 Pusaka Spasial 3D' },
             { id: 'metrik-benchmark', label: '02. Benchmark & Metrik' },
             { id: 'filosofi-rekayasa', label: '03. Filosofi Kultural' },
             { id: 'kronologi-timeline', label: '04. Kronologi Waktu' }
@@ -183,14 +187,14 @@ export default function MilestonePage({ onNavigate }) {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12 md:mb-16">
           <div>
             <h2 className="text-[#111111] text-3xl md:text-4xl font-bold tracking-tight">
-              Fase Inovasi Rekayasa<span className="text-[#684AFF]">.</span>
+              Fase Inovasi &amp; Pusaka Spasial<span className="text-[#684AFF]">.</span>
             </h2>
             <span className="font-mono text-[10px] md:text-xs uppercase tracking-[0.25em] text-[#111111]/40 block mt-1">
-              Arsip Interaktif Tiga Dimensi WebGL Three.js
+              Arsip Interaktif Pusaka Tiga Dimensi WebGL Three.js
             </span>
           </div>
           <span className="font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] text-[#111111]/50">
-            {milestones.length} Fase Milestone Lengkap
+            {milestones.length} Fase Rekam Jejak
           </span>
         </div>
 
@@ -230,8 +234,8 @@ export default function MilestonePage({ onNavigate }) {
                     {/* Badge Cue */}
                     <div className="absolute bottom-4 left-6 z-20 flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: era.accent }} />
-                      <span className="font-mono text-[9px] uppercase tracking-widest text-white/50">
-                        Interactive Three.js Artifact
+                      <span className="font-mono text-[9px] uppercase tracking-widest text-white/70">
+                        {era.modelName || 'Interactive 3D Artifact'}
                       </span>
                     </div>
 
@@ -417,7 +421,7 @@ export default function MilestonePage({ onNavigate }) {
               Jejak Waktu
             </span>
             <h2 className="text-[#111111] text-3xl md:text-5xl font-bold leading-tight tracking-[-0.03em]">
-              Kronologi Milestone<span className="text-[#684AFF]">.</span>
+              Kronologi Rekam Jejak<span className="text-[#684AFF]">.</span>
             </h2>
           </div>
           <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-[#111111]/40">

@@ -140,7 +140,7 @@ export default function Hero({ setActiveSection, onNavigateToProjects, onNavigat
               }}
               className="px-5 py-2.5 rounded-full bg-white text-[#111111] border border-black/10 font-sans text-xs font-bold uppercase tracking-[0.12em] hover:border-[#684AFF] hover:text-[#684AFF] transition-all duration-300 shadow-sm hover:scale-105 cursor-pointer flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none"
             >
-              <span>Telusuri Milestone 3D</span>
+              <span>Telusuri Pusaka Spasial</span>
               <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
             </button>
           </div>
