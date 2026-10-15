@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowUpRight, ChevronRight, Home } from 'lucide-react';
 import { DayakShieldEmblem } from '../components/DayakMotifs';
-import { BungaTerong3D, CyberMandau3D, RumahBetang3D, TalawangShield3D } from '../components/Dayak3DCanvas';
+import { BungaTerong3D, CyberMandau3D, RumahBetang3D, SapeDayak3D } from '../components/Dayak3DCanvas';
 
 const milestones = [
   {
@@ -46,11 +46,11 @@ const milestones = [
     year: '2026 - Present',
     title: 'Cultural Computing Frontier',
     subtitle: 'Founder of Ddev • High-End Spatial Craft',
-    modelName: '3D Talawang Sacred Shield',
+    modelName: "3D Sape' Pusaka Dayak",
     description:
-      'Mendefinisikan paradigma Cultural Computing: menyatukan filosofi pusaka Dayak Kalimantan dengan arsitektur web modern tingkat lanjut, interaksi spasial 3D, dan standar rekayasa digital tanpa kompromi.',
-    badges: ['3D Talawang Shield', 'Ddev Founder', 'Spatial Web Experience', 'Next-Gen Cultural Tech'],
-    ThreeComponent: TalawangShield3D,
+      'Harmoni resonansi akustik dan komputasi spasial: Memodelkan Sape\' Dayak—alat musik petik legendaris suku Dayak Kalimantan—secara prosedural 3D WebGL dengan 4 senar kinetik bergetar, ukiran ornamen tradisional, dan arsitektur Cultural Computing.',
+    badges: ["3D Sape' Dayak", 'Ddev Founder', 'Spatial Web Experience', 'Cultural Computing Frontier'],
+    ThreeComponent: SapeDayak3D,
     accent: '#D97706'
   }
 ];

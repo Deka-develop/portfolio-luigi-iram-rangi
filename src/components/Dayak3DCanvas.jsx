@@ -1301,8 +1301,8 @@ export function RumahBetang3D({ className = '' }) {
 // Backward compatibility alias
 export const BatangGaring3D = RumahBetang3D;
 
-// 4. Era 2026: 3D Talawang Sacred Shield (Cultural Computing Frontier)
-export function TalawangShield3D({ className = '' }) {
+// 4. Era 2026: 3D Sape' Pusaka Dayak (Cultural Computing Frontier)
+export function SapeDayak3D({ className = '' }) {
   const mountRef = useRef(null);
 
   useEffect(() => {
@@ -1314,7 +1314,7 @@ export function TalawangShield3D({ className = '' }) {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 4.0);
+    camera.position.set(0, 0, 4.4);
 
     let renderer;
     try {
@@ -1329,103 +1329,212 @@ export function TalawangShield3D({ className = '' }) {
     const group = new THREE.Group();
     scene.add(group);
 
-    // Traditional Hexagonal Pointed Silhouette of Talawang Dayak Shield
-    const shape = new THREE.Shape();
-    shape.moveTo(0, 1.6); // Top sharp point
-    shape.lineTo(0.65, 0.95); // Upper right shoulder
-    shape.lineTo(0.52, 0.0); // Waist taper
-    shape.lineTo(0.62, -0.95); // Lower flank
-    shape.lineTo(0, -1.6); // Bottom sharp point
-    shape.lineTo(-0.62, -0.95); // Lower left flank
-    shape.lineTo(-0.52, 0.0); // Left waist
-    shape.lineTo(-0.65, 0.95); // Upper left shoulder
-    shape.closePath();
+    // Traditional Sape' Dayak Canoe Contour Silhouette (Badan Sape')
+    const sapeShape = new THREE.Shape();
+    sapeShape.moveTo(0, -1.45);
+    sapeShape.lineTo(0.24, -1.45);
+    sapeShape.lineTo(0.28, -1.35);
+    // Lower body expanding outward
+    sapeShape.bezierCurveTo(0.38, -1.15, 0.40, -0.65, 0.35, -0.2);
+    // Waist and shoulder tapering to neck
+    sapeShape.bezierCurveTo(0.32, 0.2, 0.20, 0.45, 0.14, 0.7);
+    // Neck up to headstock
+    sapeShape.lineTo(0.13, 1.25);
+    // Headstock (Ulu Sape') Enggang crest flare
+    sapeShape.bezierCurveTo(0.18, 1.35, 0.26, 1.45, 0.24, 1.58);
+    sapeShape.bezierCurveTo(0.22, 1.74, 0.12, 1.80, 0.0, 1.80);
+    sapeShape.bezierCurveTo(-0.12, 1.80, -0.22, 1.74, -0.24, 1.58);
+    sapeShape.bezierCurveTo(-0.26, 1.45, -0.18, 1.35, -0.13, 1.25);
+    // Neck down
+    sapeShape.lineTo(-0.14, 0.7);
+    // Shoulder & waist
+    sapeShape.bezierCurveTo(-0.20, 0.45, -0.32, 0.2, -0.35, -0.2);
+    // Lower left flank
+    sapeShape.bezierCurveTo(-0.40, -0.65, -0.38, -1.15, -0.28, -1.35);
+    sapeShape.lineTo(-0.24, -1.45);
+    sapeShape.closePath();
 
-    const shieldGeo = new THREE.ExtrudeGeometry(shape, {
-      depth: 0.06,
+    const sapeGeo = new THREE.ExtrudeGeometry(sapeShape, {
+      depth: 0.11,
       bevelEnabled: true,
       bevelSegments: 3,
       steps: 1,
       bevelSize: 0.02,
-      bevelThickness: 0.02
+      bevelThickness: 0.025
     });
 
-    const shieldMat = new THREE.MeshStandardMaterial({
-      color: 0x101116,
-      metalness: 0.92,
-      roughness: 0.18,
-      flatShading: true
+    // Dark Belian Ironwood texture with cyber reflection
+    const sapeMat = new THREE.MeshStandardMaterial({
+      color: 0x141210,
+      metalness: 0.88,
+      roughness: 0.22,
+      flatShading: false
     });
-    const shieldMesh = new THREE.Mesh(shieldGeo, shieldMat);
-    group.add(shieldMesh);
+    const sapeMesh = new THREE.Mesh(sapeGeo, sapeMat);
+    // Center the geometry depth
+    sapeMesh.position.z = -0.055;
+    group.add(sapeMesh);
 
-    // Golden Edge Contour Lines
-    const edgesGeo = new THREE.EdgesGeometry(shieldGeo);
+    // Golden Edge Contour Lines (Aksen Emas Sape')
+    const edgesGeo = new THREE.EdgesGeometry(sapeGeo);
     const edgesMat = new THREE.LineBasicMaterial({ color: 0xd97706, linewidth: 2 });
-    const wireShield = new THREE.LineSegments(edgesGeo, edgesMat);
-    shieldMesh.add(wireShield);
+    const wireSape = new THREE.LineSegments(edgesGeo, edgesMat);
+    sapeMesh.add(wireSape);
 
-    // Central Creased Spine Ridge (Tulang Punggung Perisai 3D)
-    const spineGeo = new THREE.CylinderGeometry(0.025, 0.035, 3.15, 6);
-    const spineMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.15 });
-    const spineMesh = new THREE.Mesh(spineGeo, spineMat);
-    spineMesh.position.z = 0.07;
-    group.add(spineMesh);
+    // Headstock Carved Hornbill Crest Inlay (Ukiran Ulu Burung Enggang)
+    const crestPts = [];
+    for (let i = 0; i <= 24; i++) {
+      const a = (i / 24) * Math.PI * 2.5;
+      const r = 0.04 + (i / 24) * 0.12;
+      crestPts.push(new THREE.Vector3(Math.cos(a) * r, 1.58 + Math.sin(a) * r, 0.075));
+    }
+    const crestGeo = new THREE.BufferGeometry().setFromPoints(crestPts);
+    const crestMat = new THREE.LineBasicMaterial({ color: 0x684aff, linewidth: 2 });
+    const crestLine = new THREE.Line(crestGeo, crestMat);
+    group.add(crestLine);
 
-    // Traditional Protective Dayak Eye / Motif Inlays (Ukiran Kamang)
+    // Tuning Pegs (Telinga Sape' / 4 Pasak Putar Kayu & Kuningan)
+    const pegGroup = new THREE.Group();
+    const pegGeo = new THREE.CylinderGeometry(0.015, 0.015, 0.38, 8);
+    const pegMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.15 });
+    const knobGeo = new THREE.SphereGeometry(0.035, 10, 10);
+    const knobMat = new THREE.MeshStandardMaterial({ color: 0x684aff, metalness: 0.9, roughness: 0.2 });
+
+    const pegPositions = [1.36, 1.50];
+    pegPositions.forEach((py) => {
+      // Horizontal shaft crossing the headstock
+      const peg = new THREE.Mesh(pegGeo, pegMat);
+      peg.rotation.z = Math.PI / 2;
+      peg.position.set(0, py, 0.05);
+      pegGroup.add(peg);
+
+      // Left knob
+      const knobL = new THREE.Mesh(knobGeo, knobMat);
+      knobL.position.set(-0.21, py, 0.05);
+      pegGroup.add(knobL);
+
+      // Right knob
+      const knobR = new THREE.Mesh(knobGeo, knobMat);
+      knobR.position.set(0.21, py, 0.05);
+      pegGroup.add(knobR);
+    });
+    group.add(pegGroup);
+
+    // Soundboard Fretboard & Frets (Da' Sape' / Tangga Nada Prosedural)
+    const fretsGroup = new THREE.Group();
+    const fretPositions = [1.12, 0.96, 0.80, 0.64, 0.48, 0.32, 0.16, 0.0, -0.16, -0.32, -0.48];
+    const fretMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.92, roughness: 0.2 });
+
+    fretPositions.forEach((fy, idx) => {
+      const fw = 0.15 + (idx / fretPositions.length) * 0.07;
+      const fGeo = new THREE.BoxGeometry(fw, 0.014, 0.02);
+      const fret = new THREE.Mesh(fGeo, fretMat);
+      fret.position.set(0, fy, 0.068);
+      fretsGroup.add(fret);
+    });
+    group.add(fretsGroup);
+
+    // Bridge (Kuda-kuda Sape') & Nut (Penyangga Senar)
+    const bridgeGeo = new THREE.BoxGeometry(0.24, 0.038, 0.035);
+    const bridgeMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.15 });
+    const bridge = new THREE.Mesh(bridgeGeo, bridgeMat);
+    bridge.position.set(0, -1.15, 0.07);
+    group.add(bridge);
+
+    const nutGeo = new THREE.BoxGeometry(0.18, 0.024, 0.024);
+    const nut = new THREE.Mesh(nutGeo, bridgeMat);
+    nut.position.set(0, 1.20, 0.07);
+    group.add(nut);
+
+    // Rosette Soundhole (Lubang Resonansi Sape')
+    const soundHoleGeo = new THREE.TorusGeometry(0.09, 0.016, 12, 32);
+    const soundHoleMat = new THREE.MeshStandardMaterial({ color: 0x684aff, emissive: 0x331166, metalness: 0.9 });
+    const soundHole = new THREE.Mesh(soundHoleGeo, soundHoleMat);
+    soundHole.position.set(0, -0.72, 0.065);
+    group.add(soundHole);
+
+    // Decorative Traditional Dayak Carvings on Flanks (Ukiran Kalung Paku / Tali Nyawa)
     const motifGroup = new THREE.Group();
-    const createDiamondPts = (scale) => [
-      new THREE.Vector3(0, 0.45 * scale, 0.08),
-      new THREE.Vector3(0.28 * scale, 0, 0.08),
-      new THREE.Vector3(0, -0.45 * scale, 0.08),
-      new THREE.Vector3(-0.28 * scale, 0, 0.08),
-      new THREE.Vector3(0, 0.45 * scale, 0.08)
-    ];
-
-    const dUpperGeo = new THREE.BufferGeometry().setFromPoints(createDiamondPts(1.0));
-    const dUpperMat = new THREE.LineBasicMaterial({ color: 0x684aff, linewidth: 2 });
-    const dUpper = new THREE.Line(dUpperGeo, dUpperMat);
-    dUpper.position.y = 0.55;
-    motifGroup.add(dUpper);
-
-    const dLowerGeo = new THREE.BufferGeometry().setFromPoints(createDiamondPts(1.0));
-    const dLowerMat = new THREE.LineBasicMaterial({ color: 0x684aff, linewidth: 2 });
-    const dLower = new THREE.Line(dLowerGeo, dLowerMat);
-    dLower.position.y = -0.55;
-    motifGroup.add(dLower);
-
+    const createSideSpiral = (flip = 1) => {
+      const pts = [];
+      for (let i = 0; i <= 20; i++) {
+        const t = i / 20;
+        const angle = t * Math.PI * 2;
+        const rad = 0.02 + t * 0.08;
+        pts.push(new THREE.Vector3(flip * (0.18 + Math.cos(angle) * rad), -0.75 + Math.sin(angle) * rad * 1.5, 0.066));
+      }
+      return pts;
+    };
+    const sLGeo = new THREE.BufferGeometry().setFromPoints(createSideSpiral(-1));
+    const sRGeo = new THREE.BufferGeometry().setFromPoints(createSideSpiral(1));
+    const spiralMat = new THREE.LineBasicMaterial({ color: 0xd97706, linewidth: 2 });
+    motifGroup.add(new THREE.Line(sLGeo, spiralMat));
+    motifGroup.add(new THREE.Line(sRGeo, spiralMat));
     group.add(motifGroup);
 
-    // Floating Quantum Gem Core (Inti Pusaka Spasial)
-    const coreGeo = new THREE.OctahedronGeometry(0.22, 0);
-    const coreMat = new THREE.MeshStandardMaterial({
-      color: 0x684aff,
-      emissive: 0x221155,
-      metalness: 0.95,
-      roughness: 0.1
-    });
-    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-    coreMesh.position.z = 0.22;
-    group.add(coreMesh);
+    // 4 Harmonic Strings (Senar Sape' Dinamis Kinetik)
+    const stringCount = 4;
+    const stringX = [-0.06, -0.02, 0.02, 0.06];
+    const stringSegments = 24;
+    const stringLines = [];
+    const stringGeos = [];
 
-    // Dual Spatial Kinetic Forcefield Rings
-    const ring1Geo = new THREE.TorusGeometry(1.65, 0.015, 16, 64);
-    const ring1Mat = new THREE.MeshBasicMaterial({ color: 0x684aff, transparent: true, opacity: 0.7 });
+    const stringColors = [0xd97706, 0x684aff, 0x684aff, 0xd97706];
+
+    for (let s = 0; s < stringCount; s++) {
+      const pts = [];
+      for (let seg = 0; seg <= stringSegments; seg++) {
+        const t = seg / stringSegments;
+        const sy = -1.15 + t * (1.20 - (-1.15));
+        pts.push(new THREE.Vector3(stringX[s], sy, 0.085));
+      }
+      const sGeo = new THREE.BufferGeometry().setFromPoints(pts);
+      const sMat = new THREE.LineBasicMaterial({ color: stringColors[s], linewidth: 2 });
+      const line = new THREE.Line(sGeo, sMat);
+      stringGeos.push(sGeo);
+      stringLines.push(line);
+      group.add(line);
+    }
+
+    // Acoustic Harmonic Spatial Orbit Rings
+    const ring1Geo = new THREE.TorusGeometry(1.68, 0.014, 16, 64);
+    const ring1Mat = new THREE.MeshBasicMaterial({ color: 0x684aff, transparent: true, opacity: 0.65 });
     const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
     ring1.rotation.x = Math.PI / 3;
     group.add(ring1);
 
-    const ring2Geo = new THREE.TorusGeometry(1.4, 0.012, 16, 64);
+    const ring2Geo = new THREE.TorusGeometry(1.42, 0.012, 16, 64);
     const ring2Mat = new THREE.MeshBasicMaterial({ color: 0xd97706, transparent: true, opacity: 0.6 });
     const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
     ring2.rotation.y = Math.PI / 4;
     group.add(ring2);
 
+    // Floating Sacred Musical Notes / Stardust Particles
+    const dustCount = 45;
+    const dustPts = [];
+    for (let i = 0; i < dustCount; i++) {
+      dustPts.push(
+        (Math.random() - 0.5) * 3.2,
+        (Math.random() - 0.5) * 3.4,
+        (Math.random() - 0.5) * 1.8
+      );
+    }
+    const dustGeo = new THREE.BufferGeometry();
+    dustGeo.setAttribute('position', new THREE.Float32BufferAttribute(dustPts, 3));
+    const dustMat = new THREE.PointsMaterial({
+      color: 0xf59e0b,
+      size: 0.035,
+      transparent: true,
+      opacity: 0.75
+    });
+    const dust = new THREE.Points(dustGeo, dustMat);
+    group.add(dust);
+
     // Lighting
-    const light1 = new THREE.DirectionalLight(0xd97706, 3.5);
+    const light1 = new THREE.DirectionalLight(0xd97706, 3.6);
     light1.position.set(4, 3, 3);
     scene.add(light1);
-    const light2 = new THREE.DirectionalLight(0x684aff, 3.0);
+    const light2 = new THREE.DirectionalLight(0x684aff, 3.2);
     light2.position.set(-3, -3, 2);
     scene.add(light2);
     scene.add(new THREE.AmbientLight(0xffffff, 1.2));
@@ -1435,12 +1544,30 @@ export function TalawangShield3D({ className = '' }) {
       animId = requestAnimationFrame(animate);
       const time = performance.now();
 
-      group.rotation.y += 0.011;
-      group.rotation.x = Math.sin(time * 0.001) * 0.14;
-      coreMesh.rotation.x += 0.02;
-      coreMesh.rotation.y += 0.03;
+      // Continuous 3D rotation with gentle floating motion
+      group.rotation.y += 0.010;
+      group.rotation.x = Math.sin(time * 0.001) * 0.12;
+      group.rotation.z = Math.cos(time * 0.0008) * 0.06;
+
+      // Orbit rings rotation
       ring1.rotation.z += 0.012;
       ring2.rotation.x += 0.014;
+      dust.rotation.y += 0.003;
+
+      // Harmonic String Vibration Physics (Senar Sape' bergetar harmonis)
+      for (let s = 0; s < stringCount; s++) {
+        const geo = stringGeos[s];
+        const posAttr = geo.attributes.position;
+        const freq = 0.012 + s * 0.003;
+        for (let seg = 0; seg <= stringSegments; seg++) {
+          const t = seg / stringSegments;
+          // Harmonic envelope: zero at bridge and nut, peak in middle
+          const env = Math.sin(t * Math.PI);
+          const zOffset = 0.085 + Math.sin(time * freq + seg * 0.5) * 0.012 * env;
+          posAttr.setZ(seg, zOffset);
+        }
+        posAttr.needsUpdate = true;
+      }
 
       renderer.render(scene, camera);
     };
@@ -1463,32 +1590,43 @@ export function TalawangShield3D({ className = '' }) {
         container.removeChild(renderer.domElement);
       }
       renderer.dispose();
-      shieldGeo.dispose();
-      shieldMat.dispose();
+      sapeGeo.dispose();
+      sapeMat.dispose();
       edgesGeo.dispose();
       edgesMat.dispose();
-      spineGeo.dispose();
-      spineMat.dispose();
-      dUpperGeo.dispose();
-      dUpperMat.dispose();
-      dLowerGeo.dispose();
-      dLowerMat.dispose();
-      coreGeo.dispose();
-      coreMat.dispose();
+      crestGeo.dispose();
+      crestMat.dispose();
+      pegGeo.dispose();
+      pegMat.dispose();
+      knobGeo.dispose();
+      knobMat.dispose();
+      bridgeGeo.dispose();
+      bridgeMat.dispose();
+      nutGeo.dispose();
+      soundHoleGeo.dispose();
+      soundHoleMat.dispose();
+      sLGeo.dispose();
+      sRGeo.dispose();
+      spiralMat.dispose();
+      stringGeos.forEach(g => g.dispose());
       ring1Geo.dispose();
       ring1Mat.dispose();
       ring2Geo.dispose();
       ring2Mat.dispose();
+      dustGeo.dispose();
+      dustMat.dispose();
     };
   }, []);
 
   return <div ref={mountRef} className={`w-full h-full min-h-[260px] ${className}`} />;
 }
 
-// Aliases for seamless backward compatibility
+// Backward compatibility aliases
+export const TalawangShield3D = SapeDayak3D;
+
 export {
   BungaTerong3D as WireframeMatrix3D,
   CyberMandau3D as TorusKnot3D,
   BatangGaring3D as CelestialGlobe3D,
-  TalawangShield3D as SacredShield3D
+  SapeDayak3D as SacredShield3D
 };
