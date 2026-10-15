@@ -30,7 +30,7 @@ export default function Hero({ setActiveSection, onNavigateToProjects, onNavigat
           <span>0°01′S 109°20′E</span>
           <span className="text-[#111111]">PONTIANAK, KALBAR</span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="hidden sm:flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
           <span>TERBUKA UNTUK KOLABORASI PILIHAN</span>
         </div>
@@ -106,8 +106,8 @@ export default function Hero({ setActiveSection, onNavigateToProjects, onNavigat
 
         {/* Narrative & Action Callouts */}
         <motion.div
-          initial={{ opacity: 0, y: 15, filter: 'blur(5px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="w-full max-w-2xl text-center mt-3 md:mt-4 flex flex-col items-center gap-3.5"
         >
@@ -165,7 +165,7 @@ export default function Hero({ setActiveSection, onNavigateToProjects, onNavigat
       <div className="relative z-10 w-full flex flex-col sm:flex-row items-center justify-between border-t border-[#111111]/10 pt-3 mt-4 gap-2 text-[10px] md:text-[11px] font-mono tracking-[0.16em] uppercase text-[#111111]/50">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-[#10B981]" />
-          <span>Status: Aktif Membangun Proyek Terpilih</span>
+          <span>Status: Aktif Membangun Portfolio</span>
         </div>
 
         <div className="hidden lg:flex items-center gap-4 text-[#111111]/60">

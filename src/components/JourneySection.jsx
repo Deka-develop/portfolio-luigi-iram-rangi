@@ -142,8 +142,8 @@ export default function JourneySection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                style={{ top: `${90 + index * 18}px` }}
-                className="sticky rounded-[28px] md:rounded-[36px] bg-white border border-[#111111]/10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-500 hover:shadow-[0_25px_70px_-10px_rgba(104,74,255,0.12)]"
+                style={{ '--card-top': `${90 + index * 18}px` }}
+                className="relative lg:sticky lg:[top:var(--card-top)] rounded-[28px] md:rounded-[36px] bg-white border border-[#111111]/10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.08)] overflow-hidden transition-all duration-500 hover:shadow-[0_25px_70px_-10px_rgba(104,74,255,0.12)]"
               >
                 <div className="flex flex-col lg:flex-row items-stretch min-h-[460px] md:min-h-[500px]">
                   

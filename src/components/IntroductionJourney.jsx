@@ -252,14 +252,14 @@ export default function IntroductionJourney({ onNavigate }) {
       {/* ───────────────── SECTION 1: MANIFESTO & FILOSOFI ───────────────── */}
       <section
         id="intro-manifesto"
-        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-16 md:py-24 bg-[#E5E6E8] text-[#111111] border-t border-[#111111]/15 z-10 rounded-t-[28px] sm:rounded-t-[36px] shadow-[0_-18px_45px_rgba(0,0,0,0.12)]"
+        className="relative lg:sticky lg:top-0 min-h-screen w-full flex flex-col justify-center px-5 sm:px-8 md:px-12 lg:px-20 py-12 sm:py-16 lg:py-24 bg-[#E5E6E8] text-[#111111] border-t border-[#111111]/15 z-10 rounded-t-[28px] sm:rounded-t-[36px] shadow-[0_-18px_45px_rgba(0,0,0,0.12)]"
       >
         {/* Section Index Bar */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.15 }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, amount: 0.05 }}
+          transition={{ duration: 0.5 }}
           className="flex flex-col gap-2 mb-8 md:mb-12 max-w-6xl mx-auto w-full"
         >
           <div className="flex items-center justify-between text-[10px] md:text-xs font-mono tracking-[0.25em] uppercase text-[#111111]/60">
@@ -280,14 +280,14 @@ export default function IntroductionJourney({ onNavigate }) {
         {/* Big Impact Statement with Scroll Kinetic Reveal */}
         <div className="max-w-6xl mx-auto w-full">
           <h2 className="font-sans font-black text-3xl sm:text-5xl md:text-6xl lg:text-7xl uppercase tracking-[-0.03em] leading-[1.04] text-[#111111] mb-8">
-            <ScrollRevealWords delay={0.05} amount={0.15}>
+            <ScrollRevealWords delay={0.05}>
               KAMI TIDAK HANYA MENULIS KODE,
             </ScrollRevealWords>
             <br className="hidden md:block" />
-            <ScrollRevealWords delay={0.2} amount={0.15} className="text-[#684AFF]">
+            <ScrollRevealWords delay={0.2} className="text-[#684AFF]">
               KAMI MERAWAT IDENTITAS
             </ScrollRevealWords>{' '}
-            <ScrollRevealWords delay={0.35} amount={0.15}>
+            <ScrollRevealWords delay={0.35}>
               DI SETIAP DIMENSI DIGITAL.
             </ScrollRevealWords>
           </h2>
@@ -296,19 +296,19 @@ export default function IntroductionJourney({ onNavigate }) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start pt-4">
             
             <div className="lg:col-span-8 flex flex-col gap-6 text-[#111111]/80 font-sans text-base sm:text-lg leading-relaxed">
-              <ScrollRevealParagraph delay={0.1} amount={0.15} className="border-l-2 border-[#684AFF]/40 pl-4 py-0.5">
+              <ScrollRevealParagraph delay={0.1} className="border-l-2 border-[#684AFF]/40 pl-4 py-0.5">
                 <p>
                   Halo, saya <strong className="text-[#111111] font-bold">Luigi Iram Rangi</strong>. Saya seorang pengembang perangkat lunak berdarah <strong className="text-[#111111] font-bold">Dayak</strong> yang berbasis di garis khatulistiwa Kota Pontianak, Kalimantan Barat.
                 </p>
               </ScrollRevealParagraph>
 
-              <ScrollRevealParagraph delay={0.25} amount={0.15} className="border-l-2 border-[#D97706]/40 pl-4 py-0.5">
+              <ScrollRevealParagraph delay={0.25} className="border-l-2 border-[#D97706]/40 pl-4 py-0.5">
                 <p>
                   Di tengah arus industri teknologi yang sering kali seragam dan mengesampingkan konteks lokal, saya memelopori pendekatan yang saya sebut sebagai <span className="inline-block px-2.5 py-0.5 rounded-md bg-[#684AFF]/10 text-[#684AFF] font-mono text-sm font-bold uppercase tracking-wider">Cultural Computing</span> — sebuah keyakinan bahwa filosofi bunga terong, keseimbangan spasial hutan Borneo, dan nilai kekeluargaan komunal dapat berpadu harmonis dengan komputasi grafika 3D WebGL modern, arsitektur sistem nir-beban, serta performa web berkecepatan tinggi.
                 </p>
               </ScrollRevealParagraph>
 
-              <ScrollRevealParagraph delay={0.4} amount={0.15} className="border-l-2 border-[#10B981]/40 pl-4 py-0.5">
+              <ScrollRevealParagraph delay={0.4} className="border-l-2 border-[#10B981]/40 pl-4 py-0.5">
                 <p>
                   Melalui studio yang saya dirikan, <strong className="text-[#111111] font-bold">Ddev Studio</strong>, serta keterlibatan aktif dalam inisiatif riset dan konservasi di <strong className="text-[#111111] font-bold">Borneo Globe</strong>, karya-karya yang saya rancang ditujukan untuk membuktikan bahwa karya dari pelosok khatulistiwa mampu bersaing dengan standar teknologi terbaik dunia tanpa kehilangan akar tradisinya.
                 </p>
@@ -319,7 +319,6 @@ export default function IntroductionJourney({ onNavigate }) {
             <ScrollShuffleCard
               delay={0.25}
               rotate={2.0}
-              amount={0.15}
               className="lg:col-span-4 bg-white/95 backdrop-blur-md border border-[#111111]/10 rounded-2xl p-6 sm:p-8 flex flex-col items-center text-center shadow-lg relative group"
             >
               <DayakCornerAccent position="top-right" className="absolute top-3 right-3 w-4 h-4 text-[#D97706]" />
@@ -329,7 +328,7 @@ export default function IntroductionJourney({ onNavigate }) {
                 <DayakCulturalSeal className="w-28 h-28" animated={true} />
               </div>
 
-              <ScrollRevealWords as="span" delay={0.4} amount={0.15} className="font-sans font-bold text-lg text-[#111111] mt-4 uppercase tracking-tight">
+              <ScrollRevealWords as="span" delay={0.4} className="font-sans font-bold text-lg text-[#111111] mt-4 uppercase tracking-tight">
                 Luigi Iram Rangi
               </ScrollRevealWords>
               <span className="font-mono text-xs uppercase tracking-widest text-[#684AFF] font-bold mt-1">
@@ -353,14 +352,14 @@ export default function IntroductionJourney({ onNavigate }) {
       {/* ───────────────── SECTION 2: TIGA PILAR DIRI ───────────────── */}
       <section
         id="intro-pillars"
-        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-16 md:py-24 bg-[#EDEEF0] text-[#111111] border-t border-[#111111]/15 z-20 rounded-t-[28px] sm:rounded-t-[36px] shadow-[0_-25px_60px_rgba(0,0,0,0.18)]"
+        className="relative lg:sticky lg:top-0 min-h-screen w-full flex flex-col justify-center px-5 sm:px-8 md:px-12 lg:px-20 py-12 sm:py-16 lg:py-24 bg-[#EDEEF0] text-[#111111] border-t border-[#111111]/15 z-20 rounded-t-[28px] sm:rounded-t-[36px] shadow-[0_-25px_60px_rgba(0,0,0,0.18)] -mt-6 sm:-mt-8 lg:mt-0"
       >
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.15 }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, amount: 0.05 }}
+          transition={{ duration: 0.5 }}
           className="flex flex-col gap-2 mb-10 max-w-6xl mx-auto w-full"
         >
           <div className="flex items-center gap-3 text-[10px] md:text-xs font-mono tracking-[0.25em] uppercase text-[#111111]/60">
@@ -370,12 +369,11 @@ export default function IntroductionJourney({ onNavigate }) {
           <ScrollRevealWords
             as="h3"
             delay={0.1}
-            amount={0.15}
             className="font-sans font-black text-2xl sm:text-4xl md:text-5xl uppercase tracking-tight text-[#111111] mt-1"
           >
             DIMENSI REKAYASA &amp; KREASI
           </ScrollRevealWords>
-          <ScrollRevealParagraph delay={0.2} amount={0.15}>
+          <ScrollRevealParagraph delay={0.2}>
             <p className="font-sans text-sm sm:text-base text-[#111111]/60 max-w-2xl mt-1">
               Tiga aspek fundamental yang membentuk karakter, kapabilitas teknis, dan arah karya Luigi Iram Rangi dalam lanskap digital modern.
             </p>
@@ -394,7 +392,6 @@ export default function IntroductionJourney({ onNavigate }) {
                 key={p.id}
                 delay={idx * 0.12}
                 rotate={cardRotate}
-                amount={0.15}
                 onMouseEnter={() => setActivePilar(idx)}
                 className={`relative flex flex-col justify-between p-7 sm:p-8 rounded-3xl transition-all duration-300 border cursor-pointer ${
                   isHovered
@@ -435,7 +432,6 @@ export default function IntroductionJourney({ onNavigate }) {
                   <ScrollRevealWords
                     as="h4"
                     delay={0.06 + idx * 0.08}
-                    amount={0.15}
                     className="font-sans font-black text-xl sm:text-2xl uppercase tracking-tight leading-snug mb-3"
                   >
                     {p.title}
@@ -496,15 +492,15 @@ export default function IntroductionJourney({ onNavigate }) {
       {/* ───────────────── SECTION 3: PRINSIP & PERSONA ───────────────── */}
       <section
         id="intro-ethos"
-        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-16 md:py-24 bg-[#E8E9EC] text-[#111111] border-t border-[#111111]/15 z-30 rounded-t-[28px] sm:rounded-t-[36px] shadow-[0_-30px_70px_rgba(0,0,0,0.22)]"
+        className="relative lg:sticky lg:top-0 min-h-screen w-full flex flex-col justify-center px-5 sm:px-8 md:px-12 lg:px-20 py-12 sm:py-16 lg:py-24 bg-[#E8E9EC] text-[#111111] border-t border-[#111111]/15 z-30 rounded-t-[28px] sm:rounded-t-[36px] shadow-[0_-30px_70px_rgba(0,0,0,0.22)] -mt-6 sm:-mt-8 lg:mt-0"
       >
         <div className="max-w-6xl mx-auto w-full">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.15 }}
-            transition={{ duration: 0.6 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.5 }}
             className="flex flex-col gap-2 mb-10"
           >
             <div className="flex items-center gap-3 text-[10px] md:text-xs font-mono tracking-[0.25em] uppercase text-[#111111]/60">
@@ -514,12 +510,11 @@ export default function IntroductionJourney({ onNavigate }) {
             <ScrollRevealWords
               as="h3"
               delay={0.1}
-              amount={0.15}
               className="font-sans font-black text-2xl sm:text-4xl md:text-5xl uppercase tracking-tight text-[#111111] mt-1"
             >
               NILAI YANG SAYA PEGANG TEGUH
             </ScrollRevealWords>
-            <ScrollRevealParagraph delay={0.2} amount={0.15}>
+            <ScrollRevealParagraph delay={0.2}>
               <p className="font-sans text-sm sm:text-base text-[#111111]/60 max-w-2xl mt-1">
                 Standar arsitektur kode dan sisi manusiawi di balik layar Luigi Iram Rangi.
               </p>
@@ -535,7 +530,6 @@ export default function IntroductionJourney({ onNavigate }) {
                   key={pr.num}
                   delay={idx * 0.08}
                   rotate={idx % 2 === 0 ? -1.5 : 1.5}
-                  amount={0.15}
                   className="group p-5 rounded-2xl bg-white border border-[#111111]/10 hover:border-[#684AFF]/40 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
                 >
                   <div>
@@ -551,7 +545,6 @@ export default function IntroductionJourney({ onNavigate }) {
                     <ScrollRevealWords
                       as="h4"
                       delay={0.05 + idx * 0.08}
-                      amount={0.15}
                       className="font-sans font-bold text-sm sm:text-base uppercase tracking-tight text-[#111111] group-hover:text-[#684AFF] transition-colors mb-1.5 leading-snug"
                     >
                       {pr.title}
@@ -581,7 +574,6 @@ export default function IntroductionJourney({ onNavigate }) {
                       key={item.label}
                       delay={0.1 + idx * 0.08}
                       rotate={idx % 2 === 0 ? 1.5 : -1.5}
-                      amount={0.15}
                       className="p-5 rounded-2xl bg-white border border-[#111111]/10 hover:border-[#684AFF]/40 hover:shadow-md transition-all flex flex-col justify-between"
                     >
                       <div>
@@ -603,7 +595,7 @@ export default function IntroductionJourney({ onNavigate }) {
                 })}
               </div>
 
-              <ScrollRevealParagraph delay={0.4} amount={0.15} className="p-5 rounded-2xl bg-white/70 border border-[#111111]/10 font-sans text-xs text-[#111111]/70 leading-relaxed">
+              <ScrollRevealParagraph delay={0.4} className="p-5 rounded-2xl bg-white/70 border border-[#111111]/10 font-sans text-xs text-[#111111]/70 leading-relaxed">
                 <p>
                   Bagi saya, layar komputer adalah kanvas digital khatulistiwa tempat nilai luhur Borneo dapat diekspresikan kembali dalam estetika modern berstandar dunia.
                 </p>
@@ -617,14 +609,14 @@ export default function IntroductionJourney({ onNavigate }) {
       {/* ───────────────── SECTION 4: PINTU GERBANG PENJELAJAHAN ───────────────── */}
       <section
         id="intro-gateway"
-        className="sticky top-0 min-h-screen w-full flex flex-col justify-center px-6 md:px-12 lg:px-20 py-16 md:py-24 bg-[#111111] text-[#EDEEF0] border-t border-white/20 z-40 rounded-t-[28px] sm:rounded-t-[36px] shadow-[0_-38px_85px_rgba(0,0,0,0.45)]"
+        className="relative lg:sticky lg:top-0 min-h-screen w-full flex flex-col justify-center px-5 sm:px-8 md:px-12 lg:px-20 py-12 sm:py-16 lg:py-24 bg-[#111111] text-[#EDEEF0] border-t border-white/20 z-40 rounded-t-[28px] sm:rounded-t-[36px] shadow-[0_-38px_85px_rgba(0,0,0,0.45)] -mt-6 sm:-mt-8 lg:mt-0"
       >
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.15 }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, amount: 0.05 }}
+          transition={{ duration: 0.5 }}
           className="flex flex-col items-center text-center max-w-4xl mx-auto mb-12"
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-[#EDEEF0] font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] mb-4 border border-white/10">
@@ -634,12 +626,11 @@ export default function IntroductionJourney({ onNavigate }) {
           <ScrollRevealWords
             as="h3"
             delay={0.1}
-            amount={0.15}
             className="font-sans font-black text-3xl sm:text-5xl md:text-6xl uppercase tracking-tight text-white"
           >
             SIAP MELIHAT LEBIH JAUH?
           </ScrollRevealWords>
-          <ScrollRevealParagraph delay={0.25} amount={0.15}>
+          <ScrollRevealParagraph delay={0.25}>
             <p className="font-sans text-sm sm:text-base md:text-lg text-white/70 max-w-2xl mt-3">
               Setelah mengenal fondasi dan filosofi saya, telusuri karya nyata, instalasi 3D, instrumen teknologi, atau mulai diskusi proyek bersama.
             </p>
@@ -656,7 +647,6 @@ export default function IntroductionJourney({ onNavigate }) {
                 key={p.id}
                 delay={idx * 0.09}
                 rotate={cardRotate}
-                amount={0.15}
                 className="group p-6 rounded-3xl bg-[#1A1A1A] border border-white/10 hover:border-[#684AFF] hover:shadow-2xl transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
@@ -670,7 +660,6 @@ export default function IntroductionJourney({ onNavigate }) {
                   <ScrollRevealWords
                     as="h4"
                     delay={0.05 + idx * 0.08}
-                    amount={0.15}
                     className="font-sans font-black text-xl uppercase tracking-tight text-white mb-2 group-hover:text-[#684AFF] transition-colors"
                   >
                     {p.name}

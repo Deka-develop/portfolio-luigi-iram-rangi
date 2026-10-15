@@ -421,7 +421,7 @@ export default function Projects() {
   };
 
   return (
-    <section className="w-full min-h-screen bg-[#07080B] text-white pt-24 md:pt-32 pb-20 px-4 sm:px-8 lg:px-14 flex flex-col justify-center relative overflow-hidden select-none border-y border-white/10">
+    <section className="w-full min-h-screen bg-[#07080B] text-white pt-24 md:pt-32 pb-20 px-4 sm:px-8 lg:px-14 flex flex-col justify-center relative overflow-hidden border-y border-white/10">
       
       {/* ───────────────── 1. AMBIENT DYNAMIC ATMOSPHERE ───────────────── */}
       <div
@@ -988,7 +988,7 @@ export default function Projects() {
                       </p>
                     </div>
 
-                    <p className="text-xs sm:text-sm text-white/80 font-normal leading-relaxed line-clamp-2 sm:line-clamp-3">
+                    <p className="text-xs sm:text-sm text-white/80 font-normal leading-relaxed line-clamp-4 sm:line-clamp-none">
                       {activeProject.description}
                     </p>
 
