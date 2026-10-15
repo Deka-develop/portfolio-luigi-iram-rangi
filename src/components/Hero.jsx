@@ -98,9 +98,9 @@ export default function Hero({ setActiveSection, onNavigateToProjects, onNavigat
 
         {/* Narrative & Action Callouts */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.7 }}
+          initial={{ opacity: 0, y: 20, filter: 'blur(5px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ delay: 0.5, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="w-full max-w-2xl text-center mt-6 md:mt-8 flex flex-col items-center gap-5"
         >
           <p className="font-sans text-sm sm:text-base md:text-lg text-[#111111]/60 leading-relaxed max-w-xl font-normal">
