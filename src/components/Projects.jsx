@@ -452,9 +452,9 @@ export default function Projects() {
               </span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-sans font-black text-white tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-sans font-black text-white tracking-tight leading-tight">
               Karya Unggulan &amp; Solusi Produksi<span className="text-[#684AFF]">.</span>
-            </h2>
+            </h1>
             <p className="text-white/60 font-sans text-xs sm:text-sm max-w-2xl mt-2 leading-relaxed">
               Arsip sistem perangkat lunak mandiri, platform media berskala nasional, digital marketplace etnik, dan portal riset konservasi yang dibangun dengan standar performa nir-beban.
             </p>
