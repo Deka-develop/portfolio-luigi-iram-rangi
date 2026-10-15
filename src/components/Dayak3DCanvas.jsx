@@ -247,30 +247,6 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
     innerCore.position.z = 0.03;
     taliNyawaGroup.add(innerCore);
 
-    // --- C. SACRED AMBIENT ORBITAL GYRO RING (Framing the flower from behind) ---
-    const ring2Geo = new THREE.TorusGeometry(1.22, 0.01, 16, 80);
-    const ring2Mat = new THREE.MeshStandardMaterial({
-      color: 0x684aff,
-      emissive: 0x311080,
-      emissiveIntensity: 0.3,
-      metalness: 0.95,
-      roughness: 0.15
-    });
-    const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
-    ring2.position.z = -0.05;
-    ring2.rotation.x = Math.PI / 4;
-    ring2.rotation.y = Math.PI / 6;
-    mainGroup.add(ring2);
-
-    // 4 Diamond Jewel Nodes on Outer Ring
-    const nodeGeo = new THREE.OctahedronGeometry(0.04, 0);
-    const nodeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    for (let k = 0; k < 4; k++) {
-      const angle = (k * Math.PI * 2) / 4;
-      const node = new THREE.Mesh(nodeGeo, nodeMat);
-      node.position.set(Math.cos(angle) * 1.24, Math.sin(angle) * 1.24, 0);
-      ring2.add(node);
-    }
 
     // --- D. AMBIENT SACRED STARDUST SPARK PARTICLES ---
     const particleCount = 75;
@@ -305,8 +281,6 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
       innerMat,
       ring1: centerRing,
       ring1Mat,
-      ring2,
-      ring2Mat,
       particles,
       particleMat,
       solidMat,
@@ -430,10 +404,8 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
         // Central Tali Nyawa spiral revolving in counter-harmony
         taliNyawaGroup.rotation.z -= 0.35 * speedFactor * delta;
 
-        // Kinetic orbital ring gyroscopic motion
+        // Center ring rotation
         centerRing.rotation.z += 0.3 * speedFactor * delta;
-        ring2.rotation.x -= 0.35 * speedFactor * delta;
-        ring2.rotation.y += 0.25 * speedFactor * delta;
 
         // Ambient sparks
         particles.rotation.y += 0.12 * speedFactor * delta;
@@ -486,19 +458,16 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
     if (themeColor === 'violet') {
       o.wireMat.color.setHex(0x684aff);
       o.ring1Mat?.color.setHex(0xd97706);
-      o.ring2Mat?.color.setHex(0x684aff);
       o.particleMat?.color.setHex(0x684aff);
       o.innerMat?.color.setHex(0xd97706);
     } else if (themeColor === 'gold') {
       o.wireMat.color.setHex(0xd97706);
       o.ring1Mat?.color.setHex(0x684aff);
-      o.ring2Mat?.color.setHex(0xd97706);
       o.particleMat?.color.setHex(0xd97706);
       o.innerMat?.color.setHex(0x684aff);
     } else if (themeColor === 'emerald') {
       o.wireMat.color.setHex(0x10b981);
       o.ring1Mat?.color.setHex(0xd97706);
-      o.ring2Mat?.color.setHex(0x10b981);
       o.particleMat?.color.setHex(0x10b981);
       o.innerMat?.color.setHex(0xd97706);
     }
@@ -520,7 +489,7 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
         className="w-full h-full min-h-[210px] sm:min-h-[240px] md:min-h-[265px] cursor-grab active:cursor-grabbing relative z-10"
       >
         <span className="sr-only">
-          Model 3D interaktif Bunga Terong Dayak (Bungai Terung) kontemporer bertenaga WebGL Three.js. Menampilkan 8 kelopak ukir sakral, pusaran Tali Nyawa di titik tengah, dan cincin kinetik orbital.
+          Model 3D interaktif Bunga Terong Dayak (Bungai Terung) kontemporer bertenaga WebGL Three.js. Menampilkan 8 kelopak ukir sakral dan pusaran Tali Nyawa di titik tengah.
         </span>
       </section>
 
