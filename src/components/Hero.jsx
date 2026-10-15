@@ -71,19 +71,19 @@ export default function Hero({ setActiveSection, onNavigateToProjects, onNavigat
             <span className="text-[#111111]/20">.</span>
           </motion.h1>
 
-          {/* Dedicated 3D Spatial Gyroscope Stage (Zero Collision / Breathing Room) */}
+          {/* Dedicated 3D Spatial Bunga Terong Dayak Stage (Zero Collision / Breathing Room) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.35, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full max-w-[420px] sm:max-w-[460px] h-[180px] sm:h-[205px] md:h-[225px] relative my-1 sm:my-2 flex items-center justify-center"
+            className="w-full max-w-[480px] sm:max-w-[540px] h-[210px] sm:h-[240px] md:h-[265px] relative my-1 sm:my-2 flex items-center justify-center"
           >
             <Suspense
               fallback={
                 <div className="w-full h-full flex flex-col items-center justify-center text-center">
-                  <DayakShieldEmblem className="w-7 h-7 text-[#684AFF] animate-pulse mb-1.5" color="#684AFF" />
+                  <DayakShieldEmblem className="w-8 h-8 text-[#684AFF] animate-pulse mb-1.5" color="#684AFF" />
                   <span className="font-mono text-[9px] uppercase tracking-widest text-[#111111]/40">
-                    Initializing 3D Engine...
+                    Memuat 3D Bunga Terong Dayak...
                   </span>
                 </div>
               }

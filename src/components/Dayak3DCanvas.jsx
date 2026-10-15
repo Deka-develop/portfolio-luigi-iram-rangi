@@ -35,12 +35,12 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
     const width = container.clientWidth || 600;
     const height = container.clientHeight || 500;
 
-    // 1. Scene & Camera with spatial perspective
+    // 1. Scene & Camera with spatial perspective (Bigger, heroic presence)
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-    camera.position.set(0, 0, 4.6);
+    camera.position.set(0, 0, 3.4);
 
     // 2. WebGL Renderer with Alpha & Tone Mapping
     let renderer;
@@ -53,7 +53,7 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.25;
+      renderer.toneMappingExposure = 1.35;
       container.appendChild(renderer.domElement);
       rendererRef.current = renderer;
     } catch (e) {
@@ -62,104 +62,177 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
     }
 
     // 3. Dynamic Studio Lighting (Electric Violet + Amber Gold Specular)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
     scene.add(ambientLight);
 
-    const dirLightViolet = new THREE.DirectionalLight(0x684aff, 3.5);
+    const dirLightViolet = new THREE.DirectionalLight(0x684aff, 3.8);
     dirLightViolet.position.set(4, 5, 4);
     scene.add(dirLightViolet);
 
-    const dirLightAmber = new THREE.DirectionalLight(0xd97706, 2.8);
-    dirLightAmber.position.set(-4, -3, -2);
+    const dirLightAmber = new THREE.DirectionalLight(0xd97706, 3.2);
+    dirLightAmber.position.set(-4, -3, 3);
     scene.add(dirLightAmber);
 
-    const pointLight = new THREE.PointLight(0xffffff, 2.0, 15);
-    pointLight.position.set(0, 0, 3);
+    const pointLight = new THREE.PointLight(0x684aff, 2.5, 12);
+    pointLight.position.set(0, 0, 2.5);
     scene.add(pointLight);
 
-    // 4. Kinetic Kinetic Hierarchy
+    // 4. Bunga Terong Dayak (Bungai Terung) Kinetic Masterpiece Hierarchy
     const mainGroup = new THREE.Group();
+    // Initial 3D isometric tilt to reveal relief depth and woodcarving facets
+    mainGroup.rotation.x = 0.22;
+    mainGroup.rotation.y = -0.18;
     scene.add(mainGroup);
 
-    // Central Elongated Dayak Diamond Shield Core (Compact elegance, non-overlapping)
-    const shieldGeo = new THREE.OctahedronGeometry(0.55, 0);
-    shieldGeo.scale(0.72, 1.25, 0.72);
+    // --- A. THE 8 SACRED PETALS (KELOPAK BUNGA TERONG) ---
+    const petalsGroup = new THREE.Group();
+    mainGroup.add(petalsGroup);
+
+    // Parametric Dayak Petal Shape (Curved arc hook with carved belly)
+    const petalShape = new THREE.Shape();
+    petalShape.moveTo(0.18, 0.0);
+    petalShape.bezierCurveTo(0.28, 0.14, 0.58, 0.24, 0.88, 0.16);
+    petalShape.bezierCurveTo(0.98, 0.11, 1.02, -0.04, 0.90, -0.14);
+    petalShape.bezierCurveTo(0.68, -0.22, 0.40, -0.14, 0.18, 0.0);
+
+    const extrudeSettings = {
+      depth: 0.065,
+      bevelEnabled: true,
+      bevelSegments: 3,
+      steps: 1,
+      bevelSize: 0.018,
+      bevelThickness: 0.018
+    };
+
+    const petalGeo = new THREE.ExtrudeGeometry(petalShape, extrudeSettings);
+    petalGeo.center();
 
     const solidMat = new THREE.MeshStandardMaterial({
-      color: 0x111111,
-      metalness: 0.9,
-      roughness: 0.18,
+      color: 0x141416,
+      metalness: 0.88,
+      roughness: 0.22,
       flatShading: true
     });
-    const shieldMesh = new THREE.Mesh(shieldGeo, solidMat);
-    mainGroup.add(shieldMesh);
 
-    // Dynamic Edge Wireframe
-    const wireGeo = new THREE.WireframeGeometry(shieldGeo);
     const wireMat = new THREE.LineBasicMaterial({
       color: 0x684aff,
       linewidth: 2,
       transparent: true,
       opacity: 0.95
     });
-    const wireLines = new THREE.LineSegments(wireGeo, wireMat);
-    mainGroup.add(wireLines);
 
-    // Counter-rotating Inner Core
-    const innerGeo = new THREE.OctahedronGeometry(0.24, 0);
-    innerGeo.scale(0.72, 1.15, 0.72);
-    const innerMat = new THREE.MeshBasicMaterial({
-      color: 0xd97706,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.9
-    });
-    const innerCore = new THREE.Mesh(innerGeo, innerMat);
-    mainGroup.add(innerCore);
+    const wireGeo = new THREE.WireframeGeometry(petalGeo);
+    const wireLinesGroup = new THREE.Group();
+    petalsGroup.add(wireLinesGroup);
 
-    // Orbital Ring 1 (Electric Violet Equatorial Ring - Compact)
-    const ring1Geo = new THREE.TorusGeometry(0.98, 0.016, 16, 80);
-    const ring1Mat = new THREE.MeshStandardMaterial({
+    // Instantiate 8 symmetrical petals radiating at 45-degree intervals
+    const petalCount = 8;
+    for (let i = 0; i < petalCount; i++) {
+      const angle = (i * Math.PI * 2) / petalCount;
+      
+      const petalMesh = new THREE.Mesh(petalGeo, solidMat);
+      petalMesh.rotation.z = angle;
+      petalMesh.position.x = Math.cos(angle) * 0.48;
+      petalMesh.position.y = Math.sin(angle) * 0.48;
+      // Slight outward dish curvature for 3D bloom depth
+      petalMesh.rotation.x = Math.sin(angle) * 0.06;
+      petalMesh.rotation.y = -Math.cos(angle) * 0.06;
+      petalsGroup.add(petalMesh);
+
+      const petalWire = new THREE.LineSegments(wireGeo, wireMat);
+      petalWire.rotation.z = angle;
+      petalWire.position.copy(petalMesh.position);
+      petalWire.rotation.x = petalMesh.rotation.x;
+      petalWire.rotation.y = petalMesh.rotation.y;
+      wireLinesGroup.add(petalWire);
+    }
+
+    // --- B. CENTRAL SACRED SPIRAL (TALI NYAWA - PUSARAN HIDUP) ---
+    const taliNyawaGroup = new THREE.Group();
+    mainGroup.add(taliNyawaGroup);
+
+    // Parametric 3D Archimedean logarithmic spiral tube
+    const spiralPoints = [];
+    const spiralTurns = 2.4;
+    const spiralSegments = 70;
+    for (let j = 0; j <= spiralSegments; j++) {
+      const t = j / spiralSegments;
+      const angle = t * Math.PI * 2 * spiralTurns;
+      const r = 0.035 + 0.25 * Math.pow(t, 0.88);
+      const x = Math.cos(angle) * r;
+      const y = Math.sin(angle) * r;
+      const z = 0.08 * (1.0 - t * 0.7); // Forward dome elevation
+      spiralPoints.push(new THREE.Vector3(x, y, z));
+    }
+    const spiralCurve = new THREE.CatmullRomCurve3(spiralPoints);
+    const spiralGeo = new THREE.TubeGeometry(spiralCurve, 64, 0.02, 12, false);
+
+    const taliNyawaMat = new THREE.MeshStandardMaterial({
       color: 0x684aff,
-      metalness: 0.95,
-      roughness: 0.15,
       emissive: 0x3b1c9c,
-      emissiveIntensity: 0.35
+      emissiveIntensity: 0.45,
+      metalness: 0.92,
+      roughness: 0.16
+    });
+    const taliNyawaMesh = new THREE.Mesh(spiralGeo, taliNyawaMat);
+    taliNyawaGroup.add(taliNyawaMesh);
+
+    // Center Core Seed Gem (Point of origin / Titik Pusaran)
+    const coreGeo = new THREE.OctahedronGeometry(0.08, 0);
+    const innerMat = new THREE.MeshStandardMaterial({
+      color: 0xd97706,
+      emissive: 0xb45309,
+      emissiveIntensity: 0.6,
+      metalness: 0.95,
+      roughness: 0.1
+    });
+    const innerCore = new THREE.Mesh(coreGeo, innerMat);
+    innerCore.position.z = 0.09;
+    taliNyawaGroup.add(innerCore);
+
+    // --- C. SACRED CONCENTRIC RINGS (TITI DAUN & LINGKAR KINETIK) ---
+    // Inner Binding Ring (holding the petal roots)
+    const ring1Geo = new THREE.TorusGeometry(0.36, 0.016, 16, 64);
+    const ring1Mat = new THREE.MeshStandardMaterial({
+      color: 0xd97706,
+      emissive: 0x78350f,
+      emissiveIntensity: 0.35,
+      metalness: 0.9,
+      roughness: 0.2
     });
     const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
-    ring1.rotation.x = Math.PI / 3;
+    ring1.position.z = 0.04;
     mainGroup.add(ring1);
 
-    // Orbital Ring 2 (Golden Meridian Ring with jewel nodes - Compact)
-    const ring2Geo = new THREE.TorusGeometry(1.16, 0.014, 16, 80);
+    // Outer Gyro Cultural Ring (Cyber kinetic ring tilted at 25°)
+    const ring2Geo = new THREE.TorusGeometry(1.18, 0.014, 16, 80);
     const ring2Mat = new THREE.MeshStandardMaterial({
-      color: 0xd97706,
-      metalness: 0.9,
-      roughness: 0.2,
-      emissive: 0x78350f,
-      emissiveIntensity: 0.25
+      color: 0x684aff,
+      emissive: 0x311080,
+      emissiveIntensity: 0.3,
+      metalness: 0.95,
+      roughness: 0.15
     });
     const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
-    ring2.rotation.y = Math.PI / 4;
-    ring2.rotation.z = Math.PI / 6;
+    ring2.rotation.x = Math.PI / 4;
+    ring2.rotation.y = Math.PI / 6;
     mainGroup.add(ring2);
 
-    // 4 Jewel Nodes on Ring 2
-    const nodeGeo = new THREE.OctahedronGeometry(0.05, 0);
+    // 4 Diamond Jewel Nodes on Outer Ring
+    const nodeGeo = new THREE.OctahedronGeometry(0.045, 0);
     const nodeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    const nodeCount = 4;
-    for (let i = 0; i < nodeCount; i++) {
-      const angle = (i * Math.PI * 2) / nodeCount;
+    for (let k = 0; k < 4; k++) {
+      const angle = (k * Math.PI * 2) / 4;
       const node = new THREE.Mesh(nodeGeo, nodeMat);
-      node.position.set(Math.cos(angle) * 1.16, Math.sin(angle) * 1.16, 0);
+      node.position.set(Math.cos(angle) * 1.18, Math.sin(angle) * 1.18, 0);
       ring2.add(node);
     }
 
-    // Outer Ambient Floating Stardust Particles
-    const particleCount = 70;
+    // --- D. AMBIENT SACRED STARDUST SPARK PARTICLES ---
+    const particleCount = 75;
     const particlePositions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
-      const radius = 1.2 + Math.random() * 0.7;
+      const radius = 1.15 + Math.random() * 0.65;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random() * 2 - 1);
       particlePositions[i] = radius * Math.sin(phi) * Math.cos(theta);
@@ -170,17 +243,19 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
     const particleMat = new THREE.PointsMaterial({
       color: 0x684aff,
-      size: 0.03,
+      size: 0.028,
       transparent: true,
-      opacity: 0.8
+      opacity: 0.85
     });
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
     objectsRef.current = {
       mainGroup,
-      shieldMesh,
-      wireLines,
+      petalsGroup,
+      taliNyawaGroup,
+      taliNyawaMat,
+      wireLinesGroup,
       wireMat,
       innerCore,
       innerMat,
@@ -298,14 +373,25 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
       if (speedRef.current === 'fast') speedFactor = 2.4;
       if (speedRef.current === 'pause') speedFactor = 0.0;
 
-      // Continuous Idle Kinetic Rotation
+      // Continuous Idle Kinetic Rotation of Bunga Terong Dayak
       if (speedFactor > 0) {
-        mainGroup.rotation.y += 0.45 * speedFactor * delta;
-        innerCore.rotation.y -= 0.85 * speedFactor * delta;
-        innerCore.rotation.x += 0.35 * speedFactor * delta;
-        ring1.rotation.z += 0.6 * speedFactor * delta;
-        ring2.rotation.x -= 0.4 * speedFactor * delta;
-        particles.rotation.y += 0.15 * speedFactor * delta;
+        // Slow continuous yaw and gentle breathing pitch tilt
+        mainGroup.rotation.y += 0.22 * speedFactor * delta;
+        mainGroup.rotation.x = 0.22 + Math.sin(currentTime * 0.0012) * 0.06;
+
+        // Sacred 8 petals revolving gracefully
+        petalsGroup.rotation.z += 0.3 * speedFactor * delta;
+
+        // Central Tali Nyawa spiral revolving in counter-harmony
+        taliNyawaGroup.rotation.z -= 0.45 * speedFactor * delta;
+
+        // Kinetic orbital ring gyroscopic motion
+        ring1.rotation.z += 0.4 * speedFactor * delta;
+        ring2.rotation.x -= 0.35 * speedFactor * delta;
+        ring2.rotation.y += 0.25 * speedFactor * delta;
+
+        // Ambient sparks
+        particles.rotation.y += 0.12 * speedFactor * delta;
       }
 
       // Drag Inertia Damping
@@ -324,7 +410,7 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
       camera.lookAt(0, 0, 0);
 
       // Wireframe Mode Sync
-      shieldMesh.visible = !wireframeRef.current;
+      solidMat.wireframe = wireframeRef.current;
 
       renderer.render(scene, camera);
     };
@@ -350,21 +436,30 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
   // Theme Color Switcher
   useEffect(() => {
     const o = objectsRef.current;
-    if (!o.wireMat) return;
+    if (!o.wireMat || !o.taliNyawaMat) return;
 
     if (themeColor === 'violet') {
       o.wireMat.color.setHex(0x684aff);
-      o.ring1Mat.color.setHex(0x684aff);
+      o.taliNyawaMat.color.setHex(0x684aff);
+      o.taliNyawaMat.emissive.setHex(0x3b1c9c);
+      o.ring1Mat.color.setHex(0xd97706);
+      o.ring2Mat.color.setHex(0x684aff);
       o.particleMat.color.setHex(0x684aff);
       o.innerMat.color.setHex(0xd97706);
     } else if (themeColor === 'gold') {
       o.wireMat.color.setHex(0xd97706);
-      o.ring1Mat.color.setHex(0xd97706);
+      o.taliNyawaMat.color.setHex(0xd97706);
+      o.taliNyawaMat.emissive.setHex(0x78350f);
+      o.ring1Mat.color.setHex(0x684aff);
+      o.ring2Mat.color.setHex(0xd97706);
       o.particleMat.color.setHex(0xd97706);
       o.innerMat.color.setHex(0x684aff);
     } else if (themeColor === 'emerald') {
       o.wireMat.color.setHex(0x10b981);
-      o.ring1Mat.color.setHex(0x10b981);
+      o.taliNyawaMat.color.setHex(0x10b981);
+      o.taliNyawaMat.emissive.setHex(0x064e3b);
+      o.ring1Mat.color.setHex(0xd97706);
+      o.ring2Mat.color.setHex(0x10b981);
       o.particleMat.color.setHex(0x10b981);
       o.innerMat.color.setHex(0xd97706);
     }
@@ -372,7 +467,7 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
 
   const resetView = () => {
     if (objectsRef.current.mainGroup) {
-      objectsRef.current.mainGroup.rotation.set(0, 0, 0);
+      objectsRef.current.mainGroup.rotation.set(0.22, -0.18, 0);
     }
     mouseRef.current = { x: 0, y: 0, targetX: 0, targetY: 0 };
   };
@@ -382,11 +477,11 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
       {/* Three.js Canvas Container */}
       <section
         ref={mountRef}
-        aria-label="Kanvas Interaktif 3D Perisai Dayak Talawang"
-        className="w-full h-full min-h-[190px] sm:min-h-[210px] md:min-h-[230px] cursor-grab active:cursor-grabbing relative z-10"
+        aria-label="Kanvas Interaktif 3D Bunga Terong Dayak (Bungai Terung)"
+        className="w-full h-full min-h-[210px] sm:min-h-[240px] md:min-h-[265px] cursor-grab active:cursor-grabbing relative z-10"
       >
         <span className="sr-only">
-          Model 3D interaktif Perisai Dayak kontemporer bertenaga WebGL Three.js. Anda dapat menggunakan tombol kontrol di bawah untuk mengatur mode tampilan, palet warna, dan kecepatan rotasi.
+          Model 3D interaktif Bunga Terong Dayak (Bungai Terung) kontemporer bertenaga WebGL Three.js. Menampilkan 8 kelopak ukir sakral, pusaran Tali Nyawa di titik tengah, dan cincin kinetik orbital.
         </span>
       </section>
 
