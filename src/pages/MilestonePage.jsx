@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowUpRight, ChevronRight, Home } from 'lucide-react';
 import { DayakShieldEmblem } from '../components/DayakMotifs';
-import { BungaTerong3D, CyberMandau3D, BatangGaring3D, TalawangShield3D } from '../components/Dayak3DCanvas';
+import { BungaTerong3D, CyberMandau3D, RumahBetang3D, TalawangShield3D } from '../components/Dayak3DCanvas';
 
 const milestones = [
   {
@@ -34,11 +34,11 @@ const milestones = [
     year: '2025',
     title: 'Regional Impact Ecosystem',
     subtitle: 'Borneo Globe Active Hub (borneoglobe.org)',
-    modelName: '3D Batang Garing Tree of Life',
+    modelName: '3D Rumah Betang Dayak',
     description:
       'Memimpin rekayasa platform resmi Borneo Globe. Menghubungkan inisiatif konservasi hutan hujan tropis Borneo, riset ilmiah, dan pemberdayaan komunitas lokal dengan jaringan mitra global berkelanjutan.',
-    badges: ['3D Batang Garing Tree', 'borneoglobe.org Platform', '2,800+ Penerima Manfaat', 'Global Research Partners'],
-    ThreeComponent: BatangGaring3D,
+    badges: ['3D Rumah Betang Dayak', 'borneoglobe.org Platform', '2,800+ Penerima Manfaat', 'Global Research Partners'],
+    ThreeComponent: RumahBetang3D,
     accent: '#10B981'
   },
   {

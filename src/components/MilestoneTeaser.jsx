@@ -160,7 +160,7 @@ export default function MilestoneTeaser({ onNavigateToMilestone }) {
             </h3>
 
             <p className="text-white/60 text-xs sm:text-sm md:text-base max-w-2xl leading-relaxed font-normal">
-              Rasakan pengalaman navigasi spasial mandiri dengan 4 model 3D pusaka digital Dayak interaktif (Bunga Terong Spasial, Cyber Mandau Blade, Batang Garing Tree of Life, dan Talawang Sacred Shield), rekam jejak benchmark, serta arsitektur komputasi budaya Dayak.
+              Rasakan pengalaman navigasi spasial mandiri dengan 4 model 3D pusaka digital Dayak interaktif (Bunga Terong Spasial, Cyber Mandau Blade, Rumah Betang Dayak, dan Talawang Sacred Shield), rekam jejak benchmark, serta arsitektur komputasi budaya Dayak.
             </p>
           </div>
 

@@ -68,7 +68,7 @@ function App() {
     const metaDescriptions = {
       home: 'Portofolio Luigi Iram Rangi — Founder of Ddev (Dayak Developer) & Creative Developer, merancang arsitektur web modern, WebGL 3D, platform interaktif, dan sistem digital berkinerja tinggi dari Kalimantan Barat.',
       karya: 'Portfolio — Luigi Iram Rangi | Founder of Ddev. Eksplorasi 8 proyek web produksi, arsitektur headless, dan studi kasus sistem skala regional & internasional.',
-      'milestone-3d': 'Pusaka Spasial & Rekam Jejak — Luigi Iram Rangi | Founder of Ddev. Arsip eksklusif 4 model 3D pusaka digital Dayak (Talawang, Cyber Mandau, Bunga Terong, Batang Garing), visualisasi WebGL spasial, dan tolok ukur rekayasa berkinerja tinggi.',
+      'milestone-3d': 'Pusaka Spasial & Rekam Jejak — Luigi Iram Rangi | Founder of Ddev. Arsip eksklusif 4 model 3D pusaka digital Dayak (Talawang, Cyber Mandau, Bunga Terong, Rumah Betang), visualisasi WebGL spasial, dan tolok ukur rekayasa berkinerja tinggi.',
       kapabilitas: 'Kapabilitas & Cyber Arcade — Luigi Iram Rangi | Founder of Ddev. Spesifikasi arsitektur performa tinggi, skor Google PageSpeed 100/100, dan simulator interaktif Cyber Arcade.',
       kontak: 'Kontak & Konsultasi — Luigi Iram Rangi | Founder of Ddev. Diskusikan arsitektur sistem baru, optimasi web vitals, atau kemitraan digital strategis.'
     };

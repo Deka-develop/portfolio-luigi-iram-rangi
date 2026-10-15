@@ -917,8 +917,8 @@ export function CyberMandau3D({ className = '' }) {
   return <div ref={mountRef} className={`w-full h-full min-h-[260px] ${className}`} />;
 }
 
-// 3. Era 2025: 3D Batang Garing Tree of Life (Borneo Globe Platform)
-export function BatangGaring3D({ className = '' }) {
+// 3. Era 2025: 3D Rumah Betang Dayak Spasial (Borneo Globe Platform)
+export function RumahBetang3D({ className = '' }) {
   const mountRef = useRef(null);
 
   useEffect(() => {
@@ -930,7 +930,8 @@ export function BatangGaring3D({ className = '' }) {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 4.0);
+    camera.position.set(2.8, 1.8, 3.4);
+    camera.lookAt(0, 0, 0);
 
     let renderer;
     try {
@@ -945,104 +946,199 @@ export function BatangGaring3D({ className = '' }) {
     const group = new THREE.Group();
     scene.add(group);
 
-    // Sacred Pillar Trunk (Batang Pohon Hayat Kristal)
-    const trunkGeo = new THREE.CylinderGeometry(0.12, 0.22, 2.3, 8);
-    const trunkMat = new THREE.MeshStandardMaterial({
-      color: 0x052e16,
+    // ── 1. TIANG PANGGUNG KAYU ULIN (10 STILT PILLARS) ──
+    const pillarsGroup = new THREE.Group();
+    const pillarGeo = new THREE.CylinderGeometry(0.04, 0.05, 0.85, 10);
+    const pillarMat = new THREE.MeshStandardMaterial({
+      color: 0x181310,
+      metalness: 0.8,
+      roughness: 0.3
+    });
+    const pillarWireGeo = new THREE.WireframeGeometry(pillarGeo);
+    const pillarWireMat = new THREE.LineBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.5 });
+
+    const xOffsets = [-1.1, -0.55, 0, 0.55, 1.1];
+    const zOffsets = [-0.42, 0.42];
+
+    xOffsets.forEach((x) => {
+      zOffsets.forEach((z) => {
+        const pillar = new THREE.Mesh(pillarGeo, pillarMat);
+        pillar.position.set(x, -0.85, z);
+        const wire = new THREE.LineSegments(pillarWireGeo, pillarWireMat);
+        pillar.add(wire);
+        pillarsGroup.add(pillar);
+      });
+    });
+    group.add(pillarsGroup);
+
+    // ── 2. GELAGAR PENYANGGA & LANTAI PANGGUNG SELASAR (ELEVATED DECK) ──
+    const deckGeo = new THREE.BoxGeometry(2.9, 0.07, 1.25);
+    const deckMat = new THREE.MeshStandardMaterial({
+      color: 0x1f1915,
+      metalness: 0.85,
+      roughness: 0.25
+    });
+    const deckMesh = new THREE.Mesh(deckGeo, deckMat);
+    deckMesh.position.y = -0.42;
+    group.add(deckMesh);
+
+    // Pagar Selasar Teras Depan (Veranda Railing)
+    const railGroup = new THREE.Group();
+    const railGeo = new THREE.BoxGeometry(2.7, 0.03, 0.03);
+    const railMat = new THREE.MeshBasicMaterial({ color: 0xd97706 });
+    const topRail = new THREE.Mesh(railGeo, railMat);
+    topRail.position.set(0, -0.22, 0.55);
+    railGroup.add(topRail);
+
+    // Baluster posts
+    const balusterGeo = new THREE.CylinderGeometry(0.015, 0.015, 0.18, 6);
+    const balusterMat = new THREE.MeshBasicMaterial({ color: 0x10b981 });
+    for (let i = -1.2; i <= 1.2; i += 0.3) {
+      const baluster = new THREE.Mesh(balusterGeo, balusterMat);
+      baluster.position.set(i, -0.31, 0.55);
+      railGroup.add(baluster);
+    }
+    group.add(railGroup);
+
+    // ── 3. BADAN UTAMA RUMAH PANJANG (MAIN CHAMBERS & WALLS) ──
+    const bodyGeo = new THREE.BoxGeometry(2.7, 0.65, 0.88);
+    const bodyMat = new THREE.MeshStandardMaterial({
+      color: 0x121016,
       metalness: 0.9,
       roughness: 0.2,
       flatShading: true
     });
-    const trunkMesh = new THREE.Mesh(trunkGeo, trunkMat);
-    group.add(trunkMesh);
+    const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+    bodyMesh.position.set(0, -0.07, -0.06);
+    group.add(bodyMesh);
 
-    const trunkWireGeo = new THREE.WireframeGeometry(trunkGeo);
-    const trunkWireMat = new THREE.LineBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.7 });
-    const trunkWire = new THREE.LineSegments(trunkWireGeo, trunkWireMat);
-    trunkMesh.add(trunkWire);
-
-    // 3 Tiers of Symmetrical Upward Horn Branches (Dahan Kosmis Batang Garing)
-    const branchesGroup = new THREE.Group();
-    const branchConfigs = [
-      { y: -0.3, r: 0.75, color: 0x10b981 },
-      { y: 0.25, r: 0.6, color: 0xd97706 },
-      { y: 0.75, r: 0.45, color: 0x38bdf8 }
-    ];
-
-    const branchGeos = [];
-    const branchMats = [];
-
-    branchConfigs.forEach((cfg) => {
-      const bGeo = new THREE.TorusGeometry(cfg.r, 0.022, 8, 24, Math.PI * 0.75);
-      const bMat = new THREE.MeshBasicMaterial({ color: cfg.color });
-      branchGeos.push(bGeo);
-      branchMats.push(bMat);
-
-      // Left branch
-      const bLeft = new THREE.Mesh(bGeo, bMat);
-      bLeft.position.set(-cfg.r * 0.65, cfg.y, 0);
-      bLeft.rotation.z = Math.PI * 0.15;
-      branchesGroup.add(bLeft);
-
-      // Right branch (mirrored)
-      const bRight = new THREE.Mesh(bGeo, bMat);
-      bRight.position.set(cfg.r * 0.65, cfg.y, 0);
-      bRight.rotation.z = Math.PI * 0.6;
-      branchesGroup.add(bRight);
+    // 5 Jendela/Bilik Bercahaya Kehidupan (Warm Glowing Community Windows)
+    const windowsGroup = new THREE.Group();
+    const winGeo = new THREE.PlaneGeometry(0.18, 0.22);
+    const winMat = new THREE.MeshBasicMaterial({
+      color: 0x10b981,
+      transparent: true,
+      opacity: 0.85,
+      side: THREE.DoubleSide
     });
-    group.add(branchesGroup);
+    const winAmberMat = new THREE.MeshBasicMaterial({
+      color: 0xd97706,
+      transparent: true,
+      opacity: 0.9,
+      side: THREE.DoubleSide
+    });
 
-    // Canopy Biosphere Particles (Awan Kanopi Hujan Tropis Borneo)
-    const pCount = 120;
+    const winX = [-0.95, -0.48, 0, 0.48, 0.95];
+    winX.forEach((x, idx) => {
+      const winMesh = new THREE.Mesh(winGeo, idx % 2 === 0 ? winMat : winAmberMat);
+      winMesh.position.set(x, -0.07, 0.39);
+      windowsGroup.add(winMesh);
+    });
+    group.add(windowsGroup);
+
+    // ── 4. ATAP PELANA KHAS RUMAH BETANG (ICONIC GABLE ROOF) ──
+    // Atap bersudut curam dengan bubungan membumbung
+    const roofShape = new THREE.Shape();
+    roofShape.moveTo(-0.65, 0); // eave front
+    roofShape.lineTo(0, 0.88); // ridge peak
+    roofShape.lineTo(0.65, 0); // eave back
+    roofShape.lineTo(0.58, -0.03);
+    roofShape.lineTo(0, 0.8); // inner gable
+    roofShape.lineTo(-0.58, -0.03);
+    roofShape.closePath();
+
+    const roofGeo = new THREE.ExtrudeGeometry(roofShape, {
+      depth: 3.1,
+      bevelEnabled: true,
+      bevelSegments: 2,
+      steps: 1,
+      bevelSize: 0.02,
+      bevelThickness: 0.02
+    });
+    roofGeo.center();
+
+    const roofMat = new THREE.MeshStandardMaterial({
+      color: 0x0f1515,
+      metalness: 0.92,
+      roughness: 0.18,
+      flatShading: true
+    });
+    const roofMesh = new THREE.Mesh(roofGeo, roofMat);
+    roofMesh.rotation.y = Math.PI / 2;
+    roofMesh.position.set(0, 0.65, -0.06);
+    group.add(roofMesh);
+
+    // Luminous Emerald Roof Shingle Edges
+    const roofEdges = new THREE.EdgesGeometry(roofGeo);
+    const roofEdgesMat = new THREE.LineBasicMaterial({ color: 0x10b981, linewidth: 2, transparent: true, opacity: 0.85 });
+    const wireRoof = new THREE.LineSegments(roofEdges, roofEdgesMat);
+    roofMesh.add(wireRoof);
+
+    // ── 5. TANDUK BUBUNGAN DAYAK / ORNAMEN BURUNG ENGGANG (GABLE HORNS) ──
+    const hornsGroup = new THREE.Group();
+    const hornGeo = new THREE.TorusGeometry(0.22, 0.024, 8, 20, Math.PI * 0.85);
+    const hornMat = new THREE.MeshBasicMaterial({ color: 0xd97706 });
+
+    // Left Horn
+    const hornLeft = new THREE.Mesh(hornGeo, hornMat);
+    hornLeft.position.set(-1.54, 1.12, -0.06);
+    hornLeft.rotation.z = Math.PI * 0.25;
+    hornsGroup.add(hornLeft);
+
+    // Right Horn
+    const hornRight = new THREE.Mesh(hornGeo, hornMat);
+    hornRight.position.set(1.54, 1.12, -0.06);
+    hornRight.rotation.z = Math.PI * 0.55;
+    hornsGroup.add(hornRight);
+
+    group.add(hornsGroup);
+
+    // ── 6. TANGGA TRADISIONAL BERTANGGA (HEJAN ULIN) ──
+    const ladderGeo = new THREE.CylinderGeometry(0.03, 0.03, 0.72, 8);
+    const ladderMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.8, roughness: 0.3 });
+    const ladder = new THREE.Mesh(ladderGeo, ladderMat);
+    ladder.position.set(0, -0.65, 0.82);
+    ladder.rotation.x = -Math.PI / 4;
+    group.add(ladder);
+
+    // ── 7. PARTIKEL BIOSPFERA KUNANG-KUNANG BORNEO (RAINFOREST FIREFLIES) ──
+    const pCount = 80;
     const pGeo = new THREE.BufferGeometry();
     const pPos = new Float32Array(pCount * 3);
     for (let i = 0; i < pCount; i++) {
-      const theta = Math.random() * Math.PI * 2;
-      const rad = 0.3 + Math.random() * 0.9;
-      pPos[i * 3] = Math.cos(theta) * rad;
-      pPos[i * 3 + 1] = 0.8 + Math.random() * 0.8;
-      pPos[i * 3 + 2] = Math.sin(theta) * rad;
+      const a = Math.random() * Math.PI * 2;
+      const rad = 1.2 + Math.random() * 1.0;
+      pPos[i * 3] = Math.cos(a) * rad;
+      pPos[i * 3 + 1] = -0.4 + Math.random() * 1.6;
+      pPos[i * 3 + 2] = Math.sin(a) * rad;
     }
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-    const pMat = new THREE.PointsMaterial({ color: 0x10b981, size: 0.045, transparent: true, opacity: 0.85 });
-    const canopyCloud = new THREE.Points(pGeo, pMat);
-    group.add(canopyCloud);
+    const pMat = new THREE.PointsMaterial({ color: 0x10b981, size: 0.04, transparent: true, opacity: 0.8 });
+    const fireflies = new THREE.Points(pGeo, pMat);
+    group.add(fireflies);
 
-    // Living Globe Beacon at the Top Apex (Borneo Globe Symbol)
-    const apexGlobeGeo = new THREE.SphereGeometry(0.32, 16, 16);
-    const apexGlobeWire = new THREE.WireframeGeometry(apexGlobeGeo);
-    const apexGlobeMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.8 });
-    const apexGlobe = new THREE.LineSegments(apexGlobeWire, apexGlobeMat);
-    apexGlobe.position.y = 1.35;
-    group.add(apexGlobe);
-
-    // Golden Borneo Latitude Marker Ring
-    const eqGeo = new THREE.TorusGeometry(0.42, 0.015, 12, 32);
-    const eqMat = new THREE.MeshBasicMaterial({ color: 0xd97706 });
-    const equator = new THREE.Mesh(eqGeo, eqMat);
-    equator.position.y = 1.35;
-    equator.rotation.x = Math.PI / 2;
-    group.add(equator);
-
-    // Lighting
-    const light1 = new THREE.DirectionalLight(0x10b981, 3.5);
+    // ── 8. LIGHTING ──
+    const light1 = new THREE.DirectionalLight(0x10b981, 3.8);
     light1.position.set(3, 4, 3);
     scene.add(light1);
-    const light2 = new THREE.DirectionalLight(0xd97706, 2.5);
+    const light2 = new THREE.DirectionalLight(0xd97706, 2.8);
     light2.position.set(-3, -2, 2);
     scene.add(light2);
-    scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+    scene.add(new THREE.AmbientLight(0xffffff, 1.3));
 
     let animId;
     const animate = () => {
       animId = requestAnimationFrame(animate);
       const time = performance.now();
 
-      group.rotation.y += 0.009;
-      canopyCloud.rotation.y -= 0.005;
-      apexGlobe.rotation.y += 0.02;
-      apexGlobe.rotation.x = Math.sin(time * 0.002) * 0.2;
-      canopyCloud.scale.setScalar(1 + Math.sin(time * 0.002) * 0.06);
+      // Continuous majestic 3D rotation & floating
+      group.rotation.y += 0.0075;
+      group.position.y = Math.sin(time * 0.0016) * 0.05;
+      fireflies.rotation.y -= 0.004;
+
+      // Warm pulsing windows
+      winMat.opacity = 0.75 + Math.sin(time * 0.003) * 0.2;
+      winAmberMat.opacity = 0.8 + Math.cos(time * 0.003) * 0.18;
 
       renderer.render(scene, camera);
     };
@@ -1065,24 +1161,39 @@ export function BatangGaring3D({ className = '' }) {
         container.removeChild(renderer.domElement);
       }
       renderer.dispose();
-      trunkGeo.dispose();
-      trunkMat.dispose();
-      trunkWireGeo.dispose();
-      trunkWireMat.dispose();
-      branchGeos.forEach((g) => g.dispose());
-      branchMats.forEach((m) => m.dispose());
+      pillarGeo.dispose();
+      pillarMat.dispose();
+      pillarWireGeo.dispose();
+      pillarWireMat.dispose();
+      deckGeo.dispose();
+      deckMat.dispose();
+      railGeo.dispose();
+      railMat.dispose();
+      balusterGeo.dispose();
+      balusterMat.dispose();
+      bodyGeo.dispose();
+      bodyMat.dispose();
+      winGeo.dispose();
+      winMat.dispose();
+      winAmberMat.dispose();
+      roofGeo.dispose();
+      roofMat.dispose();
+      roofEdges.dispose();
+      roofEdgesMat.dispose();
+      hornGeo.dispose();
+      hornMat.dispose();
+      ladderGeo.dispose();
+      ladderMat.dispose();
       pGeo.dispose();
       pMat.dispose();
-      apexGlobeGeo.dispose();
-      apexGlobeWire.dispose();
-      apexGlobeMat.dispose();
-      eqGeo.dispose();
-      eqMat.dispose();
     };
   }, []);
 
   return <div ref={mountRef} className={`w-full h-full min-h-[260px] ${className}`} />;
 }
+
+// Backward compatibility alias
+export const BatangGaring3D = RumahBetang3D;
 
 // 4. Era 2026: 3D Talawang Sacred Shield (Cultural Computing Frontier)
 export function TalawangShield3D({ className = '' }) {
