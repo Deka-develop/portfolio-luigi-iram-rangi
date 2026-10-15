@@ -150,7 +150,7 @@ const portalLinks = [
     btnText: 'Buka Halaman Portfolio'
   },
   {
-    id: 'milestone-3d',
+    id: 'pusaka-spasial',
     name: 'Pusaka Spasial 3D',
     badge: 'WebGL Interactive',
     desc: 'Jelajahi linimasa evolusi pusaka digital Dayak 3D dan rekam jejak teknologi.',
