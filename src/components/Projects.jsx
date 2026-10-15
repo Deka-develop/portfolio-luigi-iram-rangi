@@ -517,10 +517,10 @@ export default function Projects() {
         </div>
 
         {/* ───────────────── 4. MOBILE TOP HORIZONTAL CAROUSEL TABS ───────────────── */}
-        <div className="flex lg:hidden flex-col gap-2 w-full">
+        <div className="flex lg:hidden flex-col gap-2.5 w-full">
           <div
             ref={tabsContainerRef}
-            className="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar"
+            className="flex items-center gap-2.5 overflow-x-auto pb-2 custom-scrollbar"
           >
             {filteredProjects.map((project, idx) => {
               const isSelected = activeProjectIdx === idx;
@@ -528,7 +528,7 @@ export default function Projects() {
                 <button
                   key={project.id}
                   onClick={() => setActiveProjectIdx(idx)}
-                  className={`shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-mono font-bold border transition-all cursor-pointer ${
+                  className={`shrink-0 flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-mono font-bold border transition-all cursor-pointer ${
                     isSelected
                       ? 'bg-white/15 text-white shadow-lg'
                       : 'bg-white/[0.03] text-white/70 hover:text-white border-white/10'
@@ -539,12 +539,12 @@ export default function Projects() {
                   }}
                 >
                   <span
-                    className="text-[11px] font-mono font-black"
+                    className="text-xs font-mono font-black"
                     style={{ color: isSelected ? project.accentColor : 'rgba(255,255,255,0.4)' }}
                   >
                     {project.num}
                   </span>
-                  <span className="whitespace-nowrap font-medium text-xs">
+                  <span className="whitespace-nowrap font-semibold text-xs sm:text-sm">
                     {project.title}
                   </span>
                 </button>
@@ -553,13 +553,13 @@ export default function Projects() {
           </div>
 
           {/* Mobile Stepper Bar */}
-          <div className="flex items-center justify-between py-1.5 px-3 text-xs font-mono bg-white/[0.02] border border-white/5 rounded-xl">
-            <div className="flex items-center gap-2 min-w-0">
+          <div className="flex items-center justify-between py-2 px-3.5 text-xs sm:text-sm font-mono bg-white/[0.02] border border-white/5 rounded-xl">
+            <div className="flex items-center gap-2.5 min-w-0">
               <span className="font-bold tracking-wider" style={{ color: activeProject.accentColor }}>
                 {activeProject.num} / {String(filteredProjects.length).padStart(2, '0')}
               </span>
               <span className="text-white/30">•</span>
-              <span className="text-white/80 font-medium truncate max-w-[200px]">
+              <span className="text-white/80 font-medium truncate max-w-[220px]">
                 {activeProject.title}
               </span>
             </div>
@@ -569,7 +569,7 @@ export default function Projects() {
                 onClick={() =>
                   setActiveProjectIdx((prev) => (prev > 0 ? prev - 1 : filteredProjects.length - 1))
                 }
-                className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all cursor-pointer"
+                className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all cursor-pointer"
                 aria-label="Proyek sebelumnya"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -578,7 +578,7 @@ export default function Projects() {
                 onClick={() =>
                   setActiveProjectIdx((prev) => (prev < filteredProjects.length - 1 ? prev + 1 : 0))
                 }
-                className="w-7 h-7 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all cursor-pointer"
+                className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all cursor-pointer"
                 aria-label="Proyek berikutnya"
               >
                 <ChevronRight className="w-4 h-4" />
@@ -591,7 +591,7 @@ export default function Projects() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start w-full">
           
           {/* LEFT COLUMN (5 Cols): Desktop Vertical Interactive System Navigator */}
-          <div className="hidden lg:flex lg:col-span-5 flex-col gap-2.5 max-h-[720px] overflow-y-auto pr-1.5 custom-scrollbar">
+          <div className="hidden lg:flex lg:col-span-5 flex-col gap-3 max-h-[780px] overflow-y-auto pr-2 custom-scrollbar">
             {filteredProjects.map((project, idx) => {
               const isSelected = activeProjectIdx === idx;
               return (
@@ -600,76 +600,76 @@ export default function Projects() {
                   key={project.id}
                   aria-label={`Pilih proyek ${project.title}`}
                   onClick={() => setActiveProjectIdx(idx)}
-                  className={`w-full text-left group relative p-4 rounded-2xl border transition-all duration-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none ${
+                  className={`w-full text-left group relative p-5 rounded-2xl border transition-all duration-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none ${
                     isSelected
-                      ? 'bg-white/[0.09] border-white/30 shadow-[0_12px_36px_rgba(0,0,0,0.7)] backdrop-blur-xl scale-[1.01]'
-                      : 'bg-white/[0.02] border-white/5 hover:border-white/15 hover:bg-white/[0.04]'
+                      ? 'bg-white/[0.10] border-white/30 shadow-[0_16px_40px_rgba(0,0,0,0.7)] backdrop-blur-xl scale-[1.01]'
+                      : 'bg-white/[0.02] border-white/5 hover:border-white/15 hover:bg-white/[0.045]'
                   }`}
                 >
                   {/* Active Highlight Accent Bar */}
                   {isSelected && (
                     <motion.div
                       layoutId="activeProjectBar"
-                      className="absolute left-0 top-3 bottom-3 w-1.5 rounded-r-full shadow-lg"
+                      className="absolute left-0 top-3.5 bottom-3.5 w-2 rounded-r-full shadow-lg"
                       style={{ backgroundColor: project.accentColor }}
                       transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                     />
                   )}
 
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-start gap-3 min-w-0">
+                  <div className="flex items-start justify-between gap-3.5">
+                    <div className="flex items-start gap-3.5 min-w-0">
                       {/* Number with pulsing dot if active */}
                       <div className="flex flex-col items-center shrink-0 pt-0.5">
                         <span
-                          className="text-xs font-mono font-bold tracking-wider"
-                          style={{ color: isSelected ? project.accentColor : 'rgba(255,255,255,0.4)' }}
+                          className="text-sm font-mono font-bold tracking-wider"
+                          style={{ color: isSelected ? project.accentColor : 'rgba(255,255,255,0.45)' }}
                         >
                           {project.num}
                         </span>
                         {isSelected && (
                           <span
-                            className="w-1.5 h-1.5 rounded-full mt-1 animate-ping"
+                            className="w-2 h-2 rounded-full mt-1.5 animate-ping"
                             style={{ backgroundColor: project.accentColor }}
                           />
                         )}
                       </div>
 
                       <div className="min-w-0">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2.5">
                           <h3
-                            className={`text-base font-display font-bold leading-tight transition-colors line-clamp-1 ${
-                              isSelected ? 'text-white' : 'text-white/70 group-hover:text-white'
+                            className={`text-lg sm:text-xl font-display font-bold leading-snug transition-colors line-clamp-1 ${
+                              isSelected ? 'text-white' : 'text-white/75 group-hover:text-white'
                             }`}
                           >
                             {project.title}
                           </h3>
                           {isSelected && (
-                            <span className="hidden xl:inline-flex items-center gap-1 px-2 py-0.2 rounded-full text-[9px] font-mono bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-bold">
-                              <Zap className="w-2.5 h-2.5" />
+                            <span className="hidden xl:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-bold">
+                              <Zap className="w-3 h-3" />
                               {project.vitals.score}/100
                             </span>
                           )}
                         </div>
 
-                        <p className="text-[11px] font-sans text-white/60 line-clamp-1 mt-1 font-normal">
+                        <p className="text-xs sm:text-[13px] font-sans text-white/70 line-clamp-1 mt-1.5 font-normal leading-relaxed">
                           {project.subtitle}
                         </p>
 
-                        {/* Architecture tags snippet */}
-                        <div className="flex items-center gap-2 mt-2 font-mono text-[9px] text-white/40">
-                          <span>{project.category}</span>
-                          <span>•</span>
-                          <span className="text-white/60">{project.vitals.lcp} LCP</span>
+                        {/* Architecture tags & Vitals snippet */}
+                        <div className="flex items-center gap-2.5 mt-2.5 font-mono text-[11px] text-white/45">
+                          <span className="font-medium text-white/60">{project.category}</span>
+                          <span className="text-white/30">•</span>
+                          <span className="text-cyan-300/90 font-bold">{project.vitals.lcp} LCP</span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex flex-col items-end gap-2 shrink-0">
+                    <div className="flex flex-col items-end gap-2.5 shrink-0">
                       <span
-                        className="px-2 py-0.5 rounded text-[9px] font-mono uppercase tracking-wider font-semibold border"
+                        className="px-2.5 py-1 rounded-md text-[10px] sm:text-[11px] font-mono uppercase tracking-wider font-bold border"
                         style={{
-                          backgroundColor: `${project.accentColor}15`,
-                          borderColor: `${project.accentColor}35`,
+                          backgroundColor: `${project.accentColor}18`,
+                          borderColor: `${project.accentColor}40`,
                           color: project.accentColor
                         }}
                       >
@@ -677,13 +677,13 @@ export default function Projects() {
                       </span>
 
                       <div
-                        className={`w-7 h-7 rounded-xl items-center justify-center flex transition-all ${
+                        className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl items-center justify-center flex transition-all ${
                           isSelected
                             ? 'bg-white text-black shadow-md scale-105'
                             : 'bg-white/5 text-white/60 group-hover:bg-white/10 group-hover:text-white'
                         }`}
                       >
-                        <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
+                        <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
                       </div>
                     </div>
                   </div>
