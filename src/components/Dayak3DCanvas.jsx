@@ -40,7 +40,7 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
     sceneRef.current = scene;
 
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-    camera.position.set(0, 0, 3.4);
+    camera.position.set(0, 0, 3.45);
 
     // 2. WebGL Renderer with Alpha & Tone Mapping
     let renderer;
@@ -77,122 +77,97 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
     pointLight.position.set(0, 0, 2.5);
     scene.add(pointLight);
 
-    // 4. Bunga Terong Dayak (Bungai Terung) Kinetic Masterpiece Hierarchy
+    // 4. Authentic Bunga Terong Dayak (Bungai Terung) Kinetic Masterpiece
     const mainGroup = new THREE.Group();
-    // Initial 3D isometric tilt to reveal relief depth and woodcarving facets
-    mainGroup.rotation.x = 0.22;
-    mainGroup.rotation.y = -0.18;
+    // Front-facing orientation with subtle 3D hovering tilt
+    mainGroup.rotation.x = 0.08;
+    mainGroup.rotation.y = 0.0;
     scene.add(mainGroup);
 
-    // --- A. THE 8 SACRED PETALS (KELOPAK BUNGA TERONG) ---
-    const petalsGroup = new THREE.Group();
-    mainGroup.add(petalsGroup);
+    // --- A. THE 8-LOBED & 8-THORN MONOLITHIC FLOWER BODY ---
+    // Mathematically crafted to match the authentic Dayak Bungai Terung reference image
+    const flowerShape = new THREE.Shape();
+    const petalCount = 8;
+    const outlinePoints = [];
 
-    // Parametric Dayak Petal Shape (Curved arc hook with carved belly)
-    const petalShape = new THREE.Shape();
-    petalShape.moveTo(0.18, 0.0);
-    petalShape.bezierCurveTo(0.28, 0.14, 0.58, 0.24, 0.88, 0.16);
-    petalShape.bezierCurveTo(0.98, 0.11, 1.02, -0.04, 0.90, -0.14);
-    petalShape.bezierCurveTo(0.68, -0.22, 0.40, -0.14, 0.18, 0.0);
+    for (let i = 0; i < petalCount; i++) {
+      const aThorn = (i * Math.PI * 2) / petalCount;
+      const aNextThorn = ((i + 1) * Math.PI * 2) / petalCount;
 
-    const extrudeSettings = {
-      depth: 0.065,
+      // 1. Sharp Pointed Thorn / Sepal Tip (duri terong)
+      const rThorn = 1.10;
+      outlinePoints.push(new THREE.Vector2(Math.cos(aThorn) * rThorn, Math.sin(aThorn) * rThorn));
+
+      // 2. Crevice flank down from thorn tip into the notch
+      const aCrevice1 = aThorn + 0.065;
+      const rCrevice = 0.68;
+      outlinePoints.push(new THREE.Vector2(Math.cos(aCrevice1) * rCrevice, Math.sin(aCrevice1) * rCrevice));
+
+      // 3. Rounded Petal Lobe (Smooth semicircular bulge between thorns)
+      const aCrevice2 = aNextThorn - 0.065;
+      const lobeSteps = 14;
+      const rLobePeak = 0.96;
+
+      for (let s = 1; s <= lobeSteps; s++) {
+        const t = s / (lobeSteps + 1);
+        const angle = aCrevice1 + t * (aCrevice2 - aCrevice1);
+        // Half-sine profile generates a plump, circular petal lobe
+        const r = rCrevice + (rLobePeak - rCrevice) * Math.sin(t * Math.PI);
+        outlinePoints.push(new THREE.Vector2(Math.cos(angle) * r, Math.sin(angle) * r));
+      }
+
+      // 4. Crevice notch before the next thorn
+      outlinePoints.push(new THREE.Vector2(Math.cos(aCrevice2) * rCrevice, Math.sin(aCrevice2) * rCrevice));
+    }
+
+    flowerShape.moveTo(outlinePoints[0].x, outlinePoints[0].y);
+    for (let i = 1; i < outlinePoints.length; i++) {
+      flowerShape.lineTo(outlinePoints[i].x, outlinePoints[i].y);
+    }
+    flowerShape.closePath();
+
+    const flowerExtrudeSettings = {
+      depth: 0.075,
       bevelEnabled: true,
-      bevelSegments: 3,
+      bevelSegments: 4,
       steps: 1,
-      bevelSize: 0.018,
-      bevelThickness: 0.018
+      bevelSize: 0.024,
+      bevelThickness: 0.024
     };
 
-    const petalGeo = new THREE.ExtrudeGeometry(petalShape, extrudeSettings);
-    petalGeo.center();
+    const flowerGeo = new THREE.ExtrudeGeometry(flowerShape, flowerExtrudeSettings);
+    flowerGeo.center();
 
+    // Deep Obsidian / Carbon Black Body matching the solid black silhouette
     const solidMat = new THREE.MeshStandardMaterial({
-      color: 0x141416,
-      metalness: 0.88,
-      roughness: 0.22,
-      flatShading: true
+      color: 0x111113,
+      metalness: 0.85,
+      roughness: 0.25,
+      flatShading: false
     });
+    const flowerMesh = new THREE.Mesh(flowerGeo, solidMat);
+    mainGroup.add(flowerMesh);
 
+    // Subtle Cyber-Violet / Gold Contour Hairline
     const wireMat = new THREE.LineBasicMaterial({
       color: 0x684aff,
-      linewidth: 2,
+      linewidth: 1.5,
       transparent: true,
-      opacity: 0.95
+      opacity: 0.75
     });
+    const wireGeo = new THREE.WireframeGeometry(flowerGeo);
+    const wireMesh = new THREE.LineSegments(wireGeo, wireMat);
+    mainGroup.add(wireMesh);
 
-    const wireGeo = new THREE.WireframeGeometry(petalGeo);
-    const wireLinesGroup = new THREE.Group();
-    petalsGroup.add(wireLinesGroup);
-
-    // Instantiate 8 symmetrical petals radiating at 45-degree intervals
-    const petalCount = 8;
-    for (let i = 0; i < petalCount; i++) {
-      const angle = (i * Math.PI * 2) / petalCount;
-      
-      const petalMesh = new THREE.Mesh(petalGeo, solidMat);
-      petalMesh.rotation.z = angle;
-      petalMesh.position.x = Math.cos(angle) * 0.48;
-      petalMesh.position.y = Math.sin(angle) * 0.48;
-      // Slight outward dish curvature for 3D bloom depth
-      petalMesh.rotation.x = Math.sin(angle) * 0.06;
-      petalMesh.rotation.y = -Math.cos(angle) * 0.06;
-      petalsGroup.add(petalMesh);
-
-      const petalWire = new THREE.LineSegments(wireGeo, wireMat);
-      petalWire.rotation.z = angle;
-      petalWire.position.copy(petalMesh.position);
-      petalWire.rotation.x = petalMesh.rotation.x;
-      petalWire.rotation.y = petalMesh.rotation.y;
-      wireLinesGroup.add(petalWire);
-    }
-
-    // --- B. CENTRAL SACRED SPIRAL (TALI NYAWA - PUSARAN HIDUP) ---
+    // --- B. CENTRAL TALI NYAWA INTERLOCKING DOUBLE SPIRAL ---
+    // Exact S-curved twin crescent spirals from the reference image
     const taliNyawaGroup = new THREE.Group();
+    // Positioned cleanly on the front face of the flower
+    taliNyawaGroup.position.z = 0.048;
     mainGroup.add(taliNyawaGroup);
 
-    // Parametric 3D Archimedean logarithmic spiral tube
-    const spiralPoints = [];
-    const spiralTurns = 2.4;
-    const spiralSegments = 70;
-    for (let j = 0; j <= spiralSegments; j++) {
-      const t = j / spiralSegments;
-      const angle = t * Math.PI * 2 * spiralTurns;
-      const r = 0.035 + 0.25 * Math.pow(t, 0.88);
-      const x = Math.cos(angle) * r;
-      const y = Math.sin(angle) * r;
-      const z = 0.08 * (1.0 - t * 0.7); // Forward dome elevation
-      spiralPoints.push(new THREE.Vector3(x, y, z));
-    }
-    const spiralCurve = new THREE.CatmullRomCurve3(spiralPoints);
-    const spiralGeo = new THREE.TubeGeometry(spiralCurve, 64, 0.02, 12, false);
-
-    const taliNyawaMat = new THREE.MeshStandardMaterial({
-      color: 0x684aff,
-      emissive: 0x3b1c9c,
-      emissiveIntensity: 0.45,
-      metalness: 0.92,
-      roughness: 0.16
-    });
-    const taliNyawaMesh = new THREE.Mesh(spiralGeo, taliNyawaMat);
-    taliNyawaGroup.add(taliNyawaMesh);
-
-    // Center Core Seed Gem (Point of origin / Titik Pusaran)
-    const coreGeo = new THREE.OctahedronGeometry(0.08, 0);
-    const innerMat = new THREE.MeshStandardMaterial({
-      color: 0xd97706,
-      emissive: 0xb45309,
-      emissiveIntensity: 0.6,
-      metalness: 0.95,
-      roughness: 0.1
-    });
-    const innerCore = new THREE.Mesh(coreGeo, innerMat);
-    innerCore.position.z = 0.09;
-    taliNyawaGroup.add(innerCore);
-
-    // --- C. SACRED CONCENTRIC RINGS (TITI DAUN & LINGKAR KINETIK) ---
-    // Inner Binding Ring (holding the petal roots)
-    const ring1Geo = new THREE.TorusGeometry(0.36, 0.016, 16, 64);
+    // Recessed circular boundary ring in the center
+    const centerRingGeo = new THREE.TorusGeometry(0.50, 0.012, 16, 64);
     const ring1Mat = new THREE.MeshStandardMaterial({
       color: 0xd97706,
       emissive: 0x78350f,
@@ -200,12 +175,80 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
       metalness: 0.9,
       roughness: 0.2
     });
-    const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
-    ring1.position.z = 0.04;
-    mainGroup.add(ring1);
+    const centerRing = new THREE.Mesh(centerRingGeo, ring1Mat);
+    taliNyawaGroup.add(centerRing);
 
-    // Outer Gyro Cultural Ring (Cyber kinetic ring tilted at 25°)
-    const ring2Geo = new THREE.TorusGeometry(1.18, 0.014, 16, 80);
+    // Parametric Tali Nyawa Spiral Arm (curving from center S-hub to razor outer tip)
+    const armShape = new THREE.Shape();
+    const spiralSteps = 45;
+    const outerArmPoints = [];
+    const innerArmPoints = [];
+
+    for (let j = 0; j <= spiralSteps; j++) {
+      const t = j / spiralSteps;
+      // Clockwise spiral sweep (~1.2 revolutions)
+      const angle = -(t * Math.PI * 2.3);
+      const rOut = 0.05 + 0.44 * Math.pow(t, 0.82);
+      outerArmPoints.push(new THREE.Vector2(Math.cos(angle) * rOut, Math.sin(angle) * rOut));
+
+      // Bold tapered thickness: up to 0.082 thick in the body
+      const thickness = 0.082 * Math.sin(t * Math.PI * 0.95);
+      const rIn = Math.max(0.012, rOut - thickness);
+      innerArmPoints.push(new THREE.Vector2(Math.cos(angle) * rIn, Math.sin(angle) * rIn));
+    }
+
+    armShape.moveTo(outerArmPoints[0].x, outerArmPoints[0].y);
+    for (let j = 1; j < outerArmPoints.length; j++) {
+      armShape.lineTo(outerArmPoints[j].x, outerArmPoints[j].y);
+    }
+    for (let j = innerArmPoints.length - 1; j >= 0; j--) {
+      armShape.lineTo(innerArmPoints[j].x, innerArmPoints[j].y);
+    }
+    armShape.closePath();
+
+    const armExtrudeSettings = {
+      depth: 0.03,
+      bevelEnabled: true,
+      bevelSegments: 3,
+      steps: 1,
+      bevelSize: 0.008,
+      bevelThickness: 0.008
+    };
+
+    const armGeo = new THREE.ExtrudeGeometry(armShape, armExtrudeSettings);
+    armGeo.center();
+
+    // High-visibility pure white material matching the reference image stencil
+    const taliNyawaMat = new THREE.MeshBasicMaterial({
+      color: 0xffffff
+    });
+
+    // Arm 1 (Upper-Right Swirl)
+    const arm1Mesh = new THREE.Mesh(armGeo, taliNyawaMat);
+    arm1Mesh.position.set(0.05, 0.05, 0.015);
+    taliNyawaGroup.add(arm1Mesh);
+
+    // Arm 2 (Lower-Left Interlocking Swirl - 180° rotation)
+    const arm2Mesh = new THREE.Mesh(armGeo, taliNyawaMat);
+    arm2Mesh.rotation.z = Math.PI;
+    arm2Mesh.position.set(-0.05, -0.05, 0.015);
+    taliNyawaGroup.add(arm2Mesh);
+
+    // Center Core Seed Gem (Point of Origin)
+    const coreGeo = new THREE.OctahedronGeometry(0.055, 0);
+    const innerMat = new THREE.MeshStandardMaterial({
+      color: 0xd97706,
+      emissive: 0xb45309,
+      emissiveIntensity: 0.5,
+      metalness: 0.95,
+      roughness: 0.1
+    });
+    const innerCore = new THREE.Mesh(coreGeo, innerMat);
+    innerCore.position.z = 0.03;
+    taliNyawaGroup.add(innerCore);
+
+    // --- C. SACRED AMBIENT ORBITAL GYRO RING (Framing the flower from behind) ---
+    const ring2Geo = new THREE.TorusGeometry(1.22, 0.01, 16, 80);
     const ring2Mat = new THREE.MeshStandardMaterial({
       color: 0x684aff,
       emissive: 0x311080,
@@ -214,17 +257,18 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
       roughness: 0.15
     });
     const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
+    ring2.position.z = -0.05;
     ring2.rotation.x = Math.PI / 4;
     ring2.rotation.y = Math.PI / 6;
     mainGroup.add(ring2);
 
     // 4 Diamond Jewel Nodes on Outer Ring
-    const nodeGeo = new THREE.OctahedronGeometry(0.045, 0);
+    const nodeGeo = new THREE.OctahedronGeometry(0.04, 0);
     const nodeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
     for (let k = 0; k < 4; k++) {
       const angle = (k * Math.PI * 2) / 4;
       const node = new THREE.Mesh(nodeGeo, nodeMat);
-      node.position.set(Math.cos(angle) * 1.18, Math.sin(angle) * 1.18, 0);
+      node.position.set(Math.cos(angle) * 1.24, Math.sin(angle) * 1.24, 0);
       ring2.add(node);
     }
 
@@ -232,7 +276,7 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
     const particleCount = 75;
     const particlePositions = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
-      const radius = 1.15 + Math.random() * 0.65;
+      const radius = 1.18 + Math.random() * 0.65;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random() * 2 - 1);
       particlePositions[i] = radius * Math.sin(phi) * Math.cos(theta);
@@ -243,7 +287,7 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
     const particleMat = new THREE.PointsMaterial({
       color: 0x684aff,
-      size: 0.028,
+      size: 0.026,
       transparent: true,
       opacity: 0.85
     });
@@ -252,14 +296,14 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
 
     objectsRef.current = {
       mainGroup,
-      petalsGroup,
+      flowerMesh,
       taliNyawaGroup,
       taliNyawaMat,
-      wireLinesGroup,
+      wireMesh,
       wireMat,
       innerCore,
       innerMat,
-      ring1,
+      ring1: centerRing,
       ring1Mat,
       ring2,
       ring2Mat,
@@ -375,18 +419,19 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
 
       // Continuous Idle Kinetic Rotation of Bunga Terong Dayak
       if (speedFactor > 0) {
-        // Slow continuous yaw and gentle breathing pitch tilt
-        mainGroup.rotation.y += 0.22 * speedFactor * delta;
-        mainGroup.rotation.x = 0.22 + Math.sin(currentTime * 0.0012) * 0.06;
+        // Keep front-facing with subtle 3D hovering breathing motion
+        mainGroup.rotation.x = 0.06 + Math.sin(currentTime * 0.0012) * 0.04;
+        mainGroup.rotation.y = Math.cos(currentTime * 0.001) * 0.04;
 
-        // Sacred 8 petals revolving gracefully
-        petalsGroup.rotation.z += 0.3 * speedFactor * delta;
+        // Bunga Terong 8-lobed plate revolving smoothly like a sacred mandala wheel
+        flowerMesh.rotation.z += 0.22 * speedFactor * delta;
+        wireMesh.rotation.z = flowerMesh.rotation.z;
 
         // Central Tali Nyawa spiral revolving in counter-harmony
-        taliNyawaGroup.rotation.z -= 0.45 * speedFactor * delta;
+        taliNyawaGroup.rotation.z -= 0.35 * speedFactor * delta;
 
         // Kinetic orbital ring gyroscopic motion
-        ring1.rotation.z += 0.4 * speedFactor * delta;
+        centerRing.rotation.z += 0.3 * speedFactor * delta;
         ring2.rotation.x -= 0.35 * speedFactor * delta;
         ring2.rotation.y += 0.25 * speedFactor * delta;
 
@@ -436,38 +481,32 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
   // Theme Color Switcher
   useEffect(() => {
     const o = objectsRef.current;
-    if (!o.wireMat || !o.taliNyawaMat) return;
+    if (!o.wireMat) return;
 
     if (themeColor === 'violet') {
       o.wireMat.color.setHex(0x684aff);
-      o.taliNyawaMat.color.setHex(0x684aff);
-      o.taliNyawaMat.emissive.setHex(0x3b1c9c);
-      o.ring1Mat.color.setHex(0xd97706);
-      o.ring2Mat.color.setHex(0x684aff);
-      o.particleMat.color.setHex(0x684aff);
-      o.innerMat.color.setHex(0xd97706);
+      o.ring1Mat?.color.setHex(0xd97706);
+      o.ring2Mat?.color.setHex(0x684aff);
+      o.particleMat?.color.setHex(0x684aff);
+      o.innerMat?.color.setHex(0xd97706);
     } else if (themeColor === 'gold') {
       o.wireMat.color.setHex(0xd97706);
-      o.taliNyawaMat.color.setHex(0xd97706);
-      o.taliNyawaMat.emissive.setHex(0x78350f);
-      o.ring1Mat.color.setHex(0x684aff);
-      o.ring2Mat.color.setHex(0xd97706);
-      o.particleMat.color.setHex(0xd97706);
-      o.innerMat.color.setHex(0x684aff);
+      o.ring1Mat?.color.setHex(0x684aff);
+      o.ring2Mat?.color.setHex(0xd97706);
+      o.particleMat?.color.setHex(0xd97706);
+      o.innerMat?.color.setHex(0x684aff);
     } else if (themeColor === 'emerald') {
       o.wireMat.color.setHex(0x10b981);
-      o.taliNyawaMat.color.setHex(0x10b981);
-      o.taliNyawaMat.emissive.setHex(0x064e3b);
-      o.ring1Mat.color.setHex(0xd97706);
-      o.ring2Mat.color.setHex(0x10b981);
-      o.particleMat.color.setHex(0x10b981);
-      o.innerMat.color.setHex(0xd97706);
+      o.ring1Mat?.color.setHex(0xd97706);
+      o.ring2Mat?.color.setHex(0x10b981);
+      o.particleMat?.color.setHex(0x10b981);
+      o.innerMat?.color.setHex(0xd97706);
     }
   }, [themeColor]);
 
   const resetView = () => {
     if (objectsRef.current.mainGroup) {
-      objectsRef.current.mainGroup.rotation.set(0.22, -0.18, 0);
+      objectsRef.current.mainGroup.rotation.set(0.06, 0.0, 0);
     }
     mouseRef.current = { x: 0, y: 0, targetX: 0, targetY: 0 };
   };
