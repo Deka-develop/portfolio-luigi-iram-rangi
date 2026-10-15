@@ -143,11 +143,11 @@ const personaDetails = [
 const portalLinks = [
   {
     id: 'karya',
-    name: 'Karya Terpilih',
+    name: 'Portfolio',
     badge: '8+ Platform Live',
     desc: 'Eksplorasi platform web produksi berkecepatan tinggi yang telah mengudara.',
     accent: '#684AFF',
-    btnText: 'Buka Halaman Karya'
+    btnText: 'Buka Halaman Portfolio'
   },
   {
     id: 'milestone-3d',

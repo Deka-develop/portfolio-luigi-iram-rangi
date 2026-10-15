@@ -67,7 +67,7 @@ function App() {
   useEffect(() => {
     const metaDescriptions = {
       home: 'Portofolio Luigi Iram Rangi — Founder of Ddev (Dayak Developer) & Creative Developer, merancang arsitektur web modern, WebGL 3D, platform interaktif, dan sistem digital berkinerja tinggi dari Kalimantan Barat.',
-      karya: 'Karya Terpilih & Portofolio — Luigi Iram Rangi | Founder of Ddev. Eksplorasi 8 proyek web produksi, arsitektur headless, dan studi kasus sistem skala regional & internasional.',
+      karya: 'Portfolio — Luigi Iram Rangi | Founder of Ddev. Eksplorasi 8 proyek web produksi, arsitektur headless, dan studi kasus sistem skala regional & internasional.',
       'milestone-3d': 'Milestone 3D WebGL — Luigi Iram Rangi | Founder of Ddev. Arsip eksklusif 4 model 3D Three.js, visualisasi rekayasa grafika, dan benchmark performa.',
       kapabilitas: 'Kapabilitas & Cyber Arcade — Luigi Iram Rangi | Founder of Ddev. Spesifikasi arsitektur performa tinggi, skor Google PageSpeed 100/100, dan simulator interaktif Cyber Arcade.',
       kontak: 'Kontak & Konsultasi — Luigi Iram Rangi | Founder of Ddev. Diskusikan arsitektur sistem baru, optimasi web vitals, atau kemitraan digital strategis.'
@@ -75,7 +75,7 @@ function App() {
 
     const titles = {
       home: 'Luigi Iram Rangi — Founder of Ddev | Creative Developer & WebGL Specialist',
-      karya: 'Karya Terpilih & Portofolio — Luigi Iram Rangi | Founder of Ddev',
+      karya: 'Portfolio — Luigi Iram Rangi | Founder of Ddev',
       'milestone-3d': 'Milestone 3D WebGL — Luigi Iram Rangi | Founder of Ddev',
       kapabilitas: 'Kapabilitas & Cyber Arcade — Luigi Iram Rangi | Founder of Ddev',
       kontak: 'Kontak & Kolaborasi — Luigi Iram Rangi | Founder of Ddev'
@@ -137,7 +137,7 @@ function App() {
   const navItems = useMemo(
     () => [
       { id: 'home', num: '01', name: 'Beranda', desc: 'Pengenalan & Visi Spasial Dayak', target: 'home' },
-      { id: 'karya', num: '02', name: 'Karya Terpilih', desc: 'Katalog 8 Proyek Web Produksi', target: 'karya', badge: 'Halaman Karya' },
+      { id: 'karya', num: '02', name: 'Portfolio', desc: 'Katalog 8 Proyek Web Produksi', target: 'karya', badge: 'Halaman Portfolio' },
       { id: 'milestone-3d', num: '03', name: 'Milestone 3D', desc: 'Arsip Eksklusif Model 3D WebGL', target: 'milestone-3d', badge: 'Halaman 3D' },
       { id: 'kapabilitas', num: '04', name: 'Kapabilitas', desc: 'Spesifikasi Teknis & Cyber Arcade', target: 'kapabilitas', badge: 'Halaman Khusus' },
       { id: 'kontak', num: '05', name: 'Kontak', desc: 'Kolaborasi & Diskusi Rekayasa', target: 'kontak', badge: 'Halaman Khusus' }
@@ -149,7 +149,7 @@ function App() {
   const getPageBadge = () => {
     switch (route) {
       case 'karya':
-        return 'Halaman Karya';
+        return 'Halaman Portfolio';
       case 'milestone-3d':
         return 'Halaman 3D';
       case 'kapabilitas':

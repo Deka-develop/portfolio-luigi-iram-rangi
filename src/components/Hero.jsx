@@ -126,7 +126,7 @@ export default function Hero({ setActiveSection, onNavigateToProjects, onNavigat
               }}
               className="px-5 py-2.5 rounded-full bg-[#111111] text-[#EDEEF0] font-sans text-xs font-bold uppercase tracking-[0.12em] hover:bg-[#684AFF] transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 cursor-pointer flex items-center gap-2 group focus-visible:ring-2 focus-visible:ring-[#684AFF] focus-visible:outline-none"
             >
-              <span>Eksplorasi Karya Terpilih</span>
+              <span>Eksplorasi Portfolio</span>
               <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" aria-hidden="true" />
             </button>
 

@@ -57,7 +57,7 @@ export default function ProjectsTeaser({ onNavigateToProjects }) {
             </div>
 
             <h2 className="font-sans font-black text-3xl sm:text-4xl md:text-5xl lg:text-[58px] text-[#111111] tracking-[-0.03em] leading-[1.05]">
-              Karya Terpilih &amp; Ekosistem Digital<span className="text-[#684AFF]">.</span>
+              Portfolio &amp; Ekosistem Digital<span className="text-[#684AFF]">.</span>
             </h2>
           </div>
 
@@ -117,7 +117,7 @@ export default function ProjectsTeaser({ onNavigateToProjects }) {
             className="px-8 py-4 rounded-full bg-[#111111] text-[#EDEEF0] font-sans text-xs md:text-sm font-bold uppercase tracking-[0.15em] hover:bg-[#684AFF] transition-all duration-300 shadow-md hover:scale-105 cursor-pointer flex items-center gap-2 group"
           >
             <Layers className="w-4 h-4 group-hover:rotate-12 transition-transform" />
-            <span>Buka Halaman Khusus Karya Terpilih (8 Proyek Lengkap)</span>
+            <span>Buka Halaman Khusus Portfolio (8 Proyek Lengkap)</span>
             <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </button>
         </div>

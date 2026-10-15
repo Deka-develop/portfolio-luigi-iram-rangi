@@ -4,7 +4,7 @@ import Projects from '../components/Projects';
 export default function ProjectsPage() {
   useEffect(() => {
     const originalTitle = document.title;
-    document.title = 'Karya Terpilih & Portofolio — Luigi Iram Rangi | Founder of Ddev';
+    document.title = 'Portfolio — Luigi Iram Rangi | Founder of Ddev';
     window.scrollTo({ top: 0, behavior: 'instant' });
     return () => {
       document.title = originalTitle;
