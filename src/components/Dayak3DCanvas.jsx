@@ -584,6 +584,7 @@ export default function Dayak3DCanvas({ className = '', showControls = false, sh
    ───────────────────────────────────────────────────────────── */
 
 // 1. Era 2023: 3D Bunga Terong Spasial (Zero-Bloat Web Systems)
+// Model Bunga Terong Dayak otentik persis seperti di Beranda (Hero Masterpiece)
 export function BungaTerong3D({ className = '' }) {
   const mountRef = useRef(null);
 
@@ -596,7 +597,7 @@ export function BungaTerong3D({ className = '' }) {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 0, 3.6);
+    camera.position.set(0, 0, 3.4);
 
     let renderer;
     try {
@@ -608,90 +609,197 @@ export function BungaTerong3D({ className = '' }) {
       return;
     }
 
-    const group = new THREE.Group();
-    scene.add(group);
+    const mainGroup = new THREE.Group();
+    mainGroup.rotation.x = 0.1;
+    scene.add(mainGroup);
 
-    // 8 Petals in Radial Symmetry (Motif Bunga Terong Dayak)
-    const petalsGroup = new THREE.Group();
-    group.add(petalsGroup);
+    // ── A. THE 8-LOBED & 8-THORN MONOLITHIC FLOWER BODY (PERSIS SEPERTI DI BERANDA) ──
+    const flowerShape = new THREE.Shape();
+    const petalCount = 8;
+    const outlinePoints = [];
 
-    const petalMat = new THREE.MeshStandardMaterial({
-      color: 0x121218,
-      metalness: 0.9,
-      roughness: 0.2,
-      flatShading: true
+    for (let i = 0; i < petalCount; i++) {
+      const aThorn = (i * Math.PI * 2) / petalCount;
+      const aNextThorn = ((i + 1) * Math.PI * 2) / petalCount;
+
+      // 1. Sharp Pointed Thorn / Sepal Tip (duri terong)
+      const rThorn = 1.10;
+      outlinePoints.push(new THREE.Vector2(Math.cos(aThorn) * rThorn, Math.sin(aThorn) * rThorn));
+
+      // 2. Crevice flank down from thorn tip into the notch
+      const aCrevice1 = aThorn + 0.065;
+      const rCrevice = 0.68;
+      outlinePoints.push(new THREE.Vector2(Math.cos(aCrevice1) * rCrevice, Math.sin(aCrevice1) * rCrevice));
+
+      // 3. Rounded Petal Lobe (Smooth semicircular bulge between thorns)
+      const aCrevice2 = aNextThorn - 0.065;
+      const lobeSteps = 14;
+      const rLobePeak = 0.96;
+
+      for (let s = 1; s <= lobeSteps; s++) {
+        const t = s / (lobeSteps + 1);
+        const angle = aCrevice1 + t * (aCrevice2 - aCrevice1);
+        const r = rCrevice + (rLobePeak - rCrevice) * Math.sin(t * Math.PI);
+        outlinePoints.push(new THREE.Vector2(Math.cos(angle) * r, Math.sin(angle) * r));
+      }
+
+      // 4. Crevice notch before next thorn
+      outlinePoints.push(new THREE.Vector2(Math.cos(aCrevice2) * rCrevice, Math.sin(aCrevice2) * rCrevice));
+    }
+
+    flowerShape.moveTo(outlinePoints[0].x, outlinePoints[0].y);
+    for (let i = 1; i < outlinePoints.length; i++) {
+      flowerShape.lineTo(outlinePoints[i].x, outlinePoints[i].y);
+    }
+    flowerShape.closePath();
+
+    const flowerExtrudeSettings = {
+      depth: 0.075,
+      bevelEnabled: true,
+      bevelSegments: 4,
+      steps: 1,
+      bevelSize: 0.024,
+      bevelThickness: 0.024
+    };
+
+    const flowerGeo = new THREE.ExtrudeGeometry(flowerShape, flowerExtrudeSettings);
+    flowerGeo.center();
+
+    // Deep Obsidian / Carbon Black Body
+    const solidMat = new THREE.MeshStandardMaterial({
+      color: 0x111113,
+      metalness: 0.88,
+      roughness: 0.22,
+      flatShading: false
     });
-    const petalWireMat = new THREE.LineBasicMaterial({ color: 0xd97706, transparent: true, opacity: 0.85 });
+    const flowerMesh = new THREE.Mesh(flowerGeo, solidMat);
+    mainGroup.add(flowerMesh);
 
-    const petalGeo = new THREE.CylinderGeometry(0.04, 0.26, 1.05, 12);
-    petalGeo.scale(1.2, 1.0, 0.22);
-    const petalWireGeo = new THREE.WireframeGeometry(petalGeo);
+    // Subtle Cyber-Violet Contour Hairline
+    const wireMat = new THREE.LineBasicMaterial({
+      color: 0x684aff,
+      linewidth: 1.5,
+      transparent: true,
+      opacity: 0.75
+    });
+    const wireGeo = new THREE.WireframeGeometry(flowerGeo);
+    const wireMesh = new THREE.LineSegments(wireGeo, wireMat);
+    mainGroup.add(wireMesh);
 
-    const numPetals = 8;
-    for (let i = 0; i < numPetals; i++) {
-      const angle = (i / numPetals) * Math.PI * 2;
-      const petalMesh = new THREE.Mesh(petalGeo, petalMat);
-      const wireMesh = new THREE.LineSegments(petalWireGeo, petalWireMat);
-      petalMesh.add(wireMesh);
+    // ── B. CENTRAL TALI NYAWA INTERLOCKING DOUBLE SPIRAL ──
+    const taliNyawaGroup = new THREE.Group();
+    taliNyawaGroup.position.z = 0.048;
+    mainGroup.add(taliNyawaGroup);
 
-      const r = 0.52;
-      petalMesh.position.set(Math.cos(angle) * r, Math.sin(angle) * r, 0);
-      petalMesh.rotation.z = angle - Math.PI / 2;
-      petalMesh.rotation.x = 0.18; // outward subtle flare
-      petalsGroup.add(petalMesh);
-    }
-
-    // Central Archimedean Spiral (Pusaran Kehidupan Dayak)
-    const spiralPts = [];
-    for (let a = 0; a <= Math.PI * 6.5; a += 0.1) {
-      const r = 0.05 + a * 0.042;
-      spiralPts.push(new THREE.Vector3(Math.cos(a) * r, Math.sin(a) * r, a * 0.025));
-    }
-    const spiralGeo = new THREE.BufferGeometry().setFromPoints(spiralPts);
-    const spiralMat = new THREE.LineBasicMaterial({ color: 0x684aff, linewidth: 2 });
-    const spiralLine = new THREE.Line(spiralGeo, spiralMat);
-    group.add(spiralLine);
-
-    // Central Glowing Sacred Jewel (Inti Pusaka)
-    const jewelGeo = new THREE.OctahedronGeometry(0.24, 0);
-    const jewelMat = new THREE.MeshStandardMaterial({
+    // Center circular boundary ring in gold
+    const centerRingGeo = new THREE.TorusGeometry(0.50, 0.012, 16, 64);
+    const ringMat = new THREE.MeshStandardMaterial({
       color: 0xd97706,
+      emissive: 0x78350f,
+      emissiveIntensity: 0.35,
+      metalness: 0.9,
+      roughness: 0.2
+    });
+    const centerRing = new THREE.Mesh(centerRingGeo, ringMat);
+    taliNyawaGroup.add(centerRing);
+
+    // Parametric Tali Nyawa Spiral Arm
+    const armShape = new THREE.Shape();
+    const spiralSteps = 45;
+    const outerArmPoints = [];
+    const innerArmPoints = [];
+
+    for (let j = 0; j <= spiralSteps; j++) {
+      const t = j / spiralSteps;
+      const angle = -(t * Math.PI * 2.3);
+      const rOut = 0.05 + 0.44 * Math.pow(t, 0.82);
+      outerArmPoints.push(new THREE.Vector2(Math.cos(angle) * rOut, Math.sin(angle) * rOut));
+
+      const thickness = 0.082 * Math.sin(t * Math.PI * 0.95);
+      const rIn = Math.max(0.012, rOut - thickness);
+      innerArmPoints.push(new THREE.Vector2(Math.cos(angle) * rIn, Math.sin(angle) * rIn));
+    }
+
+    armShape.moveTo(outerArmPoints[0].x, outerArmPoints[0].y);
+    for (let j = 1; j < outerArmPoints.length; j++) {
+      armShape.lineTo(outerArmPoints[j].x, outerArmPoints[j].y);
+    }
+    for (let j = innerArmPoints.length - 1; j >= 0; j--) {
+      armShape.lineTo(innerArmPoints[j].x, innerArmPoints[j].y);
+    }
+    armShape.closePath();
+
+    const armExtrudeSettings = {
+      depth: 0.03,
+      bevelEnabled: true,
+      bevelSegments: 3,
+      steps: 1,
+      bevelSize: 0.008,
+      bevelThickness: 0.008
+    };
+
+    const armGeo = new THREE.ExtrudeGeometry(armShape, armExtrudeSettings);
+    armGeo.center();
+
+    // Crisp white Tali Nyawa spirals
+    const taliNyawaMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+    // Arm 1
+    const arm1Mesh = new THREE.Mesh(armGeo, taliNyawaMat);
+    arm1Mesh.position.set(0.05, 0.05, 0.015);
+    taliNyawaGroup.add(arm1Mesh);
+
+    // Arm 2 (180° rotated)
+    const arm2Mesh = new THREE.Mesh(armGeo, taliNyawaMat);
+    arm2Mesh.rotation.z = Math.PI;
+    arm2Mesh.position.set(-0.05, -0.05, 0.015);
+    taliNyawaGroup.add(arm2Mesh);
+
+    // Center Core Seed Gem
+    const coreGeo = new THREE.OctahedronGeometry(0.055, 0);
+    const innerMat = new THREE.MeshStandardMaterial({
+      color: 0xd97706,
+      emissive: 0xb45309,
+      emissiveIntensity: 0.5,
       metalness: 0.95,
       roughness: 0.1
     });
-    const jewelMesh = new THREE.Mesh(jewelGeo, jewelMat);
-    jewelMesh.position.z = 0.15;
-    group.add(jewelMesh);
+    const innerCore = new THREE.Mesh(coreGeo, innerMat);
+    innerCore.position.z = 0.03;
+    taliNyawaGroup.add(innerCore);
 
-    // Outer Halo Orbit
-    const ringGeo = new THREE.TorusGeometry(1.35, 0.015, 16, 64);
-    const ringMat = new THREE.MeshBasicMaterial({ color: 0x684aff, transparent: true, opacity: 0.65 });
-    const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-    group.add(ringMesh);
-
-    // Golden Micro-particles
-    const pCount = 50;
-    const pGeo = new THREE.BufferGeometry();
-    const pPos = new Float32Array(pCount * 3);
+    // ── C. AMBIENT SACRED STARDUST SPARK PARTICLES ──
+    const pCount = 60;
+    const pPositions = new Float32Array(pCount * 3);
     for (let i = 0; i < pCount; i++) {
-      const a = Math.random() * Math.PI * 2;
-      const rad = 1.0 + Math.random() * 0.8;
-      pPos[i * 3] = Math.cos(a) * rad;
-      pPos[i * 3 + 1] = Math.sin(a) * rad;
-      pPos[i * 3 + 2] = (Math.random() - 0.5) * 0.8;
+      const radius = 1.15 + Math.random() * 0.65;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(Math.random() * 2 - 1);
+      pPositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+      pPositions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+      pPositions[i * 3 + 2] = radius * Math.cos(phi) * 0.4;
     }
-    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-    const pMat = new THREE.PointsMaterial({ color: 0xd97706, size: 0.04, transparent: true, opacity: 0.75 });
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+    const pMat = new THREE.PointsMaterial({
+      color: 0x684aff,
+      size: 0.035,
+      transparent: true,
+      opacity: 0.85
+    });
     const particles = new THREE.Points(pGeo, pMat);
-    group.add(particles);
+    scene.add(particles);
 
-    // Lighting
-    const light1 = new THREE.DirectionalLight(0x684aff, 3.2);
+    // ── D. LIGHTING ──
+    const light1 = new THREE.DirectionalLight(0xffffff, 2.8);
     light1.position.set(3, 3, 3);
     scene.add(light1);
-    const light2 = new THREE.DirectionalLight(0xd97706, 2.5);
+    const light2 = new THREE.DirectionalLight(0xd97706, 2.2);
     light2.position.set(-3, -2, 2);
     scene.add(light2);
+    const pointLight = new THREE.PointLight(0x684aff, 3.5, 6);
+    pointLight.position.set(0, 0, 1.2);
+    scene.add(pointLight);
     scene.add(new THREE.AmbientLight(0xffffff, 1.2));
 
     let animId;
@@ -699,16 +807,14 @@ export function BungaTerong3D({ className = '' }) {
       animId = requestAnimationFrame(animate);
       const time = performance.now();
 
-      // Rhythmic rotation and breathing
-      petalsGroup.rotation.z += 0.007;
-      group.rotation.x = Math.sin(time * 0.001) * 0.2;
-      group.rotation.y = Math.cos(time * 0.001) * 0.18;
+      // Smooth revolving mandala wheel rotation like in Hero
+      mainGroup.rotation.z += 0.006;
+      mainGroup.rotation.x = 0.1 + Math.sin(time * 0.001) * 0.06;
+      mainGroup.rotation.y = Math.cos(time * 0.001) * 0.08;
 
-      spiralLine.rotation.z -= 0.014; // counter-rotation creates kinetic depth
-      jewelMesh.rotation.y += 0.02;
-      jewelMesh.scale.setScalar(1 + Math.sin(time * 0.003) * 0.12);
-      ringMesh.rotation.z += 0.005;
-      particles.rotation.z += 0.003;
+      innerCore.rotation.x += 0.015;
+      innerCore.rotation.y += 0.02;
+      particles.rotation.z += 0.002;
 
       renderer.render(scene, camera);
     };
@@ -731,16 +837,16 @@ export function BungaTerong3D({ className = '' }) {
         container.removeChild(renderer.domElement);
       }
       renderer.dispose();
-      petalGeo.dispose();
-      petalWireGeo.dispose();
-      petalMat.dispose();
-      petalWireMat.dispose();
-      spiralGeo.dispose();
-      spiralMat.dispose();
-      jewelGeo.dispose();
-      jewelMat.dispose();
-      ringGeo.dispose();
+      flowerGeo.dispose();
+      solidMat.dispose();
+      wireGeo.dispose();
+      wireMat.dispose();
+      centerRingGeo.dispose();
       ringMat.dispose();
+      armGeo.dispose();
+      taliNyawaMat.dispose();
+      coreGeo.dispose();
+      innerMat.dispose();
       pGeo.dispose();
       pMat.dispose();
     };
