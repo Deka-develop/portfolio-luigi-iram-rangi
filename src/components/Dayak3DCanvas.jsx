@@ -955,13 +955,6 @@ export function CyberMandau3D({ className = '' }) {
 
     group.add(hiltGroup);
 
-    // Kinetic Orbit Ring
-    const orbitGeo = new THREE.TorusGeometry(1.65, 0.012, 16, 64);
-    const orbitMat = new THREE.MeshBasicMaterial({ color: 0x684aff, transparent: true, opacity: 0.6 });
-    const orbitRing = new THREE.Mesh(orbitGeo, orbitMat);
-    orbitRing.rotation.x = Math.PI / 3;
-    group.add(orbitRing);
-
     // Lighting
     const light1 = new THREE.DirectionalLight(0x38bdf8, 3.8);
     light1.position.set(3, 4, 3);
@@ -980,7 +973,6 @@ export function CyberMandau3D({ className = '' }) {
       group.rotation.y += 0.013;
       group.rotation.z = Math.sin(time * 0.001) * 0.12 + 0.15;
       group.position.y = Math.sin(time * 0.0016) * 0.1;
-      orbitRing.rotation.z += 0.015;
 
       renderer.render(scene, camera);
     };
@@ -1015,8 +1007,6 @@ export function CyberMandau3D({ className = '' }) {
       pommelMat.dispose();
       collarGeo.dispose();
       collarMat.dispose();
-      orbitGeo.dispose();
-      orbitMat.dispose();
     };
   }, []);
 
