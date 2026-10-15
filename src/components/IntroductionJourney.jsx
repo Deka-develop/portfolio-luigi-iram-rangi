@@ -304,7 +304,7 @@ export default function IntroductionJourney({ onNavigate }) {
 
               <ScrollRevealParagraph delay={0.25} amount={0.15} className="border-l-2 border-[#D97706]/40 pl-4 py-0.5">
                 <p>
-                  Di tengah arus industri teknologi yang sering kali seragam dan mengesampingkan konteks lokal, saya memelopori pendekatan yang saya sebut sebagai <span className="inline-block px-2.5 py-0.5 rounded-md bg-[#684AFF]/10 text-[#684AFF] font-mono text-sm font-bold uppercase tracking-wider">Cultural Computing</span> — sebuah keyakinan bahwa filosofi ornamen ukir perisai Dayak, keseimbangan spasial hutan Borneo, dan nilai kekeluargaan komunal dapat berpadu harmonis dengan komputasi grafika 3D WebGL modern, arsitektur sistem nir-beban, serta performa web berkecepatan tinggi.
+                  Di tengah arus industri teknologi yang sering kali seragam dan mengesampingkan konteks lokal, saya memelopori pendekatan yang saya sebut sebagai <span className="inline-block px-2.5 py-0.5 rounded-md bg-[#684AFF]/10 text-[#684AFF] font-mono text-sm font-bold uppercase tracking-wider">Cultural Computing</span> — sebuah keyakinan bahwa filosofi bunga terong, keseimbangan spasial hutan Borneo, dan nilai kekeluargaan komunal dapat berpadu harmonis dengan komputasi grafika 3D WebGL modern, arsitektur sistem nir-beban, serta performa web berkecepatan tinggi.
                 </p>
               </ScrollRevealParagraph>
 

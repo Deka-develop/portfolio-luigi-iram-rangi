@@ -288,7 +288,7 @@ export default function JourneySection() {
                   // Akar &amp; Filosofi
                 </h4>
                 <p className="text-[#111111]/55 text-sm md:text-[15px] leading-relaxed">
-                  Perjalanan saya berawal dari Pontianak, Kalimantan Barat. Mengagumi ketelitian motif perisai Dayak dan filosofi keseimbangan alam Borneo yang saya transformasikan ke dalam arsitektur digital.
+                  Perjalanan saya berawal dari Pontianak, Kalimantan Barat. Mengagumi ketelitian motif bunga terong Dayak dan filosofi keseimbangan alam Borneo yang saya transformasikan ke dalam arsitektur digital.
                 </p>
                 <p className="text-[#111111]/55 text-sm md:text-[15px] leading-relaxed">
                   Dari baris kode awal hingga mengarsiteki sistem web skala regional dan platform konservasi global seperti Borneo Globe.
