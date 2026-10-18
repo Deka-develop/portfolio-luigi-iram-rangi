@@ -67,7 +67,7 @@ export default function ContactPage({ onNavigate }) {
 
       {/* ───────────────── 2. MAIN CONTACT CONTENT ───────────────── */}
       <div className="w-full">
-        <Contact />
+        <Contact isDedicatedPage={true} />
       </div>
 
     </article>
