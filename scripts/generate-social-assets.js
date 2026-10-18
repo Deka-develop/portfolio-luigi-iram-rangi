@@ -48,7 +48,7 @@ const ogCardSvg = `
       EDISI 2026 // DDEV CULTURAL COMPUTING
     </text>
     <text x="880" y="10" font-family="'Geist Mono', monospace" font-size="14" font-weight="600" fill="#111111" opacity="0.4" letter-spacing="2">
-      0°01′S 109°20′E
+      PONTIANAK, KALBAR
     </text>
   </g>
 

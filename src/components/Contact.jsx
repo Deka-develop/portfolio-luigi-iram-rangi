@@ -251,8 +251,6 @@ export default function Contact() {
           </div>
 
           <div className="flex items-center gap-4">
-            <span>0°01′S 109°20′E</span>
-            <span>•</span>
             <span>PONTIANAK, KALBAR</span>
             <span>•</span>
             <span>EDISI 2026</span>

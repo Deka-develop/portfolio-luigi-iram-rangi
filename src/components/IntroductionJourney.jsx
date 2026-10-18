@@ -114,9 +114,9 @@ const principles = [
 // Behind the Screen / Persona Tidbits
 const personaDetails = [
   {
-    label: 'Koordinat Markas',
-    val: '0°01′S 109°20′E',
-    sub: 'Pontianak, Garis Khatulistiwa Borneo',
+    label: 'Basis Operasional',
+    val: 'Pontianak, Kalimantan Barat',
+    sub: 'Garis Khatulistiwa Borneo, Indonesia',
     icon: MapPin
   },
   {
@@ -700,7 +700,7 @@ export default function IntroductionJourney({ onNavigate }) {
             <span className="font-bold text-white">LUIGI IRAM RANGI // FOUNDER OF DDEV</span>
           </div>
           <div>
-            <span>0°01′S 109°20′E • PONTIANAK, KALIMANTAN BARAT</span>
+            <span>PONTIANAK, KALIMANTAN BARAT</span>
           </div>
           <div>
             <span>© {new Date().getFullYear()} ALL RIGHTS RESERVED</span>

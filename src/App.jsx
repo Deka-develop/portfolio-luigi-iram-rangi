@@ -396,7 +396,7 @@ function App() {
 
                 <div className="flex items-center justify-between font-mono text-[10px] text-[#111111]/50 px-1">
                   <span>PTK {timeWIB} WIB</span>
-                  <span>0°01′S 109°20′E</span>
+                  <span>PONTIANAK, KALBAR</span>
                 </div>
 
                 <div className="text-center font-mono text-[9px] text-[#111111]/40 uppercase tracking-widest">

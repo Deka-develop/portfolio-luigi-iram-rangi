@@ -82,7 +82,7 @@ export default function ContactTeaser({ onNavigateToContact }) {
               iramrangi@gmail.com
             </span>
             <span className="text-white/50 font-mono text-xs">
-              Pontianak, Kalimantan Barat (PTK {timeStr} WIB • 0°01′S 109°20′E)
+              Pontianak, Kalimantan Barat (PTK {timeStr} WIB)
             </span>
           </div>
 

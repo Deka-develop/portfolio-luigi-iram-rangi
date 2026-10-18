@@ -27,7 +27,6 @@ export default function Hero({ setActiveSection, onNavigateToProjects, onNavigat
           <span className="font-bold text-[#111111]">DDEV STUDIO // CULTURAL COMPUTING</span>
         </div>
         <div className="hidden sm:flex items-center gap-6">
-          <span>0°01′S 109°20′E</span>
           <span className="text-[#111111]">PONTIANAK, KALBAR</span>
         </div>
         <div className="hidden sm:flex items-center gap-2">
