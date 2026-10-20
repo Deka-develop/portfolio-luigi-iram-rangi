@@ -62,7 +62,7 @@ export default function ProjectsTeaser({ onNavigateToProjects }) {
           </div>
 
           <p className="text-[#111111]/60 text-sm md:text-base max-w-lg leading-relaxed font-normal">
-            Katalog sistem web produksi skala regional &amp; internasional. Menampilkan 8 proyek lengkap dengan filter kategori, metrik, dan studi kasus pada halaman khusus.
+            Katalog sistem web produksi skala regional &amp; internasional. Menampilkan 9 proyek lengkap dengan filter kategori, metrik, dan studi kasus pada halaman khusus.
           </p>
         </div>
 
@@ -117,7 +117,7 @@ export default function ProjectsTeaser({ onNavigateToProjects }) {
             className="px-8 py-4 rounded-full bg-[#111111] text-[#EDEEF0] font-sans text-xs md:text-sm font-bold uppercase tracking-[0.15em] hover:bg-[#684AFF] transition-all duration-300 shadow-md hover:scale-105 cursor-pointer flex items-center gap-2 group"
           >
             <Layers className="w-4 h-4 group-hover:rotate-12 transition-transform" />
-            <span>Buka Halaman Khusus Portfolio (8 Proyek Lengkap)</span>
+            <span>Buka Halaman Khusus Portfolio (9 Proyek Lengkap)</span>
             <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </button>
         </div>

@@ -21,7 +21,8 @@ import {
   Award,
   QrCode,
   Copy,
-  Check
+  Check,
+  GraduationCap
 } from 'lucide-react';
 import { DayakShieldEmblem, DayakCornerAccent } from './DayakMotifs';
 
@@ -33,8 +34,9 @@ import iknTimeImg from '../assets/projects/ikn-time.webp';
 import indotribuneImg from '../assets/projects/indotribune.webp';
 import bebasJerawatImg from '../assets/projects/bebas-jerawat.webp';
 import alexanderMeringImg from '../assets/projects/alexander-mering.webp';
+import smaSantoPaulusImg from '../assets/projects/sma-santo-paulus.webp';
 
-// 8 Production-grade platforms with deep engineering telemetry
+// 9 Production-grade platforms with deep engineering telemetry
 const projects = [
   {
     id: 'borneo-globe',
@@ -307,15 +309,50 @@ const projects = [
       ],
       deliverables: ['Executive Personal Brand Engine', 'Bento Architecture Showcase', 'Constellation Visual System']
     }
+  },
+  {
+    id: 'sma-santo-paulus',
+    num: '09',
+    title: 'SMA Santo Paulus',
+    subtitle: 'Portal Resmi Persekolahan Katolik Nyarumkop — Singkawang Timur',
+    category: 'Digital Academic Platform',
+    categoryGroup: 'education',
+    role: 'Lead Web Architect',
+    status: 'PRODUCTION LIVE',
+    statusColor: 'indigo',
+    year: '2024 - Present',
+    url: 'https://www.smasantopaulusskw.id/',
+    image: smaSantoPaulusImg,
+    glow: 'from-blue-600/30 via-indigo-600/20 to-transparent',
+    accentColor: '#6366f1',
+    highlightMetric: 'Akreditasi A • NPSN 30105463',
+    vitals: { lcp: '0.42s', inp: '10ms', cls: '0.00', score: 100 },
+    serverTech: 'Dynamic Theme Switch • Edge CDN Network',
+    description: 'Portal web resmi SMA Santo Paulus Nyarumkop (smasantopaulusskw.id), lembaga persekolahan Katolik bersejarah di Singkawang Timur terakreditasi A. Menghadirkan portal warta sekolah, direktori guru & tenaga kependidikan, fasilitas asrama, galeri kegiatan, serta pusat informasi akademik terpadu.',
+    tech: ['Academic Web Portal', 'Adaptive Dark/Light Mode', 'Blogger Custom Engine', 'SEO Schema School'],
+    archBadges: ['School Portal Architecture', 'Notch Announcement Engine', 'Dual Theme Auto-Switch', 'Bandwidth-Optimized CDN'],
+    caseStudy: {
+      client: 'SMA Santo Paulus Nyarumkop (Persekolahan Katolik Singkawang)',
+      location: 'Singkawang Timur, Kalimantan Barat',
+      challenge: 'Mentransformasi kehadiran digital salah satu kompleks persekolahan Katolik bersejarah di Kalimantan Barat agar memiliki sistem informasi publik yang modern, responsif di seluruh gawai siswa & orang tua pelosok daerah, dan mudah dikelola oleh dewan guru.',
+      solution: 'Arsitektur web portal institusi berbasis custom engine dengan integrasi dark/light mode otomatis, sistem announcement notch-box untuk warta penting, direktori tenaga kependidikan terstruktur, dan optimasi pemuatan halaman tanpa lag.',
+      metrics: [
+        { label: 'Status', val: 'Akreditasi A' },
+        { label: 'Institusi', val: 'Nyarumkop SKW' },
+        { label: 'Pemuatan', val: '< 0.7s' }
+      ],
+      deliverables: ['Official Academic Web Portal', 'Adaptive Theme Switch Engine', 'Digital School Information System']
+    }
   }
 ];
 
-const categoryFilters = [
-  { id: 'all', label: 'Semua Platform', icon: Layers, count: 8 },
-  { id: 'culture', label: 'Budaya & Konservasi', icon: Globe, count: 3 },
-  { id: 'media', label: 'Media Nasional', icon: Newspaper, count: 2 },
-  { id: 'commerce', label: 'E-Commerce & Retail', icon: ShoppingBag, count: 2 },
-  { id: 'executive', label: 'Executive Legacy', icon: Award, count: 1 }
+const categoryFilterDefs = [
+  { id: 'all', label: 'Semua Platform', icon: Layers },
+  { id: 'culture', label: 'Budaya & Konservasi', icon: Globe },
+  { id: 'education', label: 'Pendidikan & Akademik', icon: GraduationCap },
+  { id: 'media', label: 'Media Nasional', icon: Newspaper },
+  { id: 'commerce', label: 'E-Commerce & Retail', icon: ShoppingBag },
+  { id: 'executive', label: 'Executive Legacy', icon: Award }
 ];
 
 export default function Projects() {
@@ -329,6 +366,16 @@ export default function Projects() {
 
   const touchStartX = useRef(0);
   const tabsContainerRef = useRef(null);
+
+  // Dynamic category filter counts
+  const categoryFilters = useMemo(() => {
+    return categoryFilterDefs.map((cat) => ({
+      ...cat,
+      count: cat.id === 'all'
+        ? projects.length
+        : projects.filter((p) => p.categoryGroup === cat.id).length
+    }));
+  }, []);
 
   // Filtered projects
   const filteredProjects = useMemo(() => {
@@ -448,7 +495,7 @@ export default function Projects() {
               </span>
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-[10px] font-mono font-bold text-emerald-300">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                8 SISTEM LIVE • HTTP/3 QUIC
+                {projects.length} SISTEM LIVE • HTTP/3 QUIC
               </span>
             </div>
 
